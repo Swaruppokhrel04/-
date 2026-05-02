@@ -1,0 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&family=Poppins:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Cormorant Garamond", serif;
+  --font-sans: "Poppins", "Montserrat", sans-serif;
+  
+  --color-saffron: #FF9933;
+  --color-maroon: #800000;
+  --color-gold: #D4AF37;
+  --color-cream: #FFFDD0;
+  --color-paper: #FDFBF7;
+  --color-paper-dark: #F5EFE6;
+
+  @keyframes glow {
+    0%, 100% { filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.4)); }
+    50% { filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.8)); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+}
+
+.animate-glow {
+  animation: glow 3s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.bg-scripture {
+  background-image: 
+    radial-gradient(circle at 2px 2px, rgba(128, 0, 0, 0.05) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+.bg-mandala {
+  background-color: var(--color-paper);
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0l6.5 18.5 18.5 2.5-13.5 13 3 18.5-14.5-9-14.5 9 3-18.5-13.5-13 18.5-2.5L30 0z' fill='%23d4af37' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E");
+}
+
+.bg-maroon-pattern {
+  background-color: var(--color-maroon);
+  background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0l2 18h18l-15 11 6 11-11-7-11 7 6-11-15-11h18z' fill='%23ffffff' fill-opacity='0.02' fill-rule='evenodd'/%3E%3C/svg%3E");
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-paper);
+  color: #2D2D2D;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-sans);
+}

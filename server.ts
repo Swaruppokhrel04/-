@@ -1,0 +1,203 @@
+import express from "express";
+import { createServer } from "node:http";
+import { Server } from "socket.io";
+import { createServer as createViteServer } from "vite";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import nodemailer from "nodemailer";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+async function startServer() {
+  const app = express();
+  const httpServer = createServer(app);
+  const io = new Server(httpServer, {
+    cors: {
+      origin: "*",
+    },
+  });
+
+  const PORT = 3000;
+
+  // Simple message storage (in-memory for demo)
+  const messages: any[] = [];
+
+  app.use(express.json());
+
+  // Nodemailer transporter (lazy initialization)
+  let transporter: nodemailer.Transporter | null = null;
+
+  const getTransporter = async () => {
+    if (transporter) return transporter;
+
+    // Use environment variables if available
+    if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
+      transporter = nodemailer.createTransport({
+        host: process.env.SMTP_HOST,
+        port: parseInt(process.env.SMTP_PORT || "587"),
+        secure: process.env.SMTP_SECURE === "true",
+        auth: {
+          user: process.env.SMTP_USER,
+          pass: process.env.SMTP_PASS,
+        },
+      });
+    } else {
+      // Fallback for demo: use a test account
+      const testAccount = await nodemailer.createTestAccount();
+      transporter = nodemailer.createTransport({
+        host: "smtp.ethereal.email",
+        port: 587,
+        secure: false,
+        auth: {
+          user: testAccount.user,
+          pass: testAccount.pass,
+        },
+      });
+      console.log("Demo: Use this URL to view sent emails:", nodemailer.getTestMessageUrl({} as any));
+    }
+    return transporter;
+  };
+
+  app.post("/api/book", async (req, res) => {
+    const { fullName, email, phone, pujaType, date, location, message } = req.body;
+    
+    console.log("New Booking Received:", req.body);
+
+    try {
+      const mailTransporter = await getTransporter();
+      
+      const info = await mailTransporter.sendMail({
+        from: '"Shree Nar Narayan Religious Service" <noreply@shreenarnarayan.com>',
+        to: email,
+        subject: `Booking Confirmation - ${pujaType}`,
+        text: `Pranam ${fullName},\n\nYour booking for ${pujaType} on ${date} has been received.\nLocation: ${location}\n\nWe will contact you soon at ${phone}.\n\nThank you,\nShree Nar Narayan Service`,
+        html: `
+          <div style="font-family: sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
+            <h2 style="color: #800000; text-align: center;">Booking Confirmation</h2>
+            <p>Pranam <strong>${fullName}</strong>,</p>
+            <p>Your booking for <strong>${pujaType}</strong> has been successfully received.</p>
+            <div style="background: #fdf6e3; padding: 15px; border-radius: 8px; margin: 20px 0;">
+              <p style="margin: 5px 0;"><strong>Date:</strong> ${date}</p>
+              <p style="margin: 5px 0;"><strong>Location:</strong> ${location}</p>
+              <p style="margin: 5px 0;"><strong>Service:</strong> ${pujaType}</p>
+            </div>
+            <p>We will contact you soon at <strong>${phone}</strong> to discuss further details.</p>
+            <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;" />
+            <p style="font-size: 0.8em; color: #666; text-align: center;">ॐ सर्वे भवन्तु सुखिनः</p>
+          </div>
+        `,
+      });
+
+      if (process.env.NODE_ENV !== "production") {
+        console.log("Message sent: %s", info.messageId);
+        console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+      }
+
+      res.json({ success: true, booking: req.body });
+    } catch (error) {
+      console.error("Email error:", error);
+      // Still return success but log the error if email fails (or return error if critical)
+      res.status(500).json({ success: false, error: "Failed to send confirmation email" });
+    }
+  });
+
+  app.post("/api/contact", async (req, res) => {
+    const { name, email, subject, message } = req.body;
+    
+    console.log("Contact Message Received:", req.body);
+
+    try {
+      const mailTransporter = await getTransporter();
+      
+      const info = await mailTransporter.sendMail({
+        from: `"${name}" <${email}>`,
+        to: "pokhrelswarupji@gmail.com", // Admin email
+        subject: `Contact Form: ${subject}`,
+        text: `New contact message from ${name} (${email}):\n\nSubject: ${subject}\n\nMessage:\n${message}`,
+        html: `
+          <div style="font-family: sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
+            <h2 style="color: #800000; text-align: center;">New Contact Message</h2>
+            <p><strong>From:</strong> ${name}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Subject:</strong> ${subject}</p>
+            <div style="background: #fdf6e3; padding: 15px; border-radius: 8px; margin: 20px 0;">
+              <p><strong>Message:</strong></p>
+              <p style="white-space: pre-wrap;">${message}</p>
+            </div>
+            <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;" />
+            <p style="font-size: 0.8em; color: #666; text-align: center;">Sent from Shri Nar Narayan Contact Form</p>
+          </div>
+        `,
+      });
+
+      if (process.env.NODE_ENV !== "production") {
+        console.log("Contact email sent: %s", info.messageId);
+      }
+
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Contact email error:", error);
+      res.status(500).json({ success: false, error: "Failed to send message" });
+    }
+  });
+
+  app.post("/api/newsletter", (req, res) => {
+    const { email } = req.body;
+    if (!email || !email.includes("@")) {
+      return res.status(400).json({ success: false, error: "कृपया मान्य ईमेल ठेगाना राख्नुहोस्।" });
+    }
+    console.log("Newsletter subscription:", email);
+    res.json({ success: true, message: "तपाईंको ईमेल सफलतापूर्वक दर्ता भयो!" });
+  });
+
+  io.on("connection", (socket) => {
+    console.log("A user connected:", socket.id);
+
+    // Send existing messages to the newly connected user
+    socket.emit("previous_messages", messages);
+
+    socket.on("send_message", (data) => {
+      const newMessage = {
+        ...data,
+        id: Date.now().toString(),
+        timestamp: new Date().toISOString(),
+      };
+      messages.push(newMessage);
+      
+      // Keep only last 50 messages
+      if (messages.length > 50) messages.shift();
+
+      // Broadcast to all clients
+      io.emit("receive_message", newMessage);
+    });
+
+    socket.on("disconnect", () => {
+      console.log("User disconnected:", socket.id);
+    });
+  });
+
+  // Vite middleware for development
+  if (process.env.NODE_ENV !== "production") {
+    const vite = await createViteServer({
+      server: { middlewareMode: true },
+      appType: "spa",
+    });
+    app.use(vite.middlewares);
+  } else {
+    const distPath = path.join(process.cwd(), "dist");
+    app.use(express.static(distPath));
+    app.get("*", (req, res) => {
+      res.sendFile(path.join(distPath, "index.html"));
+    });
+  }
+
+  httpServer.listen(PORT, "0.0.0.0", () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+}
+
+startServer();

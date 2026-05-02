@@ -1,0 +1,832 @@
+export type Language = 'ne' | 'hi' | 'en';
+
+export const i18n = {
+  ne: {
+    nav: {
+      home: 'गृह',
+      services: 'सेवाहरू',
+      about: 'हाम्रो बारेमा',
+      contact: 'सम्पर्क',
+      faq: 'FAQ',
+      login: 'लगिन',
+      logout: 'लगआउट',
+      dashboard: 'ड्यासबोर्ड',
+      book: 'बुक गर्नुहोस्'
+    },
+    dashboard: {
+      title: 'मेरो ड्यासबोर्ड',
+      welcome: 'नमस्ते',
+      upcoming: 'आगामी बुकिङहरू',
+      history: 'बुकिङ इतिहास',
+      profile: 'मेरो प्रोफाइल',
+      noBookings: 'तपाईँको कुनै बुकिङ छैन।',
+      date: 'मिति',
+      time: 'समय',
+      service: 'सेवा',
+      status: 'अवस्था',
+      pending: 'प्रतिक्षामा',
+      confirmed: 'थपिएको',
+      completed: 'सम्पन्न',
+      updateProfile: 'प्रोफाइल अपडेट गर्नुहोस्',
+      displayName: 'नाम',
+      saveChanges: 'परिवर्तन सुरक्षित गर्नुहोस्',
+      exportCalendar: 'क्यालेन्डरमा थप्नुहोस्'
+    },
+    hero: {
+      tag: 'ॐ नमो भगवते वासुदेवाय',
+      title: 'तपाईँको जीवनमा सुख, शान्ति र समृद्धिको लागि हामी',
+      subtitle: 'सम्पूर्ण कर्मकाण्ड तथा ज्योतिषीय सेवा प्रदान गर्दछौँ।',
+      p: 'शास्त्रोक्त विधिद्वारा पूजा र परामर्शको लागि हामीलाई सम्झनुहोस्। दिव्य आशीर्वाद र सही मार्गनिर्देशनको लागि आजै सम्पर्क गर्नुहोस्।',
+      btnConsult: 'सम्पर्क गर्नुहोस्',
+      btnServices: 'हाम्रा सेवाहरू',
+      pillars: [
+        { title: 'वैदिक पूजा', phrase: 'शुद्ध अनुष्ठान' },
+        { title: 'सटीक ज्योतिष', phrase: 'व्यक्तिगत परामर्श' },
+        { title: 'गृह शान्ति', phrase: 'वास्तु एवं संस्कार' },
+        { title: 'पावन पारायण', phrase: 'भक्तिमय पाठ' }
+      ]
+    },
+    categories: {
+      pooja: 'पूजा एवं अनुष्ठान',
+      griha: 'गृह प्रवेश एवं वास्तु',
+      path: 'पाठ एवं पारायण',
+      jyotish: 'ज्योतिष सेवा'
+    },
+    stats: {
+      pujas: 'पूजा सम्पन्न',
+      rituals: 'परम्परागत विधि',
+      families: 'सन्तुष्ट परिवार',
+      experience: 'वर्षको अनुभव'
+    },
+    services: {
+      tag: 'आध्यात्मिक सेवाहरू',
+      title: 'सम्पूर्ण आध्यात्मिक र ज्योतिषीय',
+      span: 'समाधान एकै ठाउँमा',
+      details: 'विवरण',
+      learnMore: 'थप जान्नुहोस्',
+      startingFrom: 'मूल्यका लागि सम्पर्क',
+      rituals: 'पूजा विधि',
+      benefits: 'लाभहरू',
+      priceNote: 'कृपया मूल्य र थप विवरणका लागि हामीलाई सिधै सम्पर्क गर्नुहोस्।',
+      readMore: 'थप पढ्नुहोस्',
+      showLess: 'थोरै देखाउनुहोस्',
+      deity: 'मुख्य देवता',
+      mantra: 'मुख्य मन्त्र',
+      duration: 'समय अवधि'
+    },
+    about: {
+      title: 'ॐ नमो भगवते वासुदेवाय 🙏',
+      p1: 'तपाईँको जीवनमा सुख, शान्ति र समृद्धिको लागि हामी सम्पूर्ण कर्मकाण्ड र ज्योतिषीय परामर्श सेवा प्रदान गर्दछौँ।',
+      list: [
+        '🕉️ पूजा एवं अनुष्ठान: गणपति पूजन, लक्ष्मी पूजन, शिव पूजन (रुद्राभिषेक), दुर्गा पूजन, र नवग्रह पूजन (सम्पूर्ण ग्रह शान्ति)।',
+        '🏠 गृह प्रवेश: नयाँ घरको गृह प्रवेश पूजन र वास्तु शान्ति।',
+        '📜 पाठ र पारायण: सुन्दरकाण्ड पाठ, रामायण, गीता, र श्रीमद्भागवत महापुराण।',
+        '🔭 ज्योतिष सेवा: जन्मकुण्डली निर्माण, चिना हेर्ने, ग्रह दोष निवारण, र उचित ज्योतिषीय उपायहरू।',
+        '🔥 अध्यात्मिक समाधान: जप, पाठ, हवन र सबै प्रकारका विशेष अनुष्ठानहरू।'
+      ],
+      p2: 'शास्त्रोक्त विधिद्वारा पूजा र परामर्शको लागि हामीलाई सम्झनुहोस्। दिव्य आशीर्वाद र सही मार्गनिर्देशनको लागि आजै सम्पर्क वा मेसेज गर्नुहोस्। 🙏',
+      philosophy: 'हाम्रो दर्शन: धर्म, संस्कृति र संस्कारको संरक्षण गर्दै प्रत्येक यजमानको जीवनमा आध्यात्मिक चेतना र सकारात्मकता ल्याउनु।',
+      lineage: 'हाम्रो परम्परा: हामी तीन पुस्तादेखि चलिआएको शुद्ध वैदिक परम्परा र गुरु-शिष्य परम्पराबाट दीक्षित विद्वान पण्डितहरू हौं।',
+      expertise: 'विज्ञता: कर्मकाण्ड, ज्योतिष, वास्तु शास्त्र र पौराणिक कथाहरूमा गहिरो अध्ययन र दशौं वर्षको व्यावहारिक अनुभव।',
+      trusted: '२०००+ परिवारको विश्वास',
+      desc: 'सम्पूर्ण आध्यात्मिक र ज्योतिषीय समाधान'
+    },
+    testimonials: {
+      title: 'यजमानका अनुभवहरू',
+      subtitle: 'हाम्रो सेवाबाट लाभान्वित केही श्रद्धालु भक्तजनहरू',
+      list: [
+        { name: 'राम बहादुर थापा', role: 'गृह प्रवेश पूजन', content: 'पण्डित ज्यूले अति नै शुद्ध र स्पष्ट उच्चारणका साथ गृह प्रवेश गराउनुभयो। घरमा छुट्टै प्रकारको शान्ति महसुस भएको छ।' },
+        { name: 'सरिता केसी', role: 'ज्योतिष परामर्श', content: 'मेरो जीवनको कठिन समयमा सरु जीको ज्योतिषीय परामर्शले मलाई सही मार्ग देखायो। उपायहरू धेरै प्रभावकारी रहे।' },
+        { name: 'गोपाल शर्मा', role: 'रुद्राभिषेक', content: 'शास्त्रोक्त विधि र पूर्ण निष्ठाका साथ रुद्राभिषेक सम्पन्न भयो। यस्तो विद्वान पण्डित पाउनु हाम्रो सौभाग्य हो।' }
+      ]
+    },
+    booking: {
+      title: 'शुभ साइत बुकिंग',
+      p: 'पवित्र अनुष्ठान र पूजाका लागि पात्रोबाट शुभ साइत छनौट गर्नुहोस्।',
+      form: {
+        labelName: 'यजमानको नाम',
+        holderName: 'तपाईँको नाम',
+        labelPhone: 'सम्पर्क नम्बर',
+        labelEmail: 'ईमेल ठेगाना',
+        holderEmail: 'email@example.com',
+        labelService: 'सेवाको प्रकार',
+        labelDate: 'छनौट गरिएको मिति',
+        datePlaceholder: 'पात्रोबाट छनौट गर्नुहोस्',
+        labelLocation: 'स्थान',
+        holderLocation: 'ठेगाना',
+        labelMessage: 'थप विवरणहरू',
+        holderMessage: 'कुनै विशेष आवश्यकता वा पारिवारिक परम्परा...',
+        btn: 'बुक गर्नुहोस्',
+        btnLoading: 'प्रक्रिया हुँदैछ...'
+      },
+      confirmation: {
+        title: 'बुकिङ सफल!',
+        message: 'तपाईँको बुकिङ सफलतापूर्वक दर्ता गरिएको छ। हामीले पुष्टिकरण इमेल पठाएका छौँ।',
+        summary: 'विवरण सारांश',
+        close: 'बन्द गर्नुहोस्',
+        home: 'गृहपृष्ठमा फर्कनुहोस्'
+      }
+    },
+    services_list: {
+      'ganpati-pujan': { 
+        name: 'गणपति पूजन एवं लक्ष्मी पूजन', 
+        desc: 'कुनै पनि शुभ कार्यको सुरुवातमा गरिने मंगलमय पूजन।',
+        rituals: ['कलश स्थापना', 'गणेश आह्वान', 'षोडशोपचार पूजन', 'आरती र पुष्पाञ्जली'],
+        benefits: ['विघ्न विनाश', 'नयाँ कार्यमा सफलता', 'सुख र समृद्धि']
+      },
+      'rudrabhishek': { 
+        name: 'शिव पूजन (रुद्राभिषेक)', 
+        desc: 'भगवान शिवको अभिषेक गरी शान्ति र आरोग्य प्राप्तिका लागि गरिने विशेष अनुष्ठान।',
+        rituals: ['शिवलिङ्ग स्थापना', 'पञ्चामृत अभिषेक', 'रुद्री पाठ', 'महामृत्युञ्जय जप'],
+        benefits: ['दीर्घायु र आरोग्य', 'मानसिक शान्ति', 'ग्रह बाधाहरूको निवारण']
+      },
+      'durga-pujan': { 
+        name: 'दुर्गा पूजन', 
+        desc: 'शक्ति र संरक्षणको लागि गरिने भगवती दुर्गाको पूजन।',
+        rituals: ['देवी आह्वान', 'दुर्गा सप्तशती पाठ', 'हवन', 'कुमारी पूजा'],
+        benefits: ['शक्ति र साहस प्राप्ति', 'शत्रु बाधा निवारण', 'पारिवारिक सुख']
+      },
+      'navgrah-shanti': { 
+        name: 'नवग्रह पूजन (ग्रह शान्ति)', 
+        desc: 'ग्रहहरुको प्रतिकूल प्रभावलाई कम गरी जीवनमा सुख र समृद्धि ल्याउन गरिने पूजन।',
+        rituals: ['नवग्रह मण्डल स्थापना', 'ग्रह जप', 'हवन', 'दान र पूर्णाहुति'],
+        benefits: ['ग्रह दोष निवारण', 'कार्यमा बाधा हटने', 'सौभाग्य प्राप्ति']
+      },
+      'griha-pravesh': { 
+        name: 'गृह प्रवेश', 
+        desc: 'नयाँ घरमा प्रवेश गर्दा गरिने शास्त्रोक्त पूजन र वास्तु शान्ति।',
+        rituals: ['द्वार पूजा', 'कलश शोभायात्रा', 'वास्तु पूजन', 'गृह हवन'],
+        benefits: ['घरमा सकारात्मक ऊर्जा', 'नयाँ स्थानमा सुखद वास', 'कुल देवताको आशीर्वाद']
+      },
+      'vastu-shanti': { 
+        name: 'वास्तु शान्ति', 
+        desc: 'घरको वास्तु दोष निवारणका लागि गरिने विशेष अनुष्ठान।',
+        rituals: ['पञ्चतत्व पूजन', 'वास्तु पुरुष आह्वान', 'भूमिसहन पूजन', 'शान्ति कलश स्थापना'],
+        benefits: ['वास्तु दोष निवारण', 'पारिवारिक कलह अन्त्य', 'धन आगमनमा वृद्धि']
+      },
+      'sunderkand': { 
+        name: 'सुन्दरकाण्ड पाठ', 
+        desc: 'हनुमान जीको महिमा र संरक्षणको लागि गरिने पाठ।',
+        rituals: ['हनुमान आह्वान', 'सुन्दरकाण्ड गायन', 'हनुमान चालिसा', 'प्रसाद वितरण'],
+        benefits: ['आत्मविश्वासमा वृद्धि', 'अनिष्ट शक्तिको नाश', 'संकटबाट मुक्ति']
+      },
+      'ramayan': { 
+        name: 'रामायण पारायण', 
+        desc: 'मर्यादा पुरुषोत्तम रामको पवित्र कथाको पाठ।',
+        rituals: ['राम दरबार पूजन', 'अखण्ड ज्योति स्थापना', 'तुलसीदास वन्दना', 'रामायण आरती'],
+        benefits: ['मर्यादा र नैतिकताको विकास', 'पारिवारिक मेलमिलाप', 'आध्यात्मिक जागृति']
+      },
+      'geeta': { 
+        name: 'गीता पाठ', 
+        desc: 'श्रीमद्भगवद्गीताको आध्यात्मिक ज्ञान र कर्मको पाठ।',
+        rituals: ['गीता पूजन', 'कृष्ण वन्दना', 'अध्याय अनुसार पाठ', 'ज्ञान चर्चा'],
+        benefits: ['जीवनको सही मार्गनिर्देशन', 'मानसिक दुविधाको अन्त्य', 'मोक्षको बाटो']
+      },
+      'shrimad-bhagwat': { 
+        name: 'श्रीमद्भागवत महापुराण', 
+        desc: 'मोक्ष र भक्ति प्राप्तिका लागि गरिने सप्ताह पाठ।',
+        rituals: ['पोथी पूजन', 'श्रीमद्भागवत सप्तह पाठ', 'कृष्ण लीला गायन', 'पूर्णाहुति'],
+        benefits: ['सर्वपाप विनष्ट', 'भक्ति प्राप्ति', 'पितृ उद्धार']
+      },
+      'kundali-creation': { 
+        name: 'जन्मकुण्डली निर्माण', 
+        desc: 'अनुभवी विद्वानहरूद्वारा सटीक ग्रह गणना र नक्षत्र विश्लेषणका साथ तपाईंको भाग्यको पूर्ण नक्सा (चिना) तयार पारिन्छ।',
+        rituals: ['ग्रह गणना', 'नक्षत्र विश्लेषण', 'दशा फल निर्धारण', 'चिना लेखन'],
+        benefits: ['जीवनको मार्गचित्र', 'भविष्यको पूर्वजानकारी', 'सही मार्गनिर्देशन']
+      },
+      'horoscope-reading': { 
+        name: 'चिना हेर्ने / कुण्डली विश्लेषण', 
+        desc: 'वर्तमान ग्रह दशा, गोचर र भविष्यका सम्भावित घटनाहरूको गहन अध्ययन गरी उचित मार्गनिर्देशन प्रदान गरिन्छ।',
+        rituals: ['दशा विश्लेषण', 'गोचर अध्ययन', 'प्रश्न कुण्डली', 'उपचार परामर्श'],
+        benefits: ['समस्याको पहिचान', 'सफलताको अवसर', 'मानसिक स्पष्टता']
+      },
+      'graha-dosh': { 
+        name: 'ग्रह दोष समाधान', 
+        desc: 'कालसर्प योग, मङ्गल दोष, पितृ दोष लगायतका विभिन्न ग्रहजन्य बाधाहरूको पौराणिक विधिद्वारा शान्ति र समाधान।',
+        rituals: ['दोष पहिचान', 'शान्ति अनुष्ठान', 'विधि विधान दर्शन', 'रत्न परामर्श'],
+        benefits: ['बाधा निवारण', 'पारिवारिक सुख', 'कार्य सफलता']
+      }
+    },
+    footer: {
+      desc: 'श्री नर नारायण धार्मिक सेवा - पवित्रता र निष्ठाका साथ सम्पन्न गरिने वास्तविक वैदिक अनुष्ठान र आध्यात्मिक सेवाहरू। हाम्रो पवित्र परम्पराको संरक्षणमा समर्पित।',
+      servicesTitle: 'सेवाहरू',
+      links: ['पूजा एवं अनुष्ठान', 'गृह प्रवेश पूजन', 'ज्योतिष सेवा', 'पावन पाठ'],
+      contactTitle: 'सम्पर्क',
+      contactLinks: ['WhatsApp', 'सिधा सम्पर्क', 'Facebook', 'हामीलाई लेख्नुहोस्'],
+      infoTitle: 'सूचना',
+      infoDesc: 'शुभ साइत र आध्यात्मिक जानकारीका लागि।',
+      emailHolder: 'ईमेल',
+      btnJoin: 'जुड्नुहोस्',
+      rights: '© २०२६ श्री नर नारायण धार्मिक सेवा। सर्वाधिकार सुरक्षित।',
+      mantra: 'सर्वे भवन्तु सुखिनः'
+    },
+    faq: {
+      title: 'धेरै सोधिने प्रश्नहरू',
+      questions: [
+        { q: 'पूजाको लागि आवश्यक सामग्री कसले व्यवस्था गर्छ?', a: 'सामान्यतया यजमानले सामग्री व्यवस्था गर्नुपर्ने हुन्छ, तर हामी तपाईंलाई आवश्यक सामग्रीको सूची आगाडि नै उपलब्ध गराउँछौँ। विशेष अनुरोधमा हामी आफैं पनि व्यवस्था गर्न सक्छौँ।' },
+        { q: 'के हामी टाढैबाट भिडियो कल मार्फत पूजा गर्न सक्छौँ?', a: 'हो, हामी विदेश वा टाढा रहेका यजमानहरूका लागि भिडियो कल (Zoom/WhatsApp) मार्फत पनि शुद्ध विधिले पूजा गराउँछौँ।' },
+        { q: 'बुक गरिसकेपछि मिति परिवर्तन गर्न मिल्छ?', a: 'मिल्छ, तर कम्तिमा २ दिन अगाडि जानकारी दिनुपर्ने हुन्छ ताकि हामी अर्को शुभ मुहूर्त हेर्न सकौँ।' },
+        { q: 'पण्डित जीको उपलब्धता कसरी थाहा पाउने?', a: 'हाम्रो अनलाइन पात्रोमा खाली रहेका समयहरू देख्न सक्नुहुन्छ। थप निश्चित गर्नको लागि हामीलाई सिधै फोन वा WhatsApp पनि गर्न सक्नुहुन्छ।' },
+        { q: 'ज्योतिषीय परामर्शको लागि के के विवरण चाहिन्छ?', a: 'सटीक फलादेशको लागि जन्म मिति, जन्म समय र जन्म स्थान अनिवार्य हुन्छ।' },
+        { q: 'यदि जन्म समय थाहा छैन भने के गर्ने?', a: 'यदि समय थाहा छैन भने हस्तरेखा वा प्रश्न कुण्डली मार्फत पनि परामर्श लिन सकिन्छ।' },
+        { q: 'वास्तु परामर्श पनि उपलब्ध छ?', a: 'हो, हामी नयाँ घर, अफिस वा व्यावसायिक भवनहरूको लागि पूर्ण वास्तु निरीक्षण र परामर्श प्रदान गर्दछौँ।' }
+      ]
+    },
+    chat: {
+      title: 'दिव्य सहायता',
+      online: 'अनलाइन',
+      connecting: 'जडान हुँदैछ...',
+      welcome: 'प्रणाम !',
+      subtitle: 'तपाईँको आध्यात्मिक यात्रामा हामी कसरी सहयोग गर्न सक्छौँ?',
+      placeholder: 'सन्देश लेख्वुहोस्...',
+      supportName: 'सहयोग डेस्क'
+    },
+    search: {
+      placeholder: 'सेवाहरू खोज्नुहोस्...',
+      noResults: 'कुनै नतिजा फेला परेन'
+    },
+    contact_form: {
+      title: 'हामीलाई मेसेज पठाउनुहोस्',
+      labelName: 'तपाईँको नाम',
+      labelEmail: 'ईमेल ठेगाना',
+      labelSubject: 'विषय',
+      labelMessage: 'सन्देश',
+      placeholderName: 'पुरा नाम लेख्नुहोस्',
+      placeholderEmail: 'email@example.com',
+      placeholderSubject: 'विषय के हो?',
+      placeholderMessage: 'हामीलाई कसरी मद्दत गर्न सक्छौँ...',
+      btnSubmit: 'सन्देश पठाउनुहोस्',
+      btnSending: 'पठाइँदैछ...',
+      btnSendAnother: 'अर्को सन्देश पठाउनुहोस्',
+      success: 'धन्यवाद! तपाईँको सन्देश सफलतापूर्वक पठाइएको छ।',
+      error: 'सन्देश पठाउनमा समस्या भयो। कृपया फेरि प्रयास गर्नुहोला।',
+      errNameRequired: 'कृपया आफ्नो नाम लेख्नुहोस्',
+      errEmailRequired: 'कृपया आफ्नो ईमेल लेख्नुहोस्',
+      errEmailInvalid: 'कृपया सही ईमेल ठेगाना लेख्नुहोस्',
+      errMessageRequired: 'कृपया आफ्नो सन्देश लेख्नुहोस्'
+    },
+    schedule: {
+      title: 'नियमित पूजा तालिका',
+      subtitle: 'हाम्र पवित्र सेवाहरूको दैनिक र साप्ताहिक समय तालिका',
+      days: {
+        daily: 'दैनिक',
+        monday: 'सोमबार',
+        tuesday: 'मंगलबार',
+        friday: 'शुक्रबार',
+        saturday: 'शनिबार'
+      }
+    }
+  },
+  hi: {
+    nav: {
+      home: 'होम',
+      services: 'सेवाएं',
+      about: 'हमारे बारे में',
+      contact: 'संपर्क',
+      faq: 'FAQ',
+      login: 'लॉगिन',
+      logout: 'लॉगआउट',
+      dashboard: 'डैशबोर्ड',
+      book: 'बुक करें'
+    },
+    dashboard: {
+      title: 'मेरा डैशबोर्ड',
+      welcome: 'नमस्ते',
+      upcoming: 'आगामी बुकिंग',
+      history: 'बुकिंग इतिहास',
+      profile: 'प्रोफ़ाइल',
+      noBookings: 'आपकी कोई बुकिंग नहीं है।',
+      date: 'तिथि',
+      time: 'समय',
+      service: 'सेवा',
+      status: 'स्थिति',
+      pending: 'लंबित',
+      confirmed: 'पुष्टि की गई',
+      completed: 'पूरा हुआ',
+      updateProfile: 'प्रोफ़ाइल अपडेट करें',
+      displayName: 'नाम',
+      saveChanges: 'परिवर्तन सहेजें',
+      exportCalendar: 'कैलेंडर में जोड़ें'
+    },
+    hero: {
+      tag: 'ॐ नमो भगवते वासुदेवाय',
+      title: 'आपके जीवन में सुख, शांति और समृद्धि के लिए हम',
+      subtitle: 'सम्पूर्ण पूजा एवं ज्योतिष सेवाएँ प्रदान करते हैं।',
+      p: 'शास्त्रोक्त विधि द्वारा पूजा और परामर्श के लिए हमें याद करें। दिव्य आशीर्वाद और सही मार्गदर्शन के लिए आज ही संपर्क करें।',
+      btnConsult: 'संपर्क करें',
+      btnServices: 'हमारी सेवाएं',
+      pillars: [
+        { title: 'वैदिक पूजा', phrase: 'शुद्ध अनुष्ठान' },
+        { title: 'सटीक ज्योतिष', phrase: 'व्यक्तिगत परामर्श' },
+        { title: 'गृह शान्ति', phrase: 'वास्तु एवं संस्कार' },
+        { title: 'पावन पारायण', phrase: 'भक्तिमय पाठ' }
+      ]
+    },
+    categories: {
+      pooja: 'पूजा एवं अनुष्ठान',
+      griha: 'गृह प्रवेश एवं वास्तु',
+      path: 'पाठ एवं पारायण',
+      jyotish: 'ज्योतिष सेवा'
+    },
+    stats: {
+      pujas: 'पूजा संपन्न',
+      rituals: 'पारंपरिक विधि',
+      families: 'संतुष्ट परिवार',
+      experience: 'वर्षों का अनुभव'
+    },
+    services: {
+      tag: 'आध्यात्मिक सेवाएं',
+      title: 'संपूर्ण आध्यात्मिक और ज्योतिषीय',
+      span: 'समाधान एक ही स्थान पर',
+      details: 'विवरण',
+      learnMore: 'अधिक जानें',
+      startingFrom: 'मूल्य के लिए संपर्क',
+      rituals: 'पूजा विधि',
+      benefits: 'लाभ',
+      priceNote: 'कृपया मूल्य और अधिक जानकारी के लिए हमसे सीधे संपर्क करें।',
+      readMore: 'और पढ़ें',
+      showLess: 'कम दिखाएं',
+      deity: 'मुख्य देवता',
+      mantra: 'मुख्य मंत्र',
+      duration: 'समय अवधि'
+    },
+    about: {
+      title: 'ॐ नमो भगवते वासुदेवाय 🙏',
+      p1: 'आपके जीवन में सुख, शांति और समृद्धि के लिए हम संपूर्ण कर्मकांड और ज्योतिषीय परामर्श सेवा प्रदान करते हैं।',
+      list: [
+        '🕉️ पूजा एवं अनुष्ठान: गणपति पूजन, लक्ष्मी पूजन, शिव पूजन (रुद्राभिषेक), दुर्गा पूजन, और नवग्रह पूजन (सम्पूर्ण ग्रह शान्ति)।',
+        '🏠 गृह प्रवेश: नए घर का गृह प्रवेश पूजन और वास्तु शांति।',
+        '📜 पाठ और पारायण: सुंदरकाण्ड पाठ, रामायण, गीता, और श्रीमद्भागवत महापुराण।',
+        '🔥 आध्यात्मिक समाधान: जप, पाठ, हवन और सभी प्रकार के विशेष अनुष्ठान।',
+        '🔭 ज्योतिष सेवा: जन्मकुंडली निर्माण, कुंडली विश्लेषण, ग्रह दोष निवारण, और उचित ज्योतिषीय उपाय।'
+      ],
+      p2: 'शास्त्रोक्त विधि द्वारा पूजा और परामर्श के लिए हमें याद करें। दिव्य आशीर्वाद और सही मार्गदर्शन के लिए आज ही हमसे संपर्क या मैसेज करें। 🙏',
+      philosophy: 'हमारा दर्शन: धर्म, संस्कृति और संस्कारों का संरक्षण करते हुए प्रत्येक यजमान के जीवन में आध्यात्मिक चेतना और सकारात्मकता लाना।',
+      lineage: 'हमारी परंपरा: हम तीन पीढ़ियों से चली आ रही शुद्ध वैदिक परंपरा और गुरु-शिष्य परंपरा से दीक्षित विद्वान पंडित हैं।',
+      expertise: 'विशेषज्ञता: कर्मकांड, ज्योतिष, वास्तु शास्त्र और पौराणिक कथाओं में गहरा अध्ययन और दशकों का व्यावहारिक अनुभव।',
+      trusted: '२०००+ परिवारों का विश्वास',
+      desc: 'संपूर्ण आध्यात्मिक और ज्योतिषीय समाधान'
+    },
+    testimonials: {
+      title: 'यजमानों के अनुभव',
+      subtitle: 'हमारी सेवा से लाभान्वित कुछ श्रद्धालु भक्तजन',
+      list: [
+        { name: 'राजेश कुमार', role: 'गृह प्रवेश पूजन', content: 'पंडित जी ने बहुत ही शुद्ध और स्पष्ट उच्चारण के साथ गृह प्रवेश कराया। घर में एक अलग ही शांति महसूस हो रही है।' },
+        { name: 'प्रियंका शर्मा', role: 'ज्योतिष परामर्श', content: 'मेरे जीवन के कठिन समय में ज्योतिषीय परामर्श ने मुझे सही रास्ता दिखाया। उपाय बहुत प्रभावी रहे।' },
+        { name: 'अमित मिश्रा', role: 'रुद्राभिषेक', content: 'शास्त्रोक्त विधि और पूर्ण निष्ठा के साथ रुद्राभिषेक संपन्न हुआ। ऐसे विद्वान पंडित मिलना हमारा सौभाग्य है।' }
+      ]
+    },
+    booking: {
+      title: 'शुभ मुहूर्त बुकिंग',
+      p: 'पवित्र अनुष्ठान और पूजा के लिए कैलेंडर से शुभ मुहूर्त चुनें।',
+      form: {
+        labelName: 'यजमान का नाम',
+        holderName: 'आपका नाम',
+        labelPhone: 'संपर्क नंबर',
+        labelEmail: 'ईमेल पता',
+        holderEmail: 'email@example.com',
+        labelService: 'सेवा का प्रकार',
+        labelDate: 'चुनी गई तिथि',
+        datePlaceholder: 'कैलेंडर से चुनें',
+        labelLocation: 'स्थान',
+        holderLocation: 'पता',
+        labelMessage: 'अतिरिक्त विवरण',
+        holderMessage: 'कोई विशेष आवश्यकता या पारिवारिक परंपरा...',
+        btn: 'बुक करें',
+        btnLoading: 'प्रक्रिया जारी है...'
+      },
+      confirmation: {
+        title: 'बुकिंग सफल!',
+        message: 'आपकी बुकिंग सफलतापूर्वक दर्ज कर ली गई है। हमने पुष्टिकरण ईमेल भेज दिया है।',
+        summary: 'विवरण सारांश',
+        close: 'बंद करें',
+        home: 'मुख्य पृष्ठ पर वापस जाएं'
+      }
+    },
+    services_list: {
+      'ganpati-pujan': { 
+        name: 'गणपति पूजन एवं लक्ष्मी पूजा', 
+        desc: 'किसी भी शुभ कार्य की शुरुआत में किया जाने वाला मंगलमय पूजन।',
+        rituals: ['कलश स्थापना', 'गणेश आह्वान', 'षोडशोपचार पूजन', 'आरती'],
+        benefits: ['विघ्न विनाश', 'नए कार्य में सफलता', 'सुख और समृद्धि']
+      },
+      'rudrabhishek': { 
+        name: 'शिव पूजन (रुद्राभिषेक)', 
+        desc: 'भगवान शिव का अभिषेक कर शांति और आरोग्यता के लिए विशेष अनुष्ठान।',
+        rituals: ['शिवलिंग स्थापना', 'पंचामृत अभिषेक', 'रुद्री पाठ', 'महामृत्युंजय जप'],
+        benefits: ['आरोग्य प्राप्ति', 'मानसिक शांति', 'नेगेटिव एनर्जी से मुक्ति']
+      },
+      'durga-pujan': { 
+        name: 'दुर्गा पूजा', 
+        desc: 'शक्ति और संरक्षण के लिए भगवती दुर्गा का पूजन।',
+        rituals: ['देवी आह्वान', 'सप्तशती पाठ', 'हवन', 'कन्या पूजन'],
+        benefits: ['शक्ति और साहस', 'शत्रु बाधा का नाश', 'पारिवारिक सुख']
+      },
+      'navgrah-shanti': { 
+        name: 'नवग्रह शांति', 
+        desc: 'ग्रहों के प्रतिकूल प्रभाव को कम कर जीवन में सुख और समृद्धि लाने के लिए पूजन।',
+        rituals: ['नवग्रह मंडल स्थापना', 'ग्रह मंत्र जप', 'हवन', 'दान'],
+        benefits: ['ग्रह दोष निवारण', 'कार्यों में सफलता', 'सौभाग्य']
+      },
+      'griha-pravesh': { 
+        name: 'गृह प्रवेश', 
+        desc: 'नए घर में प्रवेश से पूर्व किया जाने वाला शास्त्रोक्त पूजन।',
+        rituals: ['द्वार पूजा', 'कलश यात्रा', 'वास्तु पूजन', 'गृह हवन'],
+        benefits: ['घर में सकारात्मक ऊर्जा', 'सुखद निवास', 'कुलदेवता का आशीर्वाद']
+      },
+      'vastu-shanti': { 
+        name: 'वास्तु शांति', 
+        desc: 'घर के वास्तु दोष निवारण के लिए विशेष अनुष्ठान।',
+        rituals: ['पंचतत्व पूजन', 'वास्तु पुरुष आह्वान', 'शांति कलश स्थापना'],
+        benefits: ['वास्तु दोष से मुक्ति', 'पारिवारिक कलह का अंत', 'धन वृद्धि']
+      },
+      'sunderkand': { 
+        name: 'सुन्दरकाण्ड पाठ', 
+        desc: 'हनुमान जी की महिमा के लिए किया जाने वाला पाठ।',
+        rituals: ['हनुमान आह्वान', 'सुन्दरकाण्ड गायन', 'आरती'],
+        benefits: ['आत्मविश्वास', 'संकटों से मुक्ति', 'पॉजिटिविटी']
+      },
+      'ramayan': { 
+        name: 'रामायण', 
+        desc: 'भगवान श्री राम की पावन कथा का पारायण।',
+        rituals: ['राम दरबार पूजन', 'अखंड ज्योति', 'रामायण आरती'],
+        benefits: ['नैतिकता का विकास', 'पारिवारिक मेलजोल', 'शांति']
+      },
+      'geeta': { 
+        name: 'गीता', 
+        desc: 'श्रीमद्भगवद्गीता का आध्यात्मिक पाठ।',
+        rituals: ['गीता पूजन', 'कृष्ण वंदना', 'अध्याय पाठ'],
+        benefits: ['जीवन का मार्गदर्शन', 'मोक्ष मार्ग', 'मानसिक स्थिरता']
+      },
+      'shrimad-bhagwat': { 
+        name: 'श्रीमद्भागवत', 
+        desc: 'मोक्ष और भक्ति के लिए सात दिवसीय महापुराण कथा।',
+        rituals: ['पोथी पूजन', 'सप्ताह पारायण', 'पूर्णाहुति'],
+        benefits: ['पापों का नाश', 'भक्ति की प्राप्ति', 'पितृ शांति']
+      },
+      'kundali-creation': { 
+        name: 'जन्मकुंडली निर्माण', 
+        desc: 'अनुभवी विद्वानों द्वारा सटीक ग्रह गणना और नक्षत्र विश्लेषण के साथ आपके भाग्य का पूर्ण विवरण (टेवा) तैयार किया जाता है।',
+        rituals: ['ग्रह गणना', 'नक्षत्र विश्लेषण', 'दशा निर्धारण', 'कुंडली लेखन'],
+        benefits: ['जीवन का मार्गदर्शन', 'भविष्य की जानकारी', 'उपयुक्त सुझाव']
+      },
+      'horoscope-reading': { 
+        name: 'कुंडली विश्लेषण', 
+        desc: 'वर्तमान ग्रह दशा, गोचर और भविष्य की संभावित घटनाओं का गहरा अध्ययन कर उचित मार्गदर्शन और सावधानी के उपाय प्रदान किए जाते हैं।',
+        rituals: ['दशा विश्लेषण', 'गोचर अध्ययन', 'प्रश्न कुंडली', 'उपाय परामर्श'],
+        benefits: ['समस्या का समाधान', 'सफलता का योग', 'मानसिक शांति']
+      },
+      'graha-dosh': { 
+        name: 'ग्रह दोष निवारण', 
+        desc: 'कालसर्प योग, मंगल दोष, पितृ दोष जैसे विभिन्न ग्रहजन्य दोषों की पौराणिक विधि द्वारा शांति और समाधान के उपाय।',
+        rituals: ['दोष पहचान', 'शांति विधान', 'ग्रह जप', 'अनुष्ठान'],
+        benefits: ['बाधा निवारण', 'खुशहाली', 'कार्य सिद्धि']
+      }
+    },
+    footer: {
+      desc: 'श्री नर नारायण धार्मिक सेवा - पवित्रता और निष्ठा के साथ संपन्न किए जाने वाले वास्तविक वैदिक अनुष्ठान और आध्यात्मिक सेवाएं। हमारी पवित्र परंपरा के संरक्षण में समर्पित।',
+      servicesTitle: 'सेवाएं',
+      links: ['पूजा एवं अनुष्ठान', 'गृह प्रवेश पूजन', 'ज्योतिष सेवा', 'पावन पाठ'],
+      contactTitle: 'संपर्क',
+      contactLinks: ['WhatsApp', 'संपर्क करें', 'Facebook', 'हमें लिखें'],
+      infoTitle: 'सूचना',
+      infoDesc: 'शुभ मुहूर्त और आध्यात्मिक जानकारी के लिए।',
+      emailHolder: 'ईमेल',
+      btnJoin: 'जुड़ें',
+      rights: '© २०२६ श्री नर नारायण धार्मिक सेवा। सर्वाधिकार सुरक्षित।',
+      mantra: 'सर्वे भवन्तु सुखिनः'
+    },
+    faq: {
+      title: ' अक्सर पूछे जाने वाले प्रश्न',
+      questions: [
+        { q: 'पूजा के लिए आवश्यक सामग्री की व्यवस्था कौन करता है?', a: 'आम तौर पर यजमान को सामग्री की व्यवस्था करनी होती है, लेकिन हम आपको आवश्यक सामग्रियों की सूची पहले ही उपलब्ध करा देते हैं। विशेष अनुरोध पर हम स्वयं भी व्यवस्था कर सकते हैं।' },
+        { q: 'क्या हम वीडियो कॉल के माध्यम से दूर से पूजा कर सकते हैं?', a: 'हाँ, हम विदेश या दूर रहने वाले यजमानों के लिए वीडियो कॉल (Zoom/WhatsApp) के माध्यम से भी शुद्ध विधि से पूजा कराते हैं।' },
+        { q: 'बुक करने के बाद क्या तिथि बदली जा सकती है?', a: 'हाँ, लेकिन कम से कम 2 दिन पहले सूचित करना होगा ताकि हम दूसरा शुभ मुहूर्त देख सकें।' },
+        { q: 'पंडित जी की उपलब्धता कैसे पता करें?', a: 'हमारे ऑनलाइन कैलेंडर में रिक्त समय देखा जा सकता है। अधिक पुष्टि के लिए आप हमें सीधे कॉल या WhatsApp भी कर सकते हैं।' },
+        { q: 'ज्योतिषीय परामर्श के लिए क्या विवरण चाहिए?', a: 'सटीक भविष्यवाणियों के लिए जन्म तिथि, जन्म समय और जन्म स्थान अनिवार्य है।' },
+        { q: 'यदि जन्म का समय पता न हो तो क्या करें?', a: 'यदि समय पता नहीं है, तो हस्तरेखा या प्रश्न कुंडली के माध्यम से भी परामर्श लिया जा सकता है।' },
+        { q: 'क्या वास्तु परामर्श भी उपलब्ध है?', a: 'हाँ, हम नए घरों, कार्यालयों या व्यावसायिक भवनों के लिए पूर्ण वास्तु निरीक्षण और परामर्श प्रदान करते हैं।' }
+      ]
+    },
+    chat: {
+      title: 'दिव्य सहायता',
+      online: 'ऑनलाइन',
+      connecting: 'जुड़ रहा है...',
+      welcome: 'प्रणाम !',
+      subtitle: 'आपकी आध्यात्मिक यात्रा में हम कैसे सहायता कर सकते हैं?',
+      placeholder: 'सन्देश लिखें...',
+      supportName: 'सहायता डेस्क'
+    },
+    search: {
+      placeholder: 'सेवाएं खोजें...',
+      noResults: 'कोई परिणाम नहीं मिला'
+    },
+    contact_form: {
+      title: 'हमें संदेश भेजें',
+      labelName: 'आपका नाम',
+      labelEmail: 'ईमेल पता',
+      labelSubject: 'विषय',
+      labelMessage: 'संदेश',
+      placeholderName: 'पूरा नाम लिखें',
+      placeholderEmail: 'email@example.com',
+      placeholderSubject: 'विषय क्या है?',
+      placeholderMessage: 'हम आपकी कैसे मदद कर सकते हैं...',
+      btnSubmit: 'संदेश भेजें',
+      btnSending: 'भेजा जा रहा है...',
+      btnSendAnother: 'एक और संदेश भेजें',
+      success: 'धन्यवाद! आपका संदेश सफलतापूर्वक भेज दिया गया है।',
+      error: 'संदेश भेजने में समस्या हुई। कृपया पुनः प्रयास करें।',
+      errNameRequired: 'कृपया अपना नाम लिखें',
+      errEmailRequired: 'कृपया अपना ईमेल लिखें',
+      errEmailInvalid: 'कृपया सही ईमेल पता लिखें',
+      errMessageRequired: 'कृपया अपना संदेश लिखें'
+    },
+    schedule: {
+      title: 'नियमित पूजा तालिका',
+      subtitle: 'हमारी पवित्र सेवाओं की दैनिक और साप्ताहिक समय सारिणी',
+      days: {
+        daily: 'दैनिक',
+        monday: 'सोमवार',
+        tuesday: 'मंगलवार',
+        friday: 'शुक्रवार',
+        saturday: 'शनिवार'
+      }
+    }
+  },
+  en: {
+    nav: {
+      home: 'Home',
+      services: 'Services',
+      about: 'About',
+      contact: 'Contact',
+      faq: 'FAQ',
+      login: 'Login',
+      logout: 'Logout',
+      dashboard: 'Dashboard',
+      book: 'Book Now'
+    },
+    dashboard: {
+      title: 'My Dashboard',
+      welcome: 'Namaste',
+      upcoming: 'Upcoming Bookings',
+      history: 'Booking History',
+      profile: 'My Profile',
+      noBookings: 'You have no bookings yet.',
+      date: 'Date',
+      time: 'Time',
+      service: 'Service',
+      status: 'Status',
+      pending: 'Pending',
+      confirmed: 'Confirmed',
+      completed: 'Completed',
+      updateProfile: 'Update Profile',
+      displayName: 'Name',
+      saveChanges: 'Save Changes',
+      exportCalendar: 'Add to Calendar'
+    },
+    hero: {
+      tag: 'Om Namo Bhagavate Vasudevaya 🙏',
+      title: 'For happiness, peace, and prosperity in your life, we provide',
+      subtitle: 'complete Hindu rituals and astrology services.',
+      p: 'Remember us for Pujas and consultations according to scriptural methods. Contact us today for divine blessings and correct guidance.',
+      btnConsult: 'Consult Now',
+      btnServices: 'Our Services',
+      pillars: [
+        { title: 'Vedic Pooja', phrase: 'Authentic Rituals' },
+        { title: 'Jyotish', phrase: 'Precise Astrology' },
+        { title: 'Griha Shanti', phrase: 'Vastu & Sanskar' },
+        { title: 'Sacred Path', phrase: 'Divine Recitation' }
+      ]
+    },
+    categories: {
+      pooja: 'Rituals & Pooja',
+      griha: 'Griha Pravesh',
+      path: 'Path & Parayan',
+      jyotish: 'Astrology'
+    },
+    stats: {
+      pujas: 'Pujas Done',
+      rituals: 'Traditional Ways',
+      families: 'Happy Families',
+      experience: 'Years Experience'
+    },
+    services: {
+      tag: 'Spiritual Services',
+      title: 'Complete Spiritual and Astrological',
+      span: 'Solutions at One Place',
+      details: 'Details',
+      learnMore: 'Learn More',
+      startingFrom: 'Contact for Pricing',
+      rituals: 'Ceremony Rituals',
+      benefits: 'Spiritual Benefits',
+      priceNote: 'Please contact us directly for pricing and further details.',
+      readMore: 'Read More',
+      showLess: 'Show Less',
+      deity: 'Primary Deity',
+      mantra: 'Main Mantra',
+      duration: 'Duration'
+    },
+    about: {
+      title: 'Om Namo Bhagavate Vasudevaya 🙏',
+      p1: 'For happiness, peace, and prosperity in your life, we provide complete ritualistic and astrological consultation services.',
+      list: [
+        '🕉️ Puja & Rituals: Ganpati Pujan, Lakshmi Pujan, Shiva Pujan (Rudrabhishek), Durga Pujan, and Navagraha Pujan (Complete Planet Peace).',
+        '🏠 Griha Pravesh: Vastu Pujan and Shanti Anushthan for new homes.',
+        '📜 Recitation: Sunderkand, Ramayan, Gita, and Shrimad Bhagwat Mahapuran.',
+        '🔭 Astrology: Birth chart creation, analysis, planetary defect removal, and remedies.',
+        '🔥 Spiritual Solutions: Jap, Path, Hawan, and all types of special rituals.'
+      ],
+      p2: 'Remember us for rituals and consultations according to scriptural methods. Contact us today for divine blessings and correct guidance. 🙏',
+      philosophy: 'Our Philosophy: To preserve Dharma, culture, and values while bringing spiritual consciousness and positivity to every devotee\'s life.',
+      lineage: 'Our Lineage: We are learned Pandits initiated into the pure Vedic tradition and Guru-Shishya parampara, spanning three generations.',
+      expertise: 'Expertise: Deep study and decades of practical experience in Karmakanda, Astrology, Vastu Shastra, and Puranic recitations.',
+      trusted: 'Trusted by 2000+ Families',
+      desc: 'Expert Astrological & Ritual Services'
+    },
+    testimonials: {
+      title: 'Devotee Experiences',
+      subtitle: 'Voices of those blessed through our spiritual services',
+      list: [
+        { name: 'Robert Wilson', role: 'Virtual Puja', content: 'The virtual puja was conducted with such precision and devotion. Distance was never a barrier to feeling the divine presence.' },
+        { name: 'Ananya Rao', role: 'Astrology Consultation', content: 'The insights provided were remarkably accurate. The guidance helped me make crucial career decisions with confidence.' },
+        { name: 'Sanjay Gupta', role: 'Vastu Shanti', content: 'Extremely knowledgeable about Vastu. The remedies suggested were simple yet they brought significant harmony to our home.' }
+      ]
+    },
+    booking: {
+      title: 'Auspicious Date Booking',
+      p: 'Select an auspicious date from the calendar for your sacred ceremony.',
+      form: {
+        labelName: 'Yajman Name',
+        holderName: 'Your Name',
+        labelPhone: 'Phone Number',
+        labelEmail: 'Email Address',
+        holderEmail: 'email@example.com',
+        labelService: 'Ceremony Type',
+        labelDate: 'Selected Date',
+        datePlaceholder: 'Select from calendar',
+        labelLocation: 'Location',
+        holderLocation: 'Address',
+        labelMessage: 'Additional Details',
+        holderMessage: 'Any specific requirements or traditions...',
+        btn: 'Book Now',
+        btnLoading: 'Processing...'
+      },
+      confirmation: {
+        title: 'Booking Successful!',
+        message: 'Your booking has been successfully recorded. We have sent a confirmation email.',
+        summary: 'Details Summary',
+        close: 'Close',
+        home: 'Back to Home'
+      }
+    },
+    services_list: {
+      'ganpati-pujan': { 
+        name: 'Ganapati & Lakshmi Pooja', 
+        desc: 'Auspicious worship performed at the beginning of any good deed.',
+        rituals: ['Kalash Sthapana', 'Ganesha Avahana', 'Shodashopachara Pujan', 'Aarti'],
+        benefits: ['Obstacle Removal', 'Success in New Ventures', 'Prosperity & Wisdom']
+      },
+      'rudrabhishek': { 
+        name: 'Shiva Pooja (Rudrabhishek)', 
+        desc: 'Special ritual for peace and health by performing Abhishek of Lord Shiva.',
+        rituals: ['Shiva Linga Sthapana', 'Panchamrit Abhishek', 'Rudra Path', 'Mahamrityunjaya Jap'],
+        benefits: ['Health & Longevity', 'Inner Peace', 'Planetary Remedy']
+      },
+      'durga-pujan': { 
+        name: 'Durga Pooja', 
+        desc: 'Divine worship of Goddess Durga for strength and protection.',
+        rituals: ['Devi Avahana', 'Saptashati Path', 'Hawan', 'Kanya Pujan'],
+        benefits: ['Strength & Courage', 'Enemy Protection', 'Family Happiness']
+      },
+      'navgrah-shanti': { 
+        name: 'Navagraha Pooja (Graha Shanti)', 
+        desc: 'Worship to reduce adverse planetary influences and bring prosperity.',
+        rituals: ['Navagraha Mandal Sthapana', 'Planet Mantras', 'Hawan'],
+        benefits: ['Karmic Remedy', 'Smooth Life Progress', 'Good Fortune']
+      },
+      'griha-pravesh': { 
+        name: 'Housewarming Ritual (Griha Pravesh)', 
+        desc: 'Scriptural worship before moving into a new home.',
+        rituals: ['Dwar Puja', 'Kalash Yatra', 'Vastu Pujan', 'Griha Hawan'],
+        benefits: ['Positive Vibrations', 'Prosperous Home Stay', 'Divine Grace']
+      },
+      'vastu-shanti': { 
+        name: 'Vastu Shanti', 
+        desc: 'Special ritual for correcting the architectural defects of a home.',
+        rituals: ['Panchtatva Pujan', 'Vastu Purush Avahana', 'Shanti Kalash'],
+        benefits: ['Architectural Harmony', 'Domestic Peace', 'Wealth Growth']
+      },
+      'sunderkand': { 
+        name: 'Sundarkand Path', 
+        desc: 'Devotional recitation of Hanuman ji\'s glory and protection.',
+        rituals: ['Hanuman Avahana', 'Sundarkand Chanting', 'Aarti'],
+        benefits: ['Confidence Boost', 'Protection from Evil', 'Crisis Solution']
+      },
+      'ramayan': { 
+        name: 'Ramayan', 
+        desc: 'Sacred recitation of Lord Rama\'s life story.',
+        rituals: ['Ram Darbar Pujan', 'Akhand Jyoti', 'Ramayan Aarti'],
+        benefits: ['Ethical Living', 'Family Concord', 'Spiritual Growth']
+      },
+      'geeta': { 
+        name: 'Geeta', 
+        desc: 'Spiritual recitation of Shrimad Bhagavad Gita.',
+        rituals: ['Geeta Pujan', 'Krishna Vandana', 'Chapter Chanting'],
+        benefits: ['Right Guidance', 'Mental Stability', 'Salvation Path']
+      },
+      'shrimad-bhagwat': { 
+        name: 'Shrimad Bhagwat Mahapuran', 
+        desc: 'Seven-day recitation for devotion and liberation.',
+        rituals: ['Pothi Pujan', 'Saptah Path', 'Purnahuti'],
+        benefits: ['Spiritual Merit', 'Devotion to Krishna', 'Ancestral Peace']
+      },
+      'kundali-creation': { 
+        name: 'Kundali Creation', 
+        desc: 'Expert creation of detailed birth charts (Janampatri) with precise planetary calculations and nakshatra analysis.',
+        rituals: ['Planetary Calculation', 'Nakshatra Analysis', 'Dasha Determination', 'Chart Documenting'],
+        benefits: ['Life Roadmap', 'Future Awareness', 'Informed Guidance']
+      },
+      'horoscope-reading': { 
+        name: 'Horoscope Analysis', 
+        desc: 'In-depth study of current planetary periods (Dasha), transits (Gochar), and future life cycles to offer spiritual guidance.',
+        rituals: ['Dasha Analysis', 'Transit Study', 'Prashna Kundali', 'Remedy Consultation'],
+        benefits: ['Root Cause Finding', 'Opportunity Insight', 'Mental Clarity']
+      },
+      'graha-dosh': { 
+        name: 'Graha Dosh Nivaran', 
+        desc: 'Traditional Vedic remedies and specific rituals to mitigate negative planetary influences like Kaal Sarp Yog, Manglik Dosh, or Pitru Dosh.',
+        rituals: ['Defect Identification', 'Shanti Anushthan', 'Mantra Chanting', 'Ritual Guidance'],
+        benefits: ['Obstacle Removal', 'Harmony Restored', 'Success Path']
+      }
+    },
+    footer: {
+      desc: 'Shree Nar Narayan Religious Service - Authentic Vedic rituals and spiritual services performed with purity and devotion. Dedicated to preserving our sacred traditions.',
+      servicesTitle: 'Services',
+      links: ['Puja & Rituals', 'Griha Pravesh', 'Astrology Services', 'Sacred Recitations'],
+      contactTitle: 'Contact',
+      contactLinks: ['WhatsApp', 'Direct Contact', 'Facebook', 'Write to Us'],
+      infoTitle: 'News',
+      infoDesc: 'For auspicious moments and spiritual information.',
+      emailHolder: 'Email',
+      btnJoin: 'Join Us',
+      rights: '© 2026 Shree Nar Narayan Religious Service. All rights reserved.',
+      mantra: 'Sarve Bhavantu Sukhinah'
+    },
+    faq: {
+      title: 'Frequently Asked Questions',
+      questions: [
+        { q: 'Who arranges the required items for the Puja?', a: 'Generally, the host (Yajman) arranges the items, but we provide a list of required materials in advance. On special request, we can arrange them for you.' },
+        { q: 'Can we perform Puja remotely via video call?', a: 'Yes, we conduct Pujas via video call (Zoom/WhatsApp) with pure Vedic rituals for devotees living abroad or at a distance.' },
+        { q: 'Can the date be changed after booking?', a: 'Yes, but please inform us at least 2 days in advance so we can look for another auspicious moment.' },
+        { q: 'How to check Pandit Ji\'s availability?', a: 'You can see available slots in our online calendar. For further confirmation, you can also call or WhatsApp us directly.' },
+        { q: 'What details are needed for astrological consultation?', a: 'Accurate Date of Birth, Time of Birth, and Place of Birth are mandatory for precise predictions.' },
+        { q: 'What if I don\'t know my exact time of birth?', a: 'If you don\'t know the time, we can still provide guidance through palmistry or Prashna Kundali (Horary Astrology).' },
+        { q: 'Do you provide Vastu consultations?', a: 'Yes, we provide full Vastu inspections and consultations for homes, offices, and commercial spaces.' }
+      ]
+    },
+    chat: {
+      title: 'Divine Support',
+      online: 'Online',
+      connecting: 'Connecting...',
+      welcome: 'Pranam!',
+      subtitle: 'How can we assist you in your spiritual journey today?',
+      placeholder: 'Type your message...',
+      supportName: 'Support Desk'
+    },
+    search: {
+      placeholder: 'Search services...',
+      noResults: 'No results found'
+    },
+    contact_form: {
+      title: 'Send us a Message',
+      labelName: 'Your Name',
+      labelEmail: 'Email Address',
+      labelSubject: 'Subject',
+      labelMessage: 'Message',
+      placeholderName: 'Full Name',
+      placeholderEmail: 'email@example.com',
+      placeholderSubject: 'What is this regarding?',
+      placeholderMessage: 'How can we help you?',
+      btnSubmit: 'Send Message',
+      btnSending: 'Sending...',
+      btnSendAnother: 'Send another message',
+      success: 'Thank you! Your message has been sent successfully.',
+      error: 'There was an error sending your message. Please try again later.',
+      errNameRequired: 'Please enter your name',
+      errEmailRequired: 'Please enter your email',
+      errEmailInvalid: 'Please enter a valid email address',
+      errMessageRequired: 'Please enter your message'
+    },
+    schedule: {
+      title: 'Puja Schedule',
+      subtitle: 'Daily and weekly schedule of our sacred services',
+      days: {
+        daily: 'Daily',
+        monday: 'Monday',
+        tuesday: 'Tuesday',
+        friday: 'Friday',
+        saturday: 'Saturday'
+      }
+    }
+  }
+};
