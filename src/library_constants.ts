@@ -115,6 +115,68 @@ export const RELIGIOUS_BOOKS: Book[] = [
               hi: 'आप शंकर जी के अवतार और केसरी के नंदन हैं। आपके तेज और प्रताप की सारा संसार वंदना करता है।',
               en: 'You are the incarnation of Lord Shiva and the son of Kesari. Your glory and power are worshiped by the entire world.'
             }
+          },
+          {
+            number: '7',
+            original: 'विद्यावान गुनी अति चातुर। राम काज करिबे को आतुर॥',
+            translation: {
+              ne: 'तपाईँ विद्वान, गुणवान र अत्यन्त चतुर हुनुहुन्छ। तपाईँ सधैं भगवान रामको काम गर्न उत्सुक रहनुहुन्छ।',
+              hi: 'आप विद्वान, गुणवान और अत्यंत चतुर हैं। आप हमेशा भगवान राम के कार्य करने के लिए तत्पर रहते हैं।',
+              en: 'You are the learned, virtuous and extremely clever. You are always eager to perform the tasks of Lord Rama.'
+            }
+          },
+          {
+            number: '8',
+            original: 'प्रभु चरित्र सुनिबे को रसिया। राम लखन सीता मन बसिया॥',
+            translation: {
+              ne: 'तपाईँ भगवानको चरित्र सुन्नमा लीन हुनुहुन्छ। राम, लक्ष्मण र सीता तपाईँको मनमा वास गर्नुहुन्छ।',
+              hi: 'आप प्रभु के चरित्र सुनने में मग्न रहते हैं। राम, लक्ष्मण और सीता आपके हृदय में निवास करते हैं।',
+              en: 'You delight in listening to the glories of the Lord. Rama, Lakshmana, and Sita dwell in your heart.'
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'shiva-tandava-stotram',
+    title: {
+      ne: 'शिव ताण्डव स्तोत्रम्',
+      hi: 'शिव ताण्डव स्तोत्रम्',
+      en: 'Shiva Tandava Stotram'
+    },
+    author: {
+      ne: 'रावण',
+      hi: 'रावण',
+      en: 'Ravana'
+    },
+    category: 'Stotra',
+    description: {
+      ne: 'भगवान शिवको शक्ति र सौन्दर्यको वर्णन गर्ने शक्तिशाली स्तोत्र।',
+      hi: 'भगवान शिव की शक्ति और सौंदर्य का वर्णन करने वाला शक्तिशाली स्तोत्र।',
+      en: 'A powerful hymn describing the power and beauty of Lord Shiva, composed by Ravana.'
+    },
+    image: 'https://images.unsplash.com/photo-1544908077-3e512403ae6a?auto=format&fit=crop&q=80&w=800',
+    content: [
+      {
+        verses: [
+          {
+            number: '1',
+            original: 'जटाटवीगलज्जलप्रवाहपावितस्थले\nगलेऽवलम्ब्य लम्बितां भुजङ्गतुङ्गमालिकाम्।\nडमड्डमड्डमड्डमन्निनादवड्डमर्वयं\nचकार चण्डताण्डवं तनोतु नः शिवः शिवम्॥',
+            translation: {
+              ne: 'जसको जटाबाट निस्केको गङ्गाको प्रवाहले पवित्र भएको घाँटीमा सर्पको माला झुण्डिएको छ, जो डमरुको आवाजमा ताण्डव नृत्य गर्नुहुन्छ, ती शिवले हाम्रो कल्याण गरून्।',
+              hi: 'जिनकी जटाओं से निकलने वाली गंगा की धारा से पवित्र हुए गले में सर्पों की माला लटकी है, जो डमरू की ध्वनि पर ताण्डव नृत्य करते हैं, वे शिव हमारा कल्याण करें।',
+              en: 'With his neck consecrated by the flow of water that flows from his hair, and on his neck a snake is hanging like a garland, and the Damaru drum emits the sound Damad, Damad, Damad, Damad, Lord Shiva performed the dense Tandava dance. May he bless us.'
+            }
+          },
+          {
+            number: '2',
+            original: 'जटाकटाहसम्भ्रमभ्रमन्निलिम्पनिर्झरी-\nविलोचिवीचिवल्लरीविराजमानमूर्धनि।\nधगद्धगद्धगज्ज्वलल्ललाटपट्टपावके\nकिशोरचन्द्रशेखरे रतिः प्रतिक्षणं मम॥',
+            translation: {
+              ne: 'जसको जटा भित्र गङ्गाको छालहरू विलासी लहर झैं चम्किरहेका छन्, र जसको निधारमा अग्नि बलिरहेको छ, ती चन्द्रधारी शिवमा मेरो सधैं अनुराग रहोस्।',
+              hi: 'जिनकी जटाओं में गंगा की लहरें विलासी वल्लरी की तरह चमक रही हैं, और जिनके ललाट पर अग्नि धधक रही है, उन बालचंद्रधारी शिव में मेरा निरंतर अनुराग रहे।',
+              en: 'I have a deep interest in Lord Shiva, whose head is glorified by the rows of moving waves of the celestial river Ganga, agitating in the deep well of his hair-locks, and who has the brilliant fire flaming on his forehead, and who has the crescent moon as a jewel on his head.'
+            }
           }
         ]
       }
@@ -182,6 +244,24 @@ export const RELIGIOUS_BOOKS: Book[] = [
               hi: 'योग, योगियों के नेता, प्रकृति और पुरुष के ईश्वर, नरसिंह रूप वाले, श्रीमान, केशव, पुरुषोत्तम...',
               en: 'The Yoga, The Leader of those who know Yoga, The Lord of Nature and Spirit, He who has a Man-lion body, Possessor of Lakshmi, Kesava, and the Best among men.'
             }
+          },
+          {
+            number: '4',
+            original: 'सर्वः शर्वः शिवः स्थाणुर्भूतादिर्निधिरव्ययः।\nसम्भवो भावनो भर्ता प्रभवः प्रभुरीश्वरः॥',
+            translation: {
+              ne: 'सबै थोक, संहारक, कल्याणकारी, स्थिर, सबै प्राणीहरूको आदि, अविनाशी निधि...',
+              hi: 'सर्व, संहारक, कल्याणकारी, स्थिर, सब प्राणियों के आदिकारण, अविनाशी निधि...',
+              en: 'The All, The Destroyer, The Auspicious One, The Firm, The Source of all beings, The Inexhaustible Treasure...'
+            }
+          },
+          {
+            number: '5',
+            original: 'स्वयम्भूः शम्भुरादित्यः पुष्कराक्षो महास्वनः।\nअनादिनिधनो धाता विधाता वरुणी वरः॥',
+            translation: {
+              ne: 'स्वयम्भू, शम्भु, आदित्य, कमल जस्ता आँखा भएका, महान ध्वनि भएका, आदि र अन्त नभएका...',
+              hi: 'स्वयंभू, शंभु, आदित्य, कमल-नेत्र, महान ध्वनि वाले, आदि-अंत रहित...',
+              en: 'The Self-born, The Source of happiness, The Sun, The Lotus-eyed, The One with a Great Voice, One without beginning or end...'
+            }
           }
         ]
       }
@@ -234,6 +314,24 @@ export const RELIGIOUS_BOOKS: Book[] = [
               ne: 'हे आचार्य! तपाईँका बुद्धिमान शिष्य द्रुपद पुत्र (धृष्टद्युम्न) द्वारा व्यूहाकार खडा गरिएको पाण्डु पुत्रहरूको यो विशाल सेना हेर्नुहोस्।',
               hi: 'हे आचार्य! आपके बुद्धिमान शिष्य द्रुपदपुत्र (धृष्टद्युम्न) द्वारा व्यूहाकार खड़ी की हुई पाण्डुपुत्रों की इस बड़ी भारी सेना को देखिए।',
               en: 'Behold, O Teacher, this mighty army of the sons of Pandu, arrayed in battle formation by your talented disciple, the son of Drupada.'
+            }
+          },
+          {
+            number: '4',
+            original: 'अत्र शूरा महेष्वासा भीमार्जुनसमा युधि |\nयुयुधानो विराटश्च द्रुपदश्च महारथः || ४ ||',
+            translation: {
+              ne: 'यस सेनामा भीम र अर्जुन जस्ता धेरै शूरवीर धनुर्धारीहरू छन्, जस्तै युयुधान (सात्यकि), विराट र महारथी द्रुपद।',
+              hi: 'इस सेना में भीम और अर्जुन के समान युद्ध करने वाले अनेक शूरवीर धनुर्धारी हैं, जैसे युयुधान (सात्यकि), विराट और महारथी द्रुपद।',
+              en: 'In this army are many mighty archers as proficient in battle as Bhima and Arjuna, such as Yuyudhana, Virata, and the great warrior Drupada.'
+            }
+          },
+          {
+            number: '5',
+            original: 'धृष्टकेतुश्चेकितानः काशिराजश्च वीर्यवान् |\nपुरुजित्कुन्तिभोजश्च शैब्यश्च नरपुङ्गवः || ५ ||',
+            translation: {
+              ne: 'धृष्टकेतु, चेकितान, बलवान काशिराज, पुरुजित, कुन्तिभोज र मानिसहरूमा श्रेष्ठ शैब्य पनि यहाँ छन्।',
+              hi: 'धृष्टकेतु, चेकितान, बलवान काशिराज, पुरुजित, कुन्तिभोज और मनुष्यों में श्रेष्ठ शैब्य भी यहाँ हैं।',
+              en: 'There are also Dhrishtaketu, Chekitana, the valiant King of Kashi, Purujit, Kuntibhoja and Shaibya, the best of men.'
             }
           }
         ]
