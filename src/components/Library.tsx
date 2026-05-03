@@ -264,11 +264,11 @@ export const Library = () => {
                   transition={{ duration: 0.4, delay: idx * 0.05 }}
                   className="group bg-white rounded-[3rem] overflow-hidden border border-gold/5 hover:border-gold/30 hover:shadow-[0_40px_80px_-20px_rgba(74,4,4,0.1)] transition-all duration-500 flex flex-col h-full relative"
                 >
-                  <div className="relative h-64 overflow-hidden">
+                  <div className="relative h-72 md:h-80 overflow-hidden">
                     <img 
                       src={book.image} 
                       alt={book.title[language]} 
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[1.5s] ease-out"
+                      className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-[1.5s] ease-out"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-maroon/80 via-maroon/20 to-transparent" />
                     <div className="absolute top-6 left-6 bg-white/95 backdrop-blur px-4 py-1.5 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] text-maroon shadow-lg">

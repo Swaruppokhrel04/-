@@ -12,7 +12,11 @@ export const SERVICES: PujaService[] = [
     mantra: 'Om Gam Ganapataye Namaha',
     image: 'https://images.unsplash.com/photo-1590766948510-108259e9c4f3?auto=format&fit=crop&q=80&w=800',
     category: 'Regular',
-    audioUrl: 'https://cdn.pixabay.com/audio/2022/10/14/audio_9bcfe53422.mp3' // Spiritual/Ambient sample
+    audioUrl: 'https://cdn.pixabay.com/audio/2022/10/14/audio_9bcfe53422.mp3', // Spiritual/Ambient sample
+    faqs: [
+      { question: 'What materials are needed?', answer: 'Flowers, coconut, betel leaves, sweets, and diya are commonly required.' },
+      { question: 'What are the benefits?', answer: 'Removes obstacles and brings prosperity and wisdom to the house.' }
+    ]
   },
   {
     id: 'rudrabhishek',
@@ -23,7 +27,11 @@ export const SERVICES: PujaService[] = [
     mantra: 'Om Namah Shivaya',
     image: 'https://images.unsplash.com/photo-1563722216449-3660d5bfa78f?auto=format&fit=crop&q=80&w=800',
     category: 'Special',
-    audioUrl: 'https://cdn.pixabay.com/audio/2021/11/25/audio_10842a5c84.mp3'
+    audioUrl: 'https://cdn.pixabay.com/audio/2021/11/25/audio_10842a5c84.mp3',
+    faqs: [
+      { question: 'Is milk mandatory for Abhishek?', answer: 'While preferred, water with honey or Panchamrit can also be used.' },
+      { question: 'Best time for Rudrabhishek?', answer: 'Mondays, Shivaratri, or during the holy month of Shravan.' }
+    ]
   },
   {
     id: 'durga-pujan',
@@ -34,7 +42,11 @@ export const SERVICES: PujaService[] = [
     mantra: 'Om Dum Durgayei Namaha',
     image: 'https://images.unsplash.com/photo-1593351415075-3bac9f45c877?auto=format&fit=crop&q=80&w=800',
     category: 'Special',
-    audioUrl: 'https://cdn.pixabay.com/audio/2022/01/18/audio_d0a13f69d2.mp3'
+    audioUrl: 'https://cdn.pixabay.com/audio/2022/01/18/audio_d0a13f69d2.mp3',
+    faqs: [
+      { question: 'What is the significance of Kanya Pujan?', answer: 'It is a ritual honoring the divine feminine through young girls representing Goddess Durga.' },
+      { question: 'Duration of the puja?', answer: 'Typically 60 to 90 minutes depending on the complexity of the rituals requested.' }
+    ]
   },
   {
     id: 'navgrah-shanti',
@@ -45,7 +57,11 @@ export const SERVICES: PujaService[] = [
     mantra: 'Om Navagrahaya Namah',
     image: 'https://images.unsplash.com/photo-1464802686167-b939a67a06d1?auto=format&fit=crop&q=80&w=800',
     category: 'Special',
-    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+    faqs: [
+      { question: 'How many priests are required?', answer: 'For a full Navagraha Shanti, 1 to 3 priests are recommended for the mantras and rituals.' },
+      { question: 'Can it be performed for a specific planet?', answer: 'Yes, special pujas for specific planets (like Shani or Mangal) can also be arranged.' }
+    ]
   },
   // Griha Pravesh
   {
@@ -57,7 +73,11 @@ export const SERVICES: PujaService[] = [
     mantra: 'Om Vastu Purushaya Namah',
     image: 'https://images.unsplash.com/photo-1627850550041-38202b851953?auto=format&fit=crop&q=80&w=800',
     category: 'Sanskara',
-    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
+    faqs: [
+      { question: 'When should we perform Griha Pravesh?', answer: 'It is ideally performed during auspicious Muhurats like Basant Panchami or Akshaya Tritiya.' },
+      { question: 'Do we need a Vastu check?', answer: 'Yes, Vastu Puja is usually performed alongside Griha Pravesh to harmonize energy.' }
+    ]
   },
   {
     id: 'vastu-shanti',
@@ -135,7 +155,11 @@ export const SERVICES: PujaService[] = [
     name: 'Horoscope Analysis',
     description: 'Detailed analysis of birth chart for life guidance and future insights.',
     image: 'https://images.unsplash.com/photo-1561490430-681534015652?auto=format&fit=crop&q=80&w=800',
-    category: 'Astrology'
+    category: 'Astrology',
+    faqs: [
+      { question: 'What details are needed for analysis?', answer: 'Exact date, time, and place of birth are required for a precise horoscope analysis.' },
+      { question: 'Do you provide remedies?', answer: 'Yes, I provide Vedic remedies including mantras, gemstones, and lifestyle suggestions.' }
+    ]
   }
 ];
 
@@ -203,3 +227,54 @@ export const CONTACT_INFO = {
   address: 'RUPANDEHI NEPAL 32900',
   whatsapp: '9779847016421'
 };
+
+export const TESTIMONIALS = [
+  {
+    id: '1',
+    name: 'Rajesh Sharma',
+    location: 'Kathmandu, Nepal',
+    content: 'The Rudrabhishek ceremony was performed with such devotion. I felt a deep sense of peace throughout the ritual. Highly recommended for authentic Vedic services.',
+    rating: 5,
+    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200'
+  },
+  {
+    id: '2',
+    name: 'Priya Patel',
+    location: 'Bharatpur, Nepal',
+    content: 'Excellent service for our Griha Pravesh. The Pandit ji explained everything clearly and made the process very spiritual and meaningful for our whole family.',
+    rating: 5,
+    image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=200'
+  },
+  {
+    id: '3',
+    name: 'Amit Kumar',
+    location: 'Butwal, Nepal',
+    content: 'The horoscope analysis was very accurate and provided me with genuine guidance for my career. The remedies suggested were practical and effective.',
+    rating: 5,
+    image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=200'
+  },
+  {
+    id: '4',
+    name: 'Suresh Bhattarai',
+    location: 'Lalitpur, Nepal',
+    content: 'The Sunderkand path was organized beautifully. The pronunciation of the Sanskrit shlokas was perfect, and the energy in the room was truly divine.',
+    rating: 5,
+    image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200'
+  },
+  {
+    id: '5',
+    name: 'Meena Sharma',
+    location: 'Pokhara, Nepal',
+    content: 'I booked a Navgraha Shanti puja online. Although it was remote, I felt fully involved. The Pandit ji provided a detailed list of items and guided me through every step.',
+    rating: 5,
+    image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=200'
+  },
+  {
+    id: '6',
+    name: 'Deepak Raj',
+    location: 'Biratnagar, Nepal',
+    content: 'Very disciplined and punctual services. We have been using their astrology and puja services for years, and they always maintain the highest Vedic standards.',
+    rating: 5,
+    image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=200'
+  }
+];

@@ -30,6 +30,9 @@ interface PanchangData {
   masam: string;
   sunrise: string;
   sunset: string;
+  rahuKaal: string;
+  gulikaKaal: string;
+  abhijitMuhurat: string;
   meaning: string;
 }
 
@@ -383,6 +386,22 @@ export const CalendarView = ({ selectedDate, selectedTime, onDateSelect, onTimeS
                     <div className="pt-3 border-t border-maroon/5">
                       <p className="text-[9px] font-bold text-maroon/40 uppercase mb-0.5">{t.calendar.panchang.karana}</p>
                       <p className="text-sm font-bold text-maroon">{panchangData.karana}</p>
+                    </div>
+                  </div>
+
+                  {/* Rahu Kaal, Gulika Kaal, Abhijit Muhurat */}
+                  <div className="col-span-2 lg:col-span-4 grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
+                    <div className="p-4 bg-red-50 rounded-2xl border border-red-100">
+                      <p className="text-[9px] font-bold text-red-400 uppercase mb-1">{t.calendar.panchang.rahuKaal}</p>
+                      <p className="text-sm font-bold text-red-700">{panchangData.rahuKaal}</p>
+                    </div>
+                    <div className="p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                      <p className="text-[9px] font-bold text-gray-400 uppercase mb-1">{t.calendar.panchang.gulikaKaal}</p>
+                      <p className="text-sm font-bold text-gray-700">{panchangData.gulikaKaal}</p>
+                    </div>
+                    <div className="p-4 bg-green-50 rounded-2xl border border-green-100">
+                      <p className="text-[9px] font-bold text-green-500 uppercase mb-1">{t.calendar.panchang.abhijitMuhurat}</p>
+                      <p className="text-sm font-bold text-green-700">{panchangData.abhijitMuhurat}</p>
                     </div>
                   </div>
 

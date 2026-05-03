@@ -339,5 +339,181 @@ export const RELIGIOUS_BOOKS: Book[] = [
         ]
       }
     ]
+  },
+  {
+    id: 'panchatantra-stories',
+    title: {
+      ne: 'पंचतन्त्रका नैतिक कथाहरु',
+      hi: 'पंचतंत्र की नैतिक कहानियाँ',
+      en: 'Panchatantra Moral Stories'
+    },
+    author: {
+      ne: 'पण्डित विष्णु शर्मा',
+      hi: 'पंडित विष्णु शर्मा',
+      en: 'Pandit Vishnu Sharma'
+    },
+    category: 'Bal Sahitya',
+    description: {
+      ne: 'बालबालिकाहरुका लागि उपयोगी नैतिक र प्रेरणादायी कथाहरु।',
+      hi: 'बच्चों के लिए उपयोगी नैतिक और प्रेरणादायक कहानियाँ।',
+      en: 'Moral and inspiring stories for children from the ancient Panchatantra.'
+    },
+    image: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&q=80&w=800',
+    content: [
+      {
+        sectionTitle: { ne: 'बंदर र मगरमच्छ', hi: 'बंदर और मगरमच्छ', en: 'The Monkey and the Crocodile' },
+        verses: [
+          {
+            original: 'मित्रस्य हितकामानां यः शृणोति न भाषितम्।\nस कूर्म इव दुर्बुद्धिः काष्ठाद् भ्रष्टो विनश्यति॥',
+            translation: {
+              ne: 'जसले आफ्नो हित चाहने साथीहरूको सल्लाह मान्दैन, त्यो लौरोबाट खसेको कछुवा जस्तै नष्ट हुन्छ।',
+              hi: 'जो अपने हितैषी मित्रों की बात नहीं मानता, वह उस दुष्ट बुद्धि कछुवे के समान नष्ट हो जाता है जो लकड़ी से गिर गया था।',
+              en: 'He who does not listen to the advice of friends who wish him well, perishes like the foolish turtle who fell from the stick.'
+            }
+          },
+          {
+            original: 'त्यो बंदरले दिनहुँ मगरमच्छलाई मीठा जामुनहरू खुवाउने गर्थ्यो। (The monkey used to feed sweet jamuns to the crocodile daily.)',
+            translation: {
+              ne: 'सच्चो मित्रतामा स्वार्थ हुनुहुँदैन।',
+              hi: 'सच्ची मित्रता में स्वार्थ नहीं होना चाहिए।',
+              en: 'True friendship should be devoid of selfishness.'
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'sanskrit-learning-course',
+    title: {
+      ne: 'संस्कृत भाषा शिक्षण',
+      hi: 'संस्कृत भाषा शिक्षण (कोर्स)',
+      en: 'Sanskrit Language Learning Course'
+    },
+    author: {
+      ne: 'पारम्परिक गुरु',
+      hi: 'पारंपरिक गुरु',
+      en: 'Traditional Guru'
+    },
+    category: 'Learning',
+    description: {
+      ne: 'संस्कृत भाषा सिक्न चाहनेहरुका लागि आधारभूत परिचय र अभ्यास।',
+      hi: 'संस्कृत भाषा सीखने के इच्छुक लोगों के लिए बुनियादी परिचय और अभ्यास।',
+      en: 'A basic introduction and practice for those interested in learning the Sanskrit language.'
+    },
+    image: 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&q=80&w=800',
+    content: [
+      {
+        sectionTitle: { ne: 'आधारभूत अभिवादन', hi: 'बुनियादी अभिवादन', en: 'Basic Greetings' },
+        verses: [
+          {
+            number: '१',
+            original: 'नमस्ते (Namaste) - Hello',
+            translation: {
+              ne: 'नमस्कार',
+              hi: 'नमस्कार',
+              en: 'Hello / Salutations'
+            }
+          },
+          {
+            number: '२',
+            original: 'सुप्रभातम (Suprabhatam) - Good Morning',
+            translation: {
+              ne: 'शुभ प्रभात',
+              hi: 'शुभ प्रभात',
+              en: 'Good Morning'
+            }
+          },
+          {
+            number: '३',
+            original: 'शुभरात्रिः (Shubharatrih) - Good Night',
+            translation: {
+              ne: 'शुभ रात्रि',
+              hi: 'शुभ रात्रि',
+              en: 'Good Night'
+            }
+          },
+          {
+            number: '४',
+            original: 'कथं अस्ति? (Katham asti?) - How are you?',
+            translation: {
+              ne: 'तपाईँलाई कस्तो छ?',
+              hi: 'आप कैसे हैं?',
+              en: 'How are you?'
+            }
+          },
+          {
+            number: '५',
+            original: 'अहं कुशली अस्मि। (Aham kushali asmi.) - I am fine.',
+            translation: {
+              ne: 'म ठिक छु।',
+              hi: 'मैं ठीक हूँ।',
+              en: 'I am fine.'
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'jyotish-basics',
+    title: {
+      ne: 'ज्योतिष परिचय',
+      hi: 'ज्योतिष परिचय (सामान्य जानकारी)',
+      en: 'Introduction to Jyotish'
+    },
+    author: {
+      ne: 'ऋषि पराशर / परम्परागत',
+      hi: 'ऋषि पराशर / पारंपरिक',
+      en: 'Sage Parashara / Traditional'
+    },
+    category: 'Jyotish',
+    description: {
+      ne: 'वैदिक ज्योतिषको आधारभूत ज्ञान र परिचय।',
+      hi: 'वैदिक ज्योतिष का आधारभूत ज्ञान और परिचय।',
+      en: 'Basic knowledge and introduction to Vedic Astrology.'
+    },
+    image: 'https://images.unsplash.com/photo-1532960401447-7ee0572e7960?auto=format&fit=crop&q=80&w=800',
+    content: [
+      {
+        sectionTitle: { ne: 'ज्योतिष के हो?', hi: 'ज्योतिष क्या है?', en: 'What is Jyotish?' },
+        verses: [
+          {
+            original: 'ज्योतिषामयनं चक्षुः।',
+            translation: {
+              ne: 'ज्योतिषलाई वेदको आँखा मानिन्छ। यसले काल वा समयको बोध गराउँछ।',
+              hi: 'ज्योतिष को वेद का नेत्र माना जाता है। यह काल (समय) का बोध कराने वाला शास्त्र है।',
+              en: 'Jyotish is considered the eyes of the Vedas. It is the science that provides the knowledge of time.'
+            }
+          }
+        ]
+      },
+      {
+        sectionTitle: { ne: 'नौ ग्रह (नवग्रह)', hi: 'नौ ग्रह (नवग्रह)', en: 'Nine Planets (Navagrahas)' },
+        verses: [
+          {
+            original: 'सूर्यः सोमो मङ्गलश्च बुधश्चापि वृहस्पतिः।\nशुक्रः शनैश्चरो राहुः केतुश्चेति ग्रहा नव॥',
+            translation: {
+              ne: 'सूर्य, चन्द्र, मङ्गल, बुध, बृहस्पति, शुक्र, शनि, राहु र केतु - यी नौ ग्रहहरू हुन्।',
+              hi: 'सूर्य, चंद्रमा, मंगल, बुध, बृहस्पति, शुक्र, शनि, राहु और केतु - ये नौ मुख्य ग्रह हैं।',
+              en: 'Sun, Moon, Mars, Mercury, Jupiter, Venus, Saturn, Rahu, and Ketu - these are the nine primary planets.'
+            }
+          }
+        ]
+      },
+      {
+        sectionTitle: { ne: '१२ राशि', hi: '१२ राशियाँ', en: '12 Zodiac Signs (Rashis)' },
+        verses: [
+          {
+            original: 'मेष, वृष, मिथुन, कर्क, सिंह, कन्या, तुला, वृश्चिक, धनु, मकर, कुम्भ, मीन।',
+            translation: {
+              ne: 'यी बाह्र राशिहरू हुन् जसले अन्तरिक्षलाई विभाजित गर्दछ।',
+              hi: 'ये बारह राशियाँ हैं जो अंतरिक्ष के विभिन्न भागों का प्रतिनिधित्व करती हैं।',
+              en: 'These are the twelve zodiac signs that represent different segments of the zodiac belt.'
+            }
+          }
+        ]
+      }
+    ]
   }
 ];

@@ -33,10 +33,15 @@ import {
   Flower2,
   Sparkles,
   Search,
-  Loader2
+  Loader2,
+  HelpCircle,
+  Sun,
+  QrCode
 } from 'lucide-react';
+import { QRCodeSVG } from 'qrcode.react';
 import { format } from 'date-fns';
 import { SERVICES, CONTACT_INFO } from './constants.ts';
+import { cn } from './lib/utils';
 import { BookingFormData, PujaService } from './types.ts';
 import { CalendarView } from './components/Calendar.tsx';
 import { db } from './lib/firebase';
@@ -57,14 +62,17 @@ import { AudioPlayer } from './components/AudioPlayer.tsx';
 import { CallActionButton } from './components/CallActionButton.tsx';
 import { Library } from './components/Library.tsx';
 import { Rashifal } from './components/Rashifal.tsx';
+import { Testimonials } from './components/Testimonials.tsx';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isQrOpen, setIsQrOpen] = useState(false);
   const [query, setQuery] = useState('');
   const { t, language } = useLanguage();
   const { user, signIn, signOut } = useAuth();
   const searchRef = useRef<HTMLDivElement>(null);
+  const qrRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -72,10 +80,17 @@ const Navbar = () => {
         setIsSearchOpen(false);
         setQuery('');
       }
+      if (qrRef.current && !qrRef.current.contains(event.target as Node)) {
+        setIsQrOpen(false);
+      }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  const bookingUrl = typeof window !== 'undefined' 
+    ? `${window.location.origin}${window.location.pathname}#booking` 
+    : '';
 
   const results = query.trim() ? SERVICES.filter(s => {
     const serviceT = (i18n[language] as any).services_list[s.id];
@@ -116,7 +131,7 @@ const Navbar = () => {
                     initial={{ opacity: 0, scale: 0.95, y: 10 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95, y: 10 }}
-                    className="absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-2xl border border-maroon/10 p-4 overflow-hidden"
+                    className="absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-2xl border border-maroon/10 p-4 overflow-hidden z-50"
                   >
                     <div className="relative">
                       <input 
@@ -157,6 +172,39 @@ const Navbar = () => {
                         )}
                       </div>
                     )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            <div className="relative" ref={qrRef}>
+              <button 
+                onClick={() => setIsQrOpen(!isQrOpen)}
+                className="p-2 text-maroon hover:text-saffron transition-colors"
+                aria-label="QR Code"
+              >
+                <QrCode className="w-5 h-5" />
+              </button>
+              
+              <AnimatePresence>
+                {isQrOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95, y: 10 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.95, y: 10 }}
+                    className="absolute right-0 mt-2 w-48 bg-white rounded-2xl shadow-2xl border border-maroon/10 p-4 flex flex-col items-center z-50 text-center"
+                  >
+                    <p className="text-[10px] font-bold text-maroon uppercase tracking-wider mb-2">Scan to Book</p>
+                    <div className="bg-white p-2 rounded-xl border border-gold/20 shadow-inner">
+                      <QRCodeSVG 
+                        value={bookingUrl} 
+                        size={120}
+                        fgColor="#4A0404"
+                        level="H"
+                        includeMargin={false}
+                      />
+                    </div>
+                    <p className="mt-2 text-[8px] text-gray-400 italic">Share QR with others to share your blessing</p>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -209,7 +257,18 @@ const Navbar = () => {
           <div className="flex items-center gap-4 md:hidden">
             <button 
               onClick={() => {
+                setIsQrOpen(!isQrOpen);
+                setIsSearchOpen(false);
+                setIsOpen(false);
+              }}
+              className="p-2 text-maroon"
+            >
+              <QrCode className="w-6 h-6" />
+            </button>
+            <button 
+              onClick={() => {
                 setIsSearchOpen(!isSearchOpen);
+                setIsQrOpen(false);
                 setIsOpen(false);
               }}
               className="p-2 text-maroon"
@@ -293,56 +352,180 @@ const Navbar = () => {
       </AnimatePresence>
 
 
-      {/* Mobile Nav */}
+      {/* Mobile Nav Drawer */}
       <AnimatePresence>
         {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-paper border-b border-gold/20 overflow-hidden"
-          >
-            <div className="px-4 pt-2 pb-6 space-y-4 text-maroon">
-              <Link to="/" onClick={() => setIsOpen(false)} className="block text-lg font-bold">{t.nav.home}</Link>
-              <a href="/#services" onClick={() => setIsOpen(false)} className="block text-lg font-bold">{t.nav.services}</a>
-              <Link to="/library" onClick={() => setIsOpen(false)} className="block text-lg font-bold">{(t.nav as any).library}</Link>
-              <a href="/#about" onClick={() => setIsOpen(false)} className="block text-lg font-bold">{t.nav.about}</a>
-              <a href="/#faq" onClick={() => setIsOpen(false)} className="block text-lg font-bold">{t.nav.faq}</a>
-              {user && (
-                <Link to="/dashboard" onClick={() => setIsOpen(false)} className="block text-lg font-bold">
-                  {(t.nav as any).dashboard}
-                </Link>
-              )}
-              
-              <div className="py-2 flex items-center justify-between border-t border-gold/5 pt-6">
-                {user ? (
-                  <div className="flex items-center gap-3">
-                    {user.photoURL ? (
-                      <img src={user.photoURL} alt="" className="w-10 h-10 rounded-full" />
-                    ) : (
-                      <div className="w-10 h-10 bg-maroon/10 rounded-full flex items-center justify-center text-maroon font-bold text-lg uppercase">
-                        {user.displayName?.[0] || <Users className="w-5 h-5" />}
-                      </div>
-                    )}
-                    <div>
-                      <p className="text-sm font-bold">{user.displayName || 'Yajman'}</p>
-                      <button onClick={() => signOut()} className="text-xs text-saffron font-bold text-left">{t.nav.logout}</button>
-                    </div>
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsOpen(false)}
+              className="md:hidden fixed inset-0 bg-maroon/60 backdrop-blur-sm z-[60]"
+            />
+            
+            {/* Drawer */}
+            <motion.div
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="md:hidden fixed top-0 right-0 h-full w-[80%] max-w-[320px] bg-paper shadow-2xl z-[70] overflow-y-auto"
+            >
+              <div className="p-8 flex flex-col h-full">
+                <div className="flex justify-between items-center mb-12">
+                  <div className="flex flex-col">
+                    <span className="font-serif font-black text-maroon text-2xl">श्री नर</span>
+                    <span className="text-xs text-saffron font-bold tracking-[0.2em] uppercase">नारायण</span>
                   </div>
-                ) : (
-                  <button onClick={() => { signIn(); setIsOpen(false); }} className="text-lg font-bold flex items-center gap-2">
-                    <Users className="w-5 h-5" /> {t.nav.login}
+                  <button 
+                    onClick={() => setIsOpen(false)}
+                    className="p-2 bg-maroon/5 rounded-2xl text-maroon hover:bg-maroon hover:text-white transition-all transform hover:rotate-90"
+                  >
+                    <X className="w-6 h-6" />
                   </button>
-                )}
-              </div>
+                </div>
 
-              <div className="py-2 border-t border-gold/5 pt-4">
-                <LanguageSwitcher />
+                <div className="flex flex-col space-y-6">
+                  {[
+                    { to: "/", label: t.nav.home, type: 'link' },
+                    { to: "/#services", label: t.nav.services, type: 'anchor' },
+                    { to: "/library", label: (t.nav as any).library, type: 'link' },
+                    { to: "/#about", label: t.nav.about, type: 'anchor' },
+                    { to: "/#faq", label: t.nav.faq, type: 'anchor' }
+                  ].map((item, idx) => (
+                    <div key={idx}>
+                      {item.type === 'link' ? (
+                        <Link 
+                          to={item.to} 
+                          onClick={() => setIsOpen(false)}
+                          className="text-xl font-bold text-gray-800 hover:text-maroon transition-colors block"
+                        >
+                          {item.label}
+                        </Link>
+                      ) : (
+                        <a 
+                          href={item.to} 
+                          onClick={() => setIsOpen(false)}
+                          className="text-xl font-bold text-gray-800 hover:text-maroon transition-colors block"
+                        >
+                          {item.label}
+                        </a>
+                      )}
+                    </div>
+                  ))}
+                  
+                  {user && (
+                    <Link 
+                      to="/dashboard" 
+                      onClick={() => setIsOpen(false)}
+                      className="text-xl font-bold text-gray-800 hover:text-maroon transition-colors block"
+                    >
+                      {(t.nav as any).dashboard}
+                    </Link>
+                  )}
+                </div>
+
+                <div className="mt-auto space-y-8">
+                  <div className="pt-8 border-t border-gold/10">
+                    <LanguageSwitcher />
+                  </div>
+
+                  {user ? (
+                    <div className="bg-maroon/5 rounded-3xl p-6">
+                      <div className="flex items-center gap-4 mb-4">
+                        {user.photoURL ? (
+                          <img src={user.photoURL} alt="" className="w-12 h-12 rounded-full ring-2 ring-gold/20" />
+                        ) : (
+                          <div className="w-12 h-12 bg-maroon text-gold rounded-full flex items-center justify-center text-xl font-bold uppercase ring-2 ring-gold/20">
+                            {user.displayName?.[0] || 'Y'}
+                          </div>
+                        )}
+                        <div>
+                          <p className="text-sm font-black text-maroon line-clamp-1">{user.displayName || 'Yajman'}</p>
+                          <p className="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Devotee Profile</p>
+                        </div>
+                      </div>
+                      <button 
+                        onClick={() => { signOut(); setIsOpen(false); }}
+                        className="w-full text-xs font-black text-saffron uppercase tracking-widest text-center py-2 hover:bg-white rounded-xl transition-all"
+                      >
+                        {t.nav.logout}
+                      </button>
+                    </div>
+                  ) : (
+                    <button 
+                      onClick={() => { signIn(); setIsOpen(false); }} 
+                      className="w-full py-4 rounded-2xl bg-paper border-2 border-maroon/10 text-maroon font-bold hover:bg-maroon hover:text-white transition-all flex items-center justify-center gap-3"
+                    >
+                      <Users className="w-5 h-5" /> {t.nav.login}
+                    </button>
+                  )}
+
+                  <a 
+                    href="#booking" 
+                    onClick={() => setIsOpen(false)}
+                    className="block w-full py-5 bg-maroon text-cream rounded-2xl text-center font-bold shadow-xl shadow-maroon/20 hover:scale-[1.02] active:scale-95 transition-all"
+                  >
+                    {t.nav.book}
+                  </a>
+                </div>
               </div>
-              <a href="#booking" onClick={() => setIsOpen(false)} className="block bg-maroon text-cream px-6 py-3 rounded-xl text-center font-bold">
-                {t.nav.book}
-              </a>
-            </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
+      {/* Mobile QR Overlay */}
+      <AnimatePresence>
+        {isQrOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="md:hidden fixed inset-0 z-[100] flex items-center justify-center p-6 bg-maroon/40 backdrop-blur-md"
+            onClick={() => setIsQrOpen(false)}
+          >
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              className="bg-paper rounded-[2.5rem] p-8 shadow-2xl border border-gold/20 flex flex-col items-center max-w-sm w-full relative"
+              onClick={e => e.stopPropagation()}
+            >
+              <button 
+                onClick={() => setIsQrOpen(false)}
+                className="absolute top-6 right-6 p-2 text-maroon/40 hover:text-maroon transition-colors"
+                aria-label="Close"
+              >
+                <X className="w-6 h-6" />
+              </button>
+              
+              <div className="w-16 h-16 bg-maroon text-gold flex items-center justify-center rounded-2xl font-bold text-2xl shadow-xl shadow-maroon/20 mb-6">
+                🕉️
+              </div>
+              
+              <h3 className="text-xl font-serif font-bold text-maroon mb-2">Scan to Book</h3>
+              <p className="text-sm text-gray-500 text-center mb-8">Scan this code with another device to open the booking page or share this blessing with your family.</p>
+              
+              <div className="bg-white p-4 rounded-[2rem] border border-gold/20 shadow-2xl ring-4 ring-gold/5">
+                <QRCodeSVG 
+                  value={bookingUrl} 
+                  size={200}
+                  fgColor="#4A0404"
+                  level="H"
+                  includeMargin={false}
+                />
+              </div>
+              
+              <div className="mt-8 flex flex-col items-center gap-2">
+                <p className="text-[10px] text-saffron uppercase font-black tracking-[0.3em]">
+                  Shree Nar Narayan
+                </p>
+                <p className="text-[9px] text-gray-400 italic">May your journey be filled with divine light</p>
+              </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -358,6 +541,59 @@ const Swastik = ({ className = "w-6 h-6" }: { className?: string }) => (
     <circle cx="7" cy="17" r="1" fill="currentColor"/>
     <circle cx="17" cy="17" r="1" fill="currentColor"/>
   </svg>
+);
+
+const OmSymbol = ({ className = "w-12 h-12" }: { className?: string }) => (
+  <svg viewBox="0 0 100 100" className={className} fill="currentColor">
+    <path d="M52.3,47.9c-2.4-2.1-5.3-3.2-8.5-4c0.1-0.2,0.2-0.4,0.3-0.7c1.3-3.6,0.3-6.4-1.9-8.4c-2.5-2.2-6.3-2.1-9.3,0.3 c-2.3,1.8-3.4,4.2-3.1,6.8c0.2,2.1,1.1,3.8,2.7,5.5c-4,3.2-6.1,7.4-5.9,12.3c0.2,6,3.6,10.6,9.1,12.8c3,1.2,6.1,1.5,9.2,0.9 c2.8-0.5,5.1-1.8,7.2-3.6c2,2.4,4.7,3.9,7.9,4.4c3.8,0.7,7.2-0.2,10-2.6c3-2.6,4.1-6.2,3.3-10c-0.6-3.2-2.3-5.7-5-7.3 c-3.3-2-6.5-1.9-9.7-0.7c0-1.8,0.3-3.6,0.8-5.3c1.6-5.8,5.5-8.8,11.3-8.8c0.6,0,1.2,0,1.7,0.1c1.2,0.2,2-0.6,2-1.8c0-1.1-0.7-1.8-1.9-2 c-6.4-1.2-11.8,0.1-16,4.4c-1.3,1.3-2.3,2.8-3,4.5c0-1,0-2,0-3v-0.1c0-1,0.1-2,0.1-3c0.1-4.7,4.3-8.8,9.1-8.7 c1.2,0,1.8-0.7,1.8-1.7s-0.7-1.8-1.8-1.8c-7-0.1-12.8,5.4-13,12.3c0,0.5,0,0.9,0,1.4C52.3,45.8,52.3,46.8,52.3,47.9z M39.4,50.7 c-1.3-1.6-1.5-3.1-1-4.7c1.4-0.1,2.8,0.2,4.1,0.8c2.4,1.1,4.1,2.8,4.9,5.3c0.2,0.6,0.4,1.2,0.5,1.8C45,54.8,42.4,53.2,39.4,50.7z M43.4,65.3c-2.3,1-4.6,1.4-7,1.1c-3.1-0.4-5.3-2-6.3-5.1c-0.8-2.6-0.3-5,1.3-7c1.7-2.1,4.1-3.1,6.8-3c0.3,0,0.6,0.1,0.9,0.1 c2.2,2.1,4.3,4.2,6.5,6.3c0.9,1,1.5,2,1.8,3.2C47.8,62.8,46,64.2,43.4,65.3z M61.5,68.9c-1.5,1.4-3.3,2-5.4,1.8 c-2.4-0.3-4.1-1.6-5-3.8c-0.8-2.1-0.2-4.1,1.6-5.6c1.6-1.3,3.5-1.7,5.5-1.1c2,0.6,3.4,1.8,4,3.7C63,65.9,62.6,67.7,61.5,68.9z"/>
+    <path d="M57.6,18.4c-2.1,0-4,1.8-4,4s1.8,4,4,4c2.2,0,4-1.8,4-4S59.8,18.4,57.6,18.4z M57.6,24.4c-1.1,0-2-0.9-2-2s0.9-2,2-2 s2,0.9,2,2S58.7,24.4,57.6,24.4z"/>
+    <path d="M53.8,11.5c-1.3,4,1.4,7.4,5.4,6.7c1.1-0.2,1.7-1,1.5-2.1s-1-1.7-2.1-1.5c-1.8,0.3-2.9-1-2.4-2.6 c1.1-3.6,5.1-5,7.9-2.8c0.9,0.7,1.9,0.5,2.6-0.4c0.7-0.9,0.5-1.9-0.4-2.6C60.9,2.8,54.8,5.4,53.8,11.5z"/>
+  </svg>
+);
+
+const GhantaSymbol = ({ className = "w-12 h-12" }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+    <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+    <circle cx="12" cy="3" r="1" />
+  </svg>
+);
+
+const SankhaSymbol = ({ className = "w-12 h-12" }: { className?: string }) => (
+  <svg viewBox="0 0 100 100" className={className} fill="currentColor">
+    <path d="M85,50c0-19.3-15.7-35-35-35S15,30.7,15,50c0,11.9,5.9,22.4,15,28.8V85h10v-4.4c3.2,0.9,6.5,1.4,10,1.4c19.3,0,35-15.7,35-35H85z M35,50c0,8.3,6.7,15,15,15s15-6.7,15-15S58.3,35,50,35S35,41.7,35,50z M50,45c-2.8,0-5,2.2-5,5s2.2,5,5,5s5-2.2,5-5S52.8,45,50,45z" opacity="0.8"/>
+    <path d="M50,25c13.8,0,25,11.2,25,25s-11.2,25-25,25S25,63.8,25,50S36.2,25,50,25z M50,30c-11,0-20,9-20,20s9,20,20,20s20-9,20-20 S61,30,50,30z" opacity="0.3"/>
+  </svg>
+);
+
+const TrishulSymbol = ({ className = "w-12 h-12" }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="1.5">
+    <path d="M12 2V22M12 5C10 5 7 7 7 10V12M12 5C14 5 17 7 17 10V12M7 12H17" />
+  </svg>
+);
+
+const DecorativeBackground = () => (
+  <div className="fixed inset-0 pointer-events-none overflow-hidden z-0 opacity-[0.1]">
+    <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/pinstriped-suit.png')] opacity-20" />
+    
+    <OmSymbol className="absolute top-[5%] left-[10%] w-32 h-32 md:w-64 md:h-64 text-maroon animate-pulse" />
+    <SankhaSymbol className="absolute top-[35%] right-[5%] w-24 h-24 md:w-48 md:h-48 text-saffron" />
+    <GhantaSymbol className="absolute bottom-[15%] left-[5%] w-28 h-28 md:w-56 md:h-56 text-maroon" />
+    <AnimatedSwastik className="absolute top-[65%] right-[8%] w-36 h-36 md:w-72 md:h-72 text-saffron" />
+    <TrishulSymbol className="absolute bottom-[5%] right-[15%] w-32 h-32 text-maroon opacity-70" />
+    <Flower2 className="absolute top-[20%] right-[20%] w-40 h-40 text-gold opacity-40 animate-spin-slow" />
+    <Sun className="absolute top-[50%] left-[2%] w-32 h-32 text-saffron opacity-20 animate-pulse" />
+    <Sparkles className="absolute bottom-[40%] right-[10%] w-24 h-24 text-gold opacity-30" />
+    
+    {/* Floating Divine Light */}
+    <div className="absolute top-1/4 left-1/4 w-[120vw] h-[120vw] -translate-x-1/2 -translate-y-1/2 bg-gradient-radial from-gold/25 to-transparent blur-3xl rounded-full" />
+    
+    <div className="grid grid-cols-6 gap-20 p-20 opacity-30">
+      {[...Array(24)].map((_, i) => (
+        <Sparkles key={i} className={`w-8 h-8 text-gold ${i % 2 === 0 ? 'animate-bounce' : 'animate-pulse'}`} />
+      ))}
+    </div>
+  </div>
 );
 
 const AnimatedSwastik = ({ className = "w-12 h-12" }: { className?: string }) => (
@@ -437,52 +673,6 @@ const Stars = ({ count = 30, className = "" }: { count?: number, className?: str
   </div>
 );
 
-const OmSymbol = () => (
-  <div className="relative flex items-center justify-center">
-    {/* Concentric Rings */}
-    {[...Array(3)].map((_, i) => (
-      <motion.div
-        key={i}
-        initial={{ scale: 0.8, opacity: 0 }}
-        animate={{ 
-          scale: [1, 1.3 + (i * 0.2), 1],
-          opacity: [0, 0.2, 0],
-          rotate: i % 2 === 0 ? 360 : -360
-        }}
-        transition={{ 
-          duration: 8 + (i * 2),
-          repeat: Infinity,
-          ease: "linear"
-        }}
-        className="absolute border border-gold/30 rounded-full"
-        style={{ 
-          width: `${140 + (i * 60)}px`, 
-          height: `${140 + (i * 60)}px` 
-        }}
-      />
-    ))}
-    
-    <motion.div
-      animate={{ 
-        scale: [1, 1.05, 1],
-        filter: [
-          "drop-shadow(0 0 10px rgba(212, 175, 55, 0.3))",
-          "drop-shadow(0 0 25px rgba(212, 175, 55, 0.6))",
-          "drop-shadow(0 0 10px rgba(212, 175, 55, 0.3))"
-        ]
-      }}
-      transition={{ 
-        duration: 4, 
-        repeat: Infinity, 
-        ease: "easeInOut" 
-      }}
-      className="relative z-10 w-28 h-28 bg-white/5 backdrop-blur-sm rounded-full flex items-center justify-center border border-gold/20 shadow-inner"
-    >
-      <span className="text-6xl select-none">🕉️</span>
-    </motion.div>
-  </div>
-);
-
 const DecorativeMandala = () => (
   <motion.div
     animate={{ rotate: 360 }}
@@ -521,7 +711,7 @@ const Hero = () => {
 
   return (
     <section ref={containerRef} id="home" className="relative h-screen flex items-center justify-center overflow-hidden pt-40 md:pt-48 bg-mandala">
-      <Stars count={40} className="opacity-40" />
+      <Stars count={40} className="opacity-60" />
       <DecorativeMandala />
       
       {/* Corner Swastiks */}
@@ -540,7 +730,7 @@ const Hero = () => {
         <img 
           src="https://images.unsplash.com/photo-1544253457-3a137b1248a3?auto=format&fit=crop&q=80&w=2000" 
           alt="Divine Heritage"
-          className="w-full h-full object-cover opacity-40 scale-105"
+          className="w-full h-full object-cover object-center opacity-50 scale-100"
         />
       </motion.div>
 
@@ -711,11 +901,11 @@ const ServiceCard = ({
           </div>
         )}
       </div>
-      <div className="relative h-64 overflow-hidden">
+      <div className="relative h-72 md:h-80 overflow-hidden">
         <img 
           src={service.image} 
           alt={translatedService?.name || service.name}
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+          className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
           onError={(e) => {
             e.currentTarget.src = 'https://images.unsplash.com/photo-1590766948510-108259e9c4f3?auto=format&fit=crop&q=80&w=800';
           }}
@@ -757,25 +947,34 @@ const ServiceCard = ({
           </div>
         </div>
         <div className="relative mb-6">
-          <div className="relative">
-            <p className={`${isJyotish ? 'text-cream/70' : 'text-gray-500'} text-sm leading-relaxed transition-all duration-500 ${isExpanded ? '' : 'line-clamp-3 overflow-hidden'}`}>
-              {translatedService?.desc || service.description}
-            </p>
-            {!isExpanded && (translatedService?.desc || service.description).length > 100 && (
-              <div className={`absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t ${isJyotish ? 'from-white/5' : 'from-paper-dark'} to-transparent`} />
-            )}
+          <div className="relative overflow-hidden">
+            <motion.div
+              initial={false}
+              animate={{ height: isExpanded ? 'auto' : '4.5rem' }}
+              transition={{ duration: 0.5, ease: [0.04, 0.62, 0.23, 0.98] }}
+              className="relative"
+            >
+              <p className={`${isJyotish ? 'text-cream/70' : 'text-gray-500'} text-sm leading-relaxed`}>
+                {translatedService?.desc || service.description}
+              </p>
+              {!isExpanded && (translatedService?.desc || service.description).length > 120 && (
+                <div className={`absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t ${isJyotish ? 'from-white/0' : 'from-paper-dark'} to-transparent`} />
+              )}
+            </motion.div>
           </div>
           
-          {(translatedService?.desc || service.description).length > 100 && (
+          {(translatedService?.desc || service.description).length > 120 && (
             <button 
               onClick={() => setIsExpanded(!isExpanded)}
-              className={`mt-2 flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest transition-colors ${isJyotish ? 'text-gold hover:text-cream' : 'text-saffron hover:text-maroon'}`}
+              className={`mt-2 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest transition-colors ${isJyotish ? 'text-gold hover:text-cream' : 'text-saffron hover:text-maroon'}`}
             >
-              {isExpanded ? (
-                <><ChevronUp className="w-3 h-3" /> {t.services.showLess}</>
-              ) : (
-                <><ChevronDown className="w-3 h-3" /> {t.services.readMore}</>
-              )}
+              <div className={cn(
+                "w-5 h-5 rounded-full flex items-center justify-center transition-transform duration-300",
+                isExpanded ? "bg-maroon text-white rotate-180" : "bg-gold/10 text-gold"
+              )}>
+                <ChevronDown className="w-3 h-3" />
+              </div>
+              {isExpanded ? t.services.showLess : t.services.readMore}
             </button>
           )}
         </div>
@@ -828,6 +1027,23 @@ const ServiceCard = ({
                 )}
               </div>
             )}
+          </div>
+        )}
+
+        {service.faqs && (
+          <div className="mb-6 space-y-3 border-t border-gold/5 pt-4">
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-gold/60">
+              <HelpCircle className="w-3 h-3" />
+              {t.services.faqs}
+            </div>
+            <div className="space-y-4">
+              {service.faqs.map((faq, fIdx) => (
+                <div key={fIdx} className="space-y-1">
+                  <p className={`text-xs font-bold ${isJyotish ? 'text-gold/90' : 'text-maroon/90'}`}>Q: {faq.question}</p>
+                  <p className="text-[11px] text-gray-400 leading-relaxed italic">A: {faq.answer}</p>
+                </div>
+              ))}
+            </div>
           </div>
         )}
 
@@ -1110,7 +1326,7 @@ const BookingForm = ({ preselectedServiceId }: { preselectedServiceId?: string |
                 exit={{ opacity: 0, scale: 1.1 }}
                 className="bg-maroon p-12 rounded-[3.5rem] shadow-2xl flex flex-col items-center justify-center text-center overflow-hidden relative"
               >
-                <Stars className="opacity-20" />
+                <Stars className="opacity-40" />
                 <motion.div
                   initial={{ rotate: -180, scale: 0 }}
                   animate={{ rotate: 0, scale: 1 }}
@@ -1469,17 +1685,23 @@ const ServiceModal = ({
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             className="bg-paper w-full max-w-2xl rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden shadow-2xl relative z-10 border border-gold/20 max-h-[90vh] overflow-y-auto"
           >
+            {/* Spiritual Background Elements */}
+            <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
+              <OmSymbol className="absolute top-10 left-10 w-32 h-32" />
+              <SankhaSymbol className="absolute bottom-10 right-10 w-32 h-32" />
+              <GhantaSymbol className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64" />
+            </div>
             <button 
               onClick={onClose}
               className="absolute top-6 right-6 w-10 h-10 bg-white/80 hover:bg-white rounded-full flex items-center justify-center text-maroon shadow-lg z-20 transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
-            <div className="relative h-64 md:h-80">
+            <div className="relative h-72 md:h-[400px]">
               <img 
                 src={service.image} 
                 alt={service.name} 
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover object-center"
                 onError={(e) => {
                   e.currentTarget.src = 'https://images.unsplash.com/photo-1590766948510-108259e9c4f3?auto=format&fit=crop&q=80&w=800';
                 }}
@@ -1659,124 +1881,6 @@ const ContactSection = () => {
   );
 };
 
-const Testimonials = () => {
-  const { t } = useLanguage();
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const testimonials = t.testimonials.list;
-
-  const next = () => {
-    setCurrentIndex((prev) => (prev + 1) % testimonials.length);
-  };
-
-  const prev = () => {
-    setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
-  };
-
-  useEffect(() => {
-    const timer = setInterval(next, 5000);
-    return () => clearInterval(timer);
-  }, [testimonials.length]);
-
-  return (
-    <motion.section 
-      id="testimonials" 
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.8 }}
-      className="py-24 bg-paper relative overflow-hidden"
-    >
-      <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
-        <AnimatedSwastik className="absolute top-10 left-10 w-32 h-32" />
-        <AnimatedSwastik className="absolute bottom-10 right-10 w-32 h-32" />
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 relative z-10">
-        <div className="text-center mb-16">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="inline-block p-3 bg-saffron/10 rounded-2xl text-saffron mb-4"
-          >
-            <Users className="w-8 h-8" />
-          </motion.div>
-          <h2 className="text-3xl md:text-4xl font-bold font-serif text-maroon mb-4">{t.testimonials.title}</h2>
-          <p className="text-gray-500 max-w-2xl mx-auto">{t.testimonials.subtitle}</p>
-        </div>
-
-        <div className="relative max-w-4xl mx-auto">
-          <div className="overflow-hidden relative min-h-[400px] flex items-center">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={currentIndex}
-                initial={{ opacity: 0, x: 50 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -50 }}
-                transition={{ duration: 0.5, ease: "easeInOut" }}
-                className="w-full flex flex-col items-center text-center px-4 md:px-12"
-              >
-                <div className="relative mb-8">
-                  <div className="absolute -top-6 -left-6 md:-top-10 md:-left-10 text-gold/20">
-                    <svg width="60" height="60" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M14.017 21L14.017 18C14.017 16.8954 14.9124 16 16.017 16H19.017V14C19.017 11.7909 17.2261 10 15.017 10H14.017V7H15.017C18.883 7 22.017 10.134 22.017 14V21H14.017ZM2.01697 21L2.01697 18C2.01697 16.8954 2.9124 16 4.01697 16H7.01697V14C7.01697 11.7909 5.22606 10 3.01697 10H2.01697V7H3.01697C6.88297 7 10.017 10.134 10.017 14V21H2.01697Z" />
-                    </svg>
-                  </div>
-                  <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-paper border-4 border-gold/20 overflow-hidden mx-auto shadow-xl relative z-10">
-                    <img 
-                      src={`https://i.pravatar.cc/150?u=${testimonials[currentIndex].name}`} 
-                      alt={testimonials[currentIndex].name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="absolute -bottom-2 -right-2 bg-saffron text-white p-2 rounded-full shadow-lg z-20">
-                    <Sparkles className="w-4 h-4" />
-                  </div>
-                </div>
-
-                <p className="text-lg md:text-2xl font-serif text-maroon italic mb-8 leading-relaxed">
-                  "{testimonials[currentIndex].content}"
-                </p>
-
-                <div className="mb-8">
-                  <h4 className="text-xl font-bold text-maroon">{testimonials[currentIndex].name}</h4>
-                  <p className="text-saffron font-bold text-xs uppercase tracking-widest mt-1">{testimonials[currentIndex].role}</p>
-                </div>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
-          <div className="flex items-center justify-center gap-4 mt-8">
-            <button 
-              onClick={prev}
-              className="p-3 rounded-full bg-white border border-gold/20 text-maroon hover:bg-maroon hover:text-white transition-all shadow-md group"
-            >
-              <ChevronLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-            </button>
-            <div className="flex gap-2">
-              {testimonials.map((_, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setCurrentIndex(idx)}
-                  className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
-                    currentIndex === idx ? 'bg-saffron w-8' : 'bg-gold/30 hover:bg-gold/50'
-                  }`}
-                />
-              ))}
-            </div>
-            <button 
-              onClick={next}
-              className="p-3 rounded-full bg-white border border-gold/20 text-maroon hover:bg-maroon hover:text-white transition-all shadow-md group"
-            >
-              <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </button>
-          </div>
-        </div>
-      </div>
-    </motion.section>
-  );
-};
-
 const MainContent = ({ setSelectedService, handleBookNow, preselectedBookingId }: any) => {
   const { t } = useLanguage();
   return (
@@ -1844,11 +1948,11 @@ const MainContent = ({ setSelectedService, handleBookNow, preselectedBookingId }
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div className="relative order-2 lg:order-1">
-              <div className="aspect-[4/5] md:aspect-video lg:aspect-[4/5] rounded-[2rem] md:rounded-[3.5rem] overflow-hidden shadow-2xl relative group">
+              <div className="aspect-[4/5] md:aspect-[16/9] lg:aspect-[4/5] rounded-[2rem] md:rounded-[3.5rem] overflow-hidden shadow-2xl relative group">
                 <img 
                   src="https://images.unsplash.com/photo-1563722216449-3660d5bfa78f?auto=format&fit=crop&q=80&w=1200" 
                   alt="Purity and Tradition"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-maroon/40 to-transparent opacity-60" />
               </div>
@@ -1971,7 +2075,8 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <div className="min-h-screen bg-paper pb-20 md:pb-0">
+      <div className="min-h-screen bg-paper pb-20 md:pb-0 font-sans text-gray-900 selection:bg-maroon selection:text-white relative overflow-hidden">
+        <DecorativeBackground />
         <Navbar />
         
         <Routes>

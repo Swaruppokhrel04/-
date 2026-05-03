@@ -91,7 +91,8 @@ export const i18n = {
       showLess: 'थोरै देखाउनुहोस्',
       deity: 'मुख्य देवता',
       mantra: 'मुख्य मन्त्र',
-      duration: 'समय अवधि'
+      duration: 'समय अवधि',
+      faqs: 'आधारभूत प्रश्नहरू'
     },
     about: {
       title: 'ॐ नमो भगवते वासुदेवाय 🙏',
@@ -374,6 +375,9 @@ export const i18n = {
         masam: 'मास',
         sunrise: 'सूर्योदय',
         sunset: 'सूर्यास्त',
+        rahuKaal: 'राहु काल',
+        gulikaKaal: 'गुलिका काल',
+        abhijitMuhurat: 'अभिजीत मुहूर्त',
         loading: 'दिव्य संरेखणहरू खोज्दै...',
         meaning: 'आध्यात्मिक महत्व'
       }
@@ -479,7 +483,8 @@ export const i18n = {
       showLess: 'कम दिखाएं',
       deity: 'मुख्य देवता',
       mantra: 'मुख्य मंत्र',
-      duration: 'समय अवधि'
+      duration: 'समय अवधि',
+      faqs: 'अक्सर पूछे जाने वाले प्रश्न'
     },
     about: {
       title: 'ॐ नमो भगवते वासुदेवाय 🙏',
@@ -762,6 +767,9 @@ export const i18n = {
         masam: 'मास',
         sunrise: 'सूर्योदय',
         sunset: 'सूर्यास्त',
+        rahuKaal: 'राहु काल',
+        gulikaKaal: 'गुलिका काल',
+        abhijitMuhurat: 'अभिजीत मुहूर्त',
         loading: 'दिव्य संरेखण प्राप्त कर रहे हैं...',
         meaning: 'आध्यात्मिक महत्व'
       }
@@ -867,7 +875,8 @@ export const i18n = {
       showLess: 'Show Less',
       deity: 'Primary Deity',
       mantra: 'Main Mantra',
-      duration: 'Duration'
+      duration: 'Duration',
+      faqs: 'Common Questions'
     },
     about: {
       title: 'Om Namo Bhagavate Vasudevaya 🙏',
@@ -1150,6 +1159,9 @@ export const i18n = {
         masam: 'Masam',
         sunrise: 'Sunrise',
         sunset: 'Sunset',
+        rahuKaal: 'Rahu Kaal',
+        gulikaKaal: 'Gulika Kaal',
+        abhijitMuhurat: 'Abhijit Muhurat',
         loading: 'Fetching divine alignments...',
         meaning: 'Spiritual Significance'
       }

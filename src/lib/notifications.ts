@@ -1,8 +1,9 @@
-import { messaging, db } from './firebase';
+import { getMessagingInstance, db } from './firebase';
 import { getToken, onMessage } from 'firebase/messaging';
 import { doc, updateDoc, arrayUnion } from 'firebase/firestore';
 
 export const requestNotificationPermission = async (userId: string) => {
+  const messaging = await getMessagingInstance();
   if (!messaging) return;
 
   try {
@@ -30,11 +31,14 @@ export const requestNotificationPermission = async (userId: string) => {
   }
 };
 
-export const onMessageListener = () =>
-  new Promise((resolve) => {
-    if (!messaging) return;
+export const onMessageListener = async () => {
+  const messaging = await getMessagingInstance();
+  if (!messaging) return;
+
+  return new Promise((resolve) => {
     onMessage(messaging, (payload) => {
       console.log('Foreground message received:', payload);
       resolve(payload);
     });
   });
+};

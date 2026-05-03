@@ -1,13 +1,32 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
 import { getFirestore, doc, getDocFromServer } from 'firebase/firestore';
-import { getMessaging, getToken, onMessage } from 'firebase/messaging';
+import { getMessaging, getToken, onMessage, isSupported } from 'firebase/messaging';
 import firebaseConfig from '../../firebase-applet-config.json';
 
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
 export const auth = getAuth(app);
-export const messaging = typeof window !== 'undefined' ? getMessaging(app) : null;
+
+// Safe messaging initialization
+let messagingInstance: any = null;
+
+export const getMessagingInstance = async () => {
+  if (typeof window === 'undefined') return null;
+  if (messagingInstance) return messagingInstance;
+  
+  try {
+    const supported = await isSupported();
+    if (supported) {
+      messagingInstance = getMessaging(app);
+      return messagingInstance;
+    }
+  } catch (err) {
+    console.warn("Error checking messaging support:", err);
+  }
+  return null;
+};
+
 export const googleProvider = new GoogleAuthProvider();
 
 // Connection test

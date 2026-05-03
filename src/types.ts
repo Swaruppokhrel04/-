@@ -1,4 +1,9 @@
 
+export interface FAQ {
+  question: string;
+  answer: string;
+}
+
 export interface PujaService {
   id: string;
   name: string;
@@ -11,6 +16,7 @@ export interface PujaService {
   rituals?: string[];
   benefits?: string[];
   audioUrl?: string;
+  faqs?: FAQ[];
 }
 
 export interface BookingFormData {
@@ -34,4 +40,14 @@ export interface DashboardBooking extends BookingFormData {
   userId: string;
   status: 'pending' | 'confirmed' | 'completed' | 'cancelled';
   createdAt: any;
+}
+
+export interface Testimonial {
+  id: string;
+  name: string;
+  location: string;
+  content: string;
+  rating: number;
+  image?: string;
+  serviceId?: string;
 }

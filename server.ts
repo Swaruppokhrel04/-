@@ -274,6 +274,9 @@ async function startServer() {
       - Masam: (Hindu Month name)
       - Sunrise: (Approximate time)
       - Sunset: (Approximate time)
+      - Rahu Kaal: (Correct Rahu Kaal timing for that day)
+      - Gulika Kaal: (Correct Gulika Kaal timing for that day)
+      - Abhijit Muhurat: (Correct Abhijit Muhurat timing for that day)
       
       Return the data strictly in JSON format like this:
       {
@@ -285,6 +288,9 @@ async function startServer() {
         "masam": "string",
         "sunrise": "string",
         "sunset": "string",
+        "rahuKaal": "string",
+        "gulikaKaal": "string",
+        "abhijitMuhurat": "string",
         "meaning": "short spiritual meaning of the tithi in 20 words"
       }`;
 
