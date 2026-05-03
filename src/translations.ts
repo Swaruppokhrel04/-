@@ -12,6 +12,7 @@ export const i18n = {
       login: 'लगिन',
       logout: 'लगआउट',
       dashboard: 'ड्यासबोर्ड',
+      panchang: 'पञ्चाङ्ग',
       book: 'बुक गर्नुहोस्'
     },
     dashboard: {
@@ -289,7 +290,13 @@ export const i18n = {
       back: 'पुस्तकालयमा फर्कनुहोस्',
       search: 'पुस्तक खोज्नुहोस्...',
       noBooks: 'नतिजा फेला परेन',
-      viewPanchang: 'विस्तृत पञ्चाङ्ग हेर्नुहोस्'
+      viewPanchang: 'विस्तृत पञ्चाङ्ग हेर्नुहोस्',
+      assistant: {
+        title: 'सहयोगी',
+        placeholder: 'तपाईंको सन्देश लेख्नुहोस्...',
+        welcome: 'नमस्ते! म तपाईंको आध्यात्मिक सहयोगी हुँ। आज म तपाईंलाई कसरी मद्दत गर्न सक्छु?',
+        loading: 'सोच्दै...'
+      }
     },
     rashifal: {
       title: 'दैनिक राशिफल',
@@ -331,6 +338,7 @@ export const i18n = {
       login: 'लॉगिन',
       logout: 'लॉगआउट',
       dashboard: 'डैशबोर्ड',
+      panchang: 'पंचांग',
       book: 'बुक करें'
     },
     dashboard: {
@@ -608,7 +616,13 @@ export const i18n = {
       back: 'पुस्तकालय पर वापस जाएं',
       search: 'पुस्तक खोजें...',
       noBooks: 'कोई परिणाम नहीं मिला',
-      viewPanchang: 'विस्तृत पंचांग देखें'
+      viewPanchang: 'विस्तृत पंचांग देखें',
+      assistant: {
+        title: 'सहायक',
+        placeholder: 'अपना संदेश लिखें...',
+        welcome: 'नमस्ते! मैं आपका आध्यात्मिक सहायक हूँ। आज मैं आपकी क्या मदद कर सकता हूँ?',
+        loading: 'सोच रहा हूँ...'
+      }
     },
     rashifal: {
       title: 'दैनिक राशिफल',
@@ -650,6 +664,7 @@ export const i18n = {
       login: 'Login',
       logout: 'Logout',
       dashboard: 'Dashboard',
+      panchang: 'Panchang',
       book: 'Book Now'
     },
     dashboard: {
@@ -927,7 +942,13 @@ export const i18n = {
       back: 'Back to Library',
       search: 'Search books...',
       noBooks: 'No books found',
-      viewPanchang: 'View Detailed Panchang'
+      viewPanchang: 'View Detailed Panchang',
+      assistant: {
+        title: 'Assistant',
+        placeholder: 'Type your message...',
+        welcome: 'Namaste! I am your spiritual guide. How can I help you today?',
+        loading: 'Thinking...'
+      }
     },
     rashifal: {
       title: 'Daily Horoscope',

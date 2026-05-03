@@ -27,6 +27,7 @@ import {
   Grid,
   Scroll,
   Star,
+  ExternalLink,
   UserCheck,
   Compass,
   Heart,
@@ -61,6 +62,7 @@ import { AudioPlayer } from './components/AudioPlayer.tsx';
 import { CallActionButton } from './components/CallActionButton.tsx';
 import { Library } from './components/Library.tsx';
 import { Rashifal, SignKey } from './components/Rashifal.tsx';
+import { Assistant } from './components/Assistant.tsx';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -168,6 +170,7 @@ const Navbar = () => {
             </div>
 
             <a href="/#services" className="text-sm font-bold text-maroon dark:text-cream hover:text-saffron transition-colors">{t.nav.services}</a>
+            <a href="https://www.drikpanchang.com/panchang/day-panchang.html" target="_blank" rel="noopener noreferrer" className="text-sm font-bold text-maroon dark:text-cream hover:text-saffron transition-colors">{(t.nav as any).panchang}</a>
             <Link to="/library" className="text-sm font-bold text-maroon dark:text-cream hover:text-saffron transition-colors">{(t.nav as any).library}</Link>
             <a href="/#about" className="text-sm font-bold text-maroon dark:text-cream hover:text-saffron transition-colors">{t.nav.about}</a>
             <a href="/#faq" className="text-sm font-bold text-maroon dark:text-cream hover:text-saffron transition-colors">{t.nav.faq}</a>
@@ -339,6 +342,7 @@ const Navbar = () => {
             <div className="px-4 pt-2 pb-6 space-y-4 text-maroon">
               <Link to="/" onClick={() => setIsOpen(false)} className="block text-lg font-bold">{t.nav.home}</Link>
               <a href="/#services" onClick={() => setIsOpen(false)} className="block text-lg font-bold">{t.nav.services}</a>
+              <a href="https://www.drikpanchang.com/panchang/day-panchang.html" target="_blank" rel="noopener noreferrer" onClick={() => setIsOpen(false)} className="block text-lg font-bold">{(t.nav as any).panchang}</a>
               <Link to="/library" onClick={() => setIsOpen(false)} className="block text-lg font-bold">{(t.nav as any).library}</Link>
               <a href="/#about" onClick={() => setIsOpen(false)} className="block text-lg font-bold">{t.nav.about}</a>
               <a href="/#faq" onClick={() => setIsOpen(false)} className="block text-lg font-bold">{t.nav.faq}</a>
@@ -1437,6 +1441,20 @@ const JyotishDetailSection = () => {
                 'रत्न र मन्त्र सम्बन्धी सल्लाह',
                 'विशेष ग्रह हवन र पूजा'
               ]
+            },
+            { 
+              id: 'daily-panchang', 
+              image: 'https://images.unsplash.com/photo-1510074377623-8cf13fb86c08?auto=format&fit=crop&q=80&w=400',
+              icon: '📅',
+              title: "दैनिक हिन्दू पञ्चाङ्ग (Daily Hindu Panchang)",
+              desc: "आजको तिथि, नक्षत्र, योग र करण सहितको विस्तृत विववरण।",
+              isPanchang: true,
+              details: [
+                'शुभ र अशुभ समय (मुहूर्त)',
+                'सूर्योदय र सूर्यास्त समय',
+                'चन्द्रोदय र चन्द्रास्त समय',
+                'दैनिक पञ्चाङ्ग र विदाहरू'
+              ]
             }
           ].map((item, idx) => {
             const serviceData = SERVICES.find(s => s.id === item.id);
@@ -1476,6 +1494,27 @@ const JyotishDetailSection = () => {
                         <span className="text-sm font-medium">{detail}</span>
                       </div>
                     ))}
+                  </div>
+                  <div className="mt-10 flex justify-center md:justify-start">
+                    {(item as any).isPanchang ? (
+                      <a 
+                        href="https://www.drikpanchang.com/panchang/day-panchang.html"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-3 px-8 py-4 bg-gold text-maroon rounded-2xl font-bold uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-xl shadow-gold/20"
+                      >
+                        <ExternalLink className="w-5 h-5" />
+                        <span>आजको पञ्चाङ्ग हेर्नुहोस्</span>
+                      </a>
+                    ) : (
+                      <a 
+                        href="#booking"
+                        className="flex items-center gap-3 px-8 py-4 bg-gold text-maroon rounded-2xl font-bold uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-xl shadow-gold/20"
+                      >
+                        <Sparkles className="w-5 h-5" />
+                        <span>{t.services.bookNow}</span>
+                      </a>
+                    )}
                   </div>
                 </div>
               </div>
@@ -2126,6 +2165,7 @@ export default function App() {
           onBookNow={handleBookNow}
         />
         <ChatWidget />
+        <Assistant />
         <CallActionButton />
       </div>
     </BrowserRouter>
