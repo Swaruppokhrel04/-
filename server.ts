@@ -9,7 +9,7 @@ import dotenv from "dotenv";
 import admin from "firebase-admin";
 import fs from "node:fs";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { SERVICES, PUJA_SCHEDULE, AUSPICIOUS_DATES, CONTACT_INFO } from "./src/constants";
+import { SERVICES, PUJA_SCHEDULE, AUSPICIOUS_DATES, CONTACT_INFO } from "./src/constants.ts";
 
 dotenv.config();
 
