@@ -12,6 +12,7 @@ export const SERVICES: PujaService[] = [
     mantra: 'Om Gam Ganapataye Namaha',
     image: 'https://images.unsplash.com/photo-1590766948510-108259e9c4f3?auto=format&fit=crop&q=80&w=800',
     category: 'Regular',
+    price: 1100,
     audioUrl: 'https://cdn.pixabay.com/audio/2022/10/14/audio_9bcfe53422.mp3', // Spiritual/Ambient sample
     faqs: [
       { question: 'What materials are needed?', answer: 'Flowers, coconut, betel leaves, sweets, and diya are commonly required.' },
@@ -27,6 +28,7 @@ export const SERVICES: PujaService[] = [
     mantra: 'Om Namah Shivaya',
     image: 'https://images.unsplash.com/photo-1563722216449-3660d5bfa78f?auto=format&fit=crop&q=80&w=800',
     category: 'Special',
+    price: 5100,
     audioUrl: 'https://cdn.pixabay.com/audio/2021/11/25/audio_10842a5c84.mp3',
     faqs: [
       { question: 'Is milk mandatory for Abhishek?', answer: 'While preferred, water with honey or Panchamrit can also be used.' },
@@ -42,6 +44,7 @@ export const SERVICES: PujaService[] = [
     mantra: 'Om Dum Durgayei Namaha',
     image: 'https://images.unsplash.com/photo-1593351415075-3bac9f45c877?auto=format&fit=crop&q=80&w=800',
     category: 'Special',
+    price: 3101,
     audioUrl: 'https://cdn.pixabay.com/audio/2022/01/18/audio_d0a13f69d2.mp3',
     faqs: [
       { question: 'What is the significance of Kanya Pujan?', answer: 'It is a ritual honoring the divine feminine through young girls representing Goddess Durga.' },
@@ -57,6 +60,7 @@ export const SERVICES: PujaService[] = [
     mantra: 'Om Navagrahaya Namah',
     image: 'https://images.unsplash.com/photo-1464802686167-b939a67a06d1?auto=format&fit=crop&q=80&w=800',
     category: 'Special',
+    price: 7500,
     audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
     faqs: [
       { question: 'How many priests are required?', answer: 'For a full Navagraha Shanti, 1 to 3 priests are recommended for the mantras and rituals.' },
@@ -139,23 +143,56 @@ export const SERVICES: PujaService[] = [
   {
     id: 'kundali-creation',
     name: 'Kundali Creation',
-    description: 'Scientific creation of birth chart by expert scholars.',
+    description: 'Detailed birth chart creation using scientific Vedic calculations and accurate mathematical planetary mapping.',
     image: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&q=80&w=800',
-    category: 'Astrology'
+    category: 'Astrology',
+    price: 501,
+    benefits: [
+      'Discover your primary life purpose and karmic path',
+      'Identify planetary strengths to leverage in career',
+      'Predict accurate timing for stable life foundations'
+    ],
+    rituals: [
+      'Panchang Analysis (Tithi, Vara, Nakshatra)',
+      'Vimsottari Dasha Calculation',
+      'Lagna and Navamsha Chart Mapping'
+    ]
   },
   {
     id: 'graha-dosh',
     name: 'Graha Dosh Nivaran',
-    description: 'Astrological remedies for planetary obstacles.',
-    image: 'https://images.unsplash.com/photo-1614850523296-d8c1af93d400?auto=format&fit=crop&q=80&w=800',
-    category: 'Astrology'
+    description: 'Diagnosis and corrective remedies for planetary imbalances like Mangal, Shani Sade Sati, and Kaal Sarp.',
+    image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=800',
+    category: 'Astrology',
+    price: 1501,
+    benefits: [
+      'Neutralize negative planetary influences',
+      'Remove recurring obstacles in marriage or business',
+      'Gain mental clarity and emotional resilience'
+    ],
+    rituals: [
+      'Shani Sade Sati Peace Rituals',
+      'Mangalik Dosh Shanti',
+      'Navagraha Beej Mantra Initiation'
+    ]
   },
   {
     id: 'horoscope-reading',
     name: 'Horoscope Analysis',
-    description: 'Detailed analysis of birth chart for life guidance and future insights.',
+    description: 'Comprehensive analysis of current planetary transits (Gochara) and their impact on your immediate future.',
     image: 'https://images.unsplash.com/photo-1561490430-681534015652?auto=format&fit=crop&q=80&w=800',
     category: 'Astrology',
+    price: 1101,
+    benefits: [
+      'Strategic guidance for career changes and investments',
+      'Personalized relationship and health insights',
+      'Practical Vedic remedies for upcoming challenges'
+    ],
+    rituals: [
+      'Varshphal (Yearly Forecast) Analysis',
+      'Prashna Kundali for specific queries',
+      'Gemstone and Yantra Recommendation'
+    ],
     faqs: [
       { question: 'What details are needed for analysis?', answer: 'Exact date, time, and place of birth are required for a precise horoscope analysis.' },
       { question: 'Do you provide remedies?', answer: 'Yes, I provide Vedic remedies including mantras, gemstones, and lifestyle suggestions.' }
@@ -276,5 +313,26 @@ export const TESTIMONIALS = [
     content: 'Very disciplined and punctual services. We have been using their astrology and puja services for years, and they always maintain the highest Vedic standards.',
     rating: 5,
     image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=200'
+  }
+];
+
+export const SOUND_TRACKS = [
+  {
+    id: 'gayatri-mantra',
+    title: 'Gayatri Mantra',
+    url: 'https://cdn.pixabay.com/audio/2022/10/14/audio_9bcfe53422.mp3',
+    description: 'The most sacred prayer for wisdom and enlightenment.'
+  },
+  {
+    id: 'om-chant',
+    title: 'Peaceful Om Chanting',
+    url: 'https://cdn.pixabay.com/audio/2022/01/18/audio_d0a13f69d2.mp3',
+    description: 'The primordial sound of the universe for deep meditation.'
+  },
+  {
+    id: 'shiva-mantra',
+    title: 'Mahamrityunjaya Mantra',
+    url: 'https://cdn.pixabay.com/audio/2021/11/25/audio_10842a5c84.mp3',
+    description: 'A powerful mantra for healing and liberation.'
   }
 ];

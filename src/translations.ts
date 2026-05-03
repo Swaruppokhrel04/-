@@ -51,6 +51,23 @@ export const i18n = {
       needAssistant: 'सहयोग चाहियो?',
       connectPandit: 'पण्डितजीसँग सम्पर्क गर्नुहोस्'
     },
+    jyotish_section: {
+      tag: 'प्राचीन ज्ञान',
+      title: 'तपाईँको ब्रह्माण्डीय पहिचानको',
+      span: 'खोजी',
+      desc: 'ज्योतिष (वैदिक ज्योतिष) "प्रकाशको विज्ञान" हो जसले ग्रहहरूको चाल मार्फत हाम्रो जीवनको लय बुझ्न मद्दत गर्दछ। पण्डित जीले तपाईँका सबै जीवनका जिज्ञासाहरूको लागि प्रमाणिक, शास्त्रमा आधारित मार्गदर्शन प्रदान गर्नुहुन्छ।',
+      process: {
+        step1Title: 'जन्म विवरण साझा गर्नुहोस्',
+        step1Desc: 'तपाईँको सटीक जन्म मिति, समय र स्थान प्रदान गर्नुहोस्।',
+        step2Title: 'वैज्ञानिक विश्लेषण',
+        step2Desc: 'पण्डित जीले जटिल वैदिक गणितीय गणनाहरू गर्नुहुन्छ।',
+        step3Title: 'गहन परामर्श',
+        step3Desc: 'विस्तृत रिपोर्ट र नतिजाहरूमा १-अन-१ मार्गदर्शन प्राप्त गर्नुहोस्।',
+        step4Title: 'वैदिक उपायहरू',
+        step4Desc: 'रत्न, मन्त्र र जीवनशैलीको लागि व्यावहारिक सुझावहरू।'
+      },
+      btnConsult: 'अहिले परामर्श लिनुहोस्'
+    },
     hero: {
       tag: 'ॐ नमो भगवते वासुदेवाय',
       title: 'तपाईँको जीवनमा सुख, शान्ति र समृद्धिको लागि हामी',
@@ -443,6 +460,23 @@ export const i18n = {
       needAssistant: 'सहायता चाहिए?',
       connectPandit: 'पंडितजी से संपर्क करें'
     },
+    jyotish_section: {
+      tag: 'प्राचीन ज्ञान',
+      title: 'आपकी ब्रह्मांडीय पहचान की',
+      span: 'खोज',
+      desc: 'ज्योतिष (वैदिक ज्योतिष) "प्रकाश का विज्ञान" है जो ग्रहों की चाल के माध्यम से हमारे जीवन की लय को समझने में मदद करता है। पंडित जी आपके जीवन की सभी जिज्ञासाओं के लिए प्रमाणिक, शास्त्रों पर आधारित मार्गदर्शन प्रदान करते हैं।',
+      process: {
+        step1Title: 'जन्म विवरण साझा करें',
+        step1Desc: 'अपनी सटीक जन्म तिथि, समय और स्थान प्रदान करें।',
+        step2Title: 'वैज्ञानिक विश्लेषण',
+        step2Desc: 'पंडित जी जटिल वैदिक गणितीय गणनाएँ करते हैं।',
+        step3Title: 'गहन परामर्श',
+        step3Desc: 'विस्तृत रिपोर्ट और परिणामों पर 1-ऑन-1 मार्गदर्शन प्राप्त करें।',
+        step4Title: 'वैदिक उपाय',
+        step4Desc: 'रत्न, मंत्र और जीवनशैली के लिए व्यावहारिक सुझाव।'
+      },
+      btnConsult: 'अभी परामर्श लें'
+    },
     hero: {
       tag: 'ॐ नमो भगवते वासुदेवाय',
       title: 'आपके जीवन में सुख, शांति और समृद्धि के लिए हम',
@@ -834,6 +868,23 @@ export const i18n = {
       lastBlessing: 'Last Blessing',
       needAssistant: 'Need Assistant?',
       connectPandit: 'Connect with Pandit Ji'
+    },
+    jyotish_section: {
+      tag: 'Ancient Wisdom',
+      title: 'Decoding Your',
+      span: 'Cosmic Identity',
+      desc: 'Jyotish (Vedic Astrology) is the "Science of Light" that helps us understand our life\'s rhythm through planetary movements. Pandit Ji provides authentic, scripture-based guidance for all your life queries.',
+      process: {
+        step1Title: 'Share Birth Details',
+        step1Desc: 'Provide your exact date, time, and place of birth.',
+        step2Title: 'Scientific Analysis',
+        step2Desc: 'Pandit Ji performs complex Vedic mathematical calculations.',
+        step3Title: 'Deep Consultation',
+        step3Desc: 'Receive a detailed report and 1-on-1 guidance on results.',
+        step4Title: 'Vedic Remedies',
+        step4Desc: 'Practical suggestions for gemstones, mantras, and lifestyle.'
+      },
+      btnConsult: 'Consult Now'
     },
     hero: {
       tag: 'Om Namo Bhagavate Vasudevaya 🙏',

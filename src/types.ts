@@ -16,6 +16,7 @@ export interface PujaService {
   rituals?: string[];
   benefits?: string[];
   audioUrl?: string;
+  price?: number;
   faqs?: FAQ[];
 }
 

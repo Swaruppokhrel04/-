@@ -35,8 +35,7 @@ import {
   Search,
   Loader2,
   HelpCircle,
-  Sun,
-  QrCode
+  Sun
 } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 import { format } from 'date-fns';
@@ -59,20 +58,24 @@ import { BookingConfirmation } from './components/BookingConfirmation.tsx';
 import { Dashboard } from './components/Dashboard.tsx';
 import { ContactForm } from './components/ContactForm.tsx';
 import { AudioPlayer } from './components/AudioPlayer.tsx';
+import { GlobalSoundSystem } from './components/GlobalSoundSystem.tsx';
+import { Footer } from './components/Footer.tsx';
+import { UserGuide } from './components/UserGuide.tsx';
 import { CallActionButton } from './components/CallActionButton.tsx';
 import { Library } from './components/Library.tsx';
 import { Rashifal } from './components/Rashifal.tsx';
+import { JyotishSection } from './components/JyotishSection.tsx';
 import { Testimonials } from './components/Testimonials.tsx';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [isQrOpen, setIsQrOpen] = useState(false);
+  const [isWhatsappOpen, setIsWhatsappOpen] = useState(false);
   const [query, setQuery] = useState('');
   const { t, language } = useLanguage();
   const { user, signIn, signOut } = useAuth();
   const searchRef = useRef<HTMLDivElement>(null);
-  const qrRef = useRef<HTMLDivElement>(null);
+  const whatsappRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -80,17 +83,15 @@ const Navbar = () => {
         setIsSearchOpen(false);
         setQuery('');
       }
-      if (qrRef.current && !qrRef.current.contains(event.target as Node)) {
-        setIsQrOpen(false);
+      if (whatsappRef.current && !whatsappRef.current.contains(event.target as Node)) {
+        setIsWhatsappOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const bookingUrl = typeof window !== 'undefined' 
-    ? `${window.location.origin}${window.location.pathname}#booking` 
-    : '';
+  const whatsappUrl = `https://wa.me/${CONTACT_INFO.whatsapp}`;
 
   const results = query.trim() ? SERVICES.filter(s => {
     const serviceT = (i18n[language] as any).services_list[s.id];
@@ -177,34 +178,39 @@ const Navbar = () => {
               </AnimatePresence>
             </div>
 
-            <div className="relative" ref={qrRef}>
+            <div className="hidden lg:flex items-center gap-1 text-maroon/60 mr-4">
+              <Phone className="w-4 h-4" />
+              <span className="text-sm font-bold">{CONTACT_INFO.displayPhone}</span>
+            </div>
+
+            <div className="relative" ref={whatsappRef}>
               <button 
-                onClick={() => setIsQrOpen(!isQrOpen)}
-                className="p-2 text-maroon hover:text-saffron transition-colors"
-                aria-label="QR Code"
+                onClick={() => setIsWhatsappOpen(!isWhatsappOpen)}
+                className="p-2 text-green-600 hover:text-green-700 transition-colors"
+                aria-label="WhatsApp Contact"
               >
-                <QrCode className="w-5 h-5" />
+                <MessageCircle className="w-5 h-5" />
               </button>
               
               <AnimatePresence>
-                {isQrOpen && (
+                {isWhatsappOpen && (
                   <motion.div
                     initial={{ opacity: 0, scale: 0.95, y: 10 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95, y: 10 }}
-                    className="absolute right-0 mt-2 w-48 bg-white rounded-2xl shadow-2xl border border-maroon/10 p-4 flex flex-col items-center z-50 text-center"
+                    className="absolute right-0 mt-2 w-48 bg-white rounded-2xl shadow-2xl border border-gold/10 p-4 flex flex-col items-center z-50 text-center"
                   >
-                    <p className="text-[10px] font-bold text-maroon uppercase tracking-wider mb-2">Scan to Book</p>
-                    <div className="bg-white p-2 rounded-xl border border-gold/20 shadow-inner">
+                    <p className="text-[10px] font-bold text-green-600 uppercase tracking-wider mb-2">WhatsApp Contact</p>
+                    <div className="bg-white p-2 rounded-xl border border-green-500/20 shadow-inner">
                       <QRCodeSVG 
-                        value={bookingUrl} 
+                        value={whatsappUrl} 
                         size={120}
-                        fgColor="#4A0404"
+                        fgColor="#128C7E"
                         level="H"
                         includeMargin={false}
                       />
                     </div>
-                    <p className="mt-2 text-[8px] text-gray-400 italic">Share QR with others to share your blessing</p>
+                    <p className="mt-2 text-[8px] text-gray-400 italic">Scan to chat with Pandit Ji directly</p>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -257,18 +263,18 @@ const Navbar = () => {
           <div className="flex items-center gap-4 md:hidden">
             <button 
               onClick={() => {
-                setIsQrOpen(!isQrOpen);
+                setIsWhatsappOpen(!isWhatsappOpen);
                 setIsSearchOpen(false);
                 setIsOpen(false);
               }}
-              className="p-2 text-maroon"
+              className="p-2 text-green-600"
             >
-              <QrCode className="w-6 h-6" />
+              <MessageCircle className="w-6 h-6" />
             </button>
             <button 
               onClick={() => {
                 setIsSearchOpen(!isSearchOpen);
-                setIsQrOpen(false);
+                setIsWhatsappOpen(false);
                 setIsOpen(false);
               }}
               className="p-2 text-maroon"
@@ -464,6 +470,14 @@ const Navbar = () => {
                   )}
 
                   <a 
+                    href={`tel:${CONTACT_INFO.phone}`}
+                    className="flex items-center justify-center gap-3 text-maroon font-bold py-3 bg-paper border border-maroon/10 rounded-2xl"
+                  >
+                    <Phone className="w-4 h-4" />
+                    {CONTACT_INFO.displayPhone}
+                  </a>
+
+                  <a 
                     href="#booking" 
                     onClick={() => setIsOpen(false)}
                     className="block w-full py-5 bg-maroon text-cream rounded-2xl text-center font-bold shadow-xl shadow-maroon/20 hover:scale-[1.02] active:scale-95 transition-all"
@@ -477,15 +491,15 @@ const Navbar = () => {
         )}
       </AnimatePresence>
 
-      {/* Mobile QR Overlay */}
+      {/* Mobile Whatsapp QR Overlay */}
       <AnimatePresence>
-        {isQrOpen && (
+        {isWhatsappOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="md:hidden fixed inset-0 z-[100] flex items-center justify-center p-6 bg-maroon/40 backdrop-blur-md"
-            onClick={() => setIsQrOpen(false)}
+            onClick={() => setIsWhatsappOpen(false)}
           >
             <motion.div 
               initial={{ scale: 0.9, opacity: 0, y: 20 }}
@@ -495,25 +509,25 @@ const Navbar = () => {
               onClick={e => e.stopPropagation()}
             >
               <button 
-                onClick={() => setIsQrOpen(false)}
+                onClick={() => setIsWhatsappOpen(false)}
                 className="absolute top-6 right-6 p-2 text-maroon/40 hover:text-maroon transition-colors"
                 aria-label="Close"
               >
                 <X className="w-6 h-6" />
               </button>
               
-              <div className="w-16 h-16 bg-maroon text-gold flex items-center justify-center rounded-2xl font-bold text-2xl shadow-xl shadow-maroon/20 mb-6">
-                🕉️
+              <div className="w-16 h-16 bg-green-500 text-white flex items-center justify-center rounded-2xl font-bold text-2xl shadow-xl shadow-green-500/20 mb-6 font-sans">
+                <MessageCircle className="w-8 h-8" />
               </div>
               
-              <h3 className="text-xl font-serif font-bold text-maroon mb-2">Scan to Book</h3>
-              <p className="text-sm text-gray-500 text-center mb-8">Scan this code with another device to open the booking page or share this blessing with your family.</p>
+              <h3 className="text-xl font-serif font-bold text-maroon mb-2">WhatsApp Contact</h3>
+              <p className="text-sm text-gray-500 text-center mb-4">Scan this code to chat with Pandit Ji directly or call us at <span className="text-maroon font-bold">{CONTACT_INFO.displayPhone}</span>.</p>
               
-              <div className="bg-white p-4 rounded-[2rem] border border-gold/20 shadow-2xl ring-4 ring-gold/5">
+              <div className="bg-white p-4 rounded-[2rem] border border-green-500/20 shadow-2xl ring-4 ring-green-500/5">
                 <QRCodeSVG 
-                  value={bookingUrl} 
+                  value={whatsappUrl} 
                   size={200}
-                  fgColor="#4A0404"
+                  fgColor="#128C7E"
                   level="H"
                   includeMargin={false}
                 />
@@ -523,7 +537,7 @@ const Navbar = () => {
                 <p className="text-[10px] text-saffron uppercase font-black tracking-[0.3em]">
                   Shree Nar Narayan
                 </p>
-                <p className="text-[9px] text-gray-400 italic">May your journey be filled with divine light</p>
+                <p className="text-[9px] text-gray-400 italic">Quick spiritual assistance via WhatsApp</p>
               </div>
             </motion.div>
           </motion.div>
@@ -1554,107 +1568,6 @@ const PathSection = () => {
   );
 };
 
-const JyotishDetailSection = () => {
-  const { t } = useLanguage();
-  return (
-    <motion.section 
-      id="jyotish-details" 
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 1 }}
-      className="py-24 bg-maroon/95 relative overflow-hidden"
-    >
-      <Stars />
-      <div className="max-w-7xl mx-auto px-4 relative z-10">
-        <div className="text-center mb-12 md:mb-16">
-          <ZodiacCard className="w-12 h-12 text-gold mx-auto mb-6 animate-glow" />
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-serif text-white mb-4">ज्योतिष सेवाको विस्तृत विवरण</h2>
-          <p className="text-cream/70 max-w-2xl mx-auto text-xs md:text-sm">हाम्रा अनुभवी विद्वानहरूद्वारा प्रदान गरिने ज्योतिषीय समाधानहरू।</p>
-        </div>
-
-        <div className="grid gap-8 md:gap-12">
-          {[
-            { 
-              id: 'kundali-creation', 
-              image: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&q=80&w=400',
-              icon: '📜',
-              title: t.services_list['kundali-creation'].name,
-              desc: t.services_list['kundali-creation'].desc,
-              details: [
-                'सटीक जन्म गणित र पञ्चाङ्ग गणना',
-                'भविष्यवाणी र जीवन चक्र विश्लेषण',
-                'करिअर, शिक्षा र स्वास्थ्य परामर्श',
-                'विवाह र गुण मिलान'
-              ]
-            },
-            { 
-              id: 'graha-dosh', 
-              image: 'https://images.unsplash.com/photo-1464802686167-b939a67a06d1?auto=format&fit=crop&q=80&w=400',
-              icon: '🪐',
-              title: t.services_list['graha-dosh'].name,
-              desc: t.services_list['graha-dosh'].desc,
-              details: [
-                'कालसर्प, मङ्गल र पितृ दोष शान्ति',
-                'ग्रहजन्य बाधाहरूको पौराणिक समाधान',
-                'रत्न र मन्त्र सम्बन्धी सल्लाह',
-                'विशेष ग्रह हवन र पूजा'
-              ]
-            }
-          ].map((item, idx) => {
-            const serviceData = SERVICES.find(s => s.id === item.id);
-            return (
-              <motion.div 
-                key={item.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.2 }}
-                className="bg-white/5 border border-gold/20 rounded-[3rem] p-8 md:p-12 overflow-hidden relative group"
-              >
-                <div className="absolute right-0 top-0 w-1/3 h-full opacity-[0.05] group-hover:opacity-[0.1] transition-opacity">
-                  <img src={item.image} alt="Background" className="w-full h-full object-cover" />
-                </div>
-                <div className="grid md:grid-cols-[1fr_2fr] gap-12 items-center relative z-10">
-                  <div className="text-center md:text-left">
-                    <div className="w-24 h-24 rounded-full overflow-hidden mb-6 mx-auto md:mx-0 border-2 border-gold/30">
-                       <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
-                    </div>
-                    <h3 className="text-2xl font-bold font-serif text-gold mb-4">{item.title}</h3>
-                    <div className="w-20 h-1 bg-gold/30 mx-auto md:mx-0" />
-                  </div>
-                  <div>
-                  <p className="text-lg text-cream/90 font-serif leading-relaxed mb-4 italic">
-                    "{item.desc}"
-                  </p>
-                  <div className="bg-gold/5 border border-gold/20 p-4 rounded-2xl mb-8">
-                    <p className="text-xs text-gold font-bold text-center italic uppercase tracking-wider">
-                      * {t.services.priceNote}
-                    </p>
-                  </div>
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    {item.details.map((detail, dIdx) => (
-                      <div key={dIdx} className="flex items-center gap-3 text-cream/70 bg-white/5 p-4 rounded-2xl border border-white/5 hover:bg-gold/10 hover:border-gold/20 transition-all">
-                        <div className="w-1.5 h-1.5 bg-gold rounded-full" />
-                        <span className="text-sm font-medium">{detail}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-            );
-          })}
-        </div>
-        
-        <div className="mt-20">
-          <Rashifal />
-        </div>
-      </div>
-    </motion.section>
-  );
-};
-
 const ServiceModal = ({ 
   service, 
   onClose,
@@ -1932,7 +1845,11 @@ const MainContent = ({ setSelectedService, handleBookNow, preselectedBookingId }
 
       <PathSection />
 
-      <JyotishDetailSection />
+      <JyotishSection onSelectService={setSelectedService} />
+
+      <div className="max-w-7xl mx-auto px-4 relative z-10 py-12">
+        <Rashifal />
+      </div>
 
       <Testimonials />
 
@@ -2089,59 +2006,16 @@ export default function App() {
           } />
           <Route path="/library" element={<Library />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/privacy" element={<div className="pt-32 pb-20 container mx-auto px-6 min-h-screen"><h1 className="text-4xl font-serif font-black text-maroon mb-8">Privacy Policy</h1><p className="text-gray-600">Your privacy is important to us. We only collect information necessary to provide our Vedic services.</p></div>} />
+          <Route path="/terms" element={<div className="pt-32 pb-20 container mx-auto px-6 min-h-screen"><h1 className="text-4xl font-serif font-black text-maroon mb-8">Terms of Service</h1><p className="text-gray-600">By using our services, you agree to follow the traditional Vedic protocols as guided by Pandit Ji.</p></div>} />
+          <Route path="/guide" element={<UserGuide />} />
         </Routes>
 
         <BottomNav />
         {/* Redundant floating action buttons removed to prevent clutter on mobile */}
         
-        <footer className="bg-paper py-16 md:py-20 border-t border-gold/10">
-          <div className="max-w-7xl mx-auto px-4">
-            <div className="grid md:grid-cols-4 gap-12 mb-16">
-              <div className="col-span-1">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-8 h-8 bg-maroon text-gold flex items-center justify-center rounded font-bold">🕉️</div>
-                  <span className="font-serif text-xl font-bold text-maroon">श्री नर नारायण</span>
-                </div>
-                <p className="text-sm text-gray-500 leading-relaxed">
-                  {t.footer.desc}
-                </p>
-              </div>
-              <div>
-                <h4 className="font-bold text-maroon mb-6 text-sm uppercase tracking-widest">{t.footer.servicesTitle}</h4>
-                <ul className="space-y-3 text-sm text-gray-500">
-                  {t.footer.links.map((link, idx) => (
-                    <li key={idx}><a href="#" className="hover:text-saffron transition-colors">{link}</a></li>
-                  ))}
-                </ul>
-              </div>
-              <div>
-                <h4 className="font-bold text-maroon mb-6 text-sm uppercase tracking-widest">{t.footer.contactTitle}</h4>
-                <ul className="space-y-3 text-sm text-gray-500">
-                  <li className="flex items-center gap-2">
-                    <Phone className="w-4 h-4 text-saffron" />
-                    <a href={`tel:${CONTACT_INFO.phone}`} className="hover:text-saffron">{CONTACT_INFO.displayPhone}</a>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <MessageCircle className="w-4 h-4 text-saffron" />
-                    <a href={`https://wa.me/${CONTACT_INFO.whatsapp}`} className="hover:text-saffron">WhatsApp Chat</a>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <MapPin className="w-4 h-4 text-saffron" />
-                    <span>{CONTACT_INFO.address}</span>
-                  </li>
-                </ul>
-              </div>
-              <div>
-                <h4 className="font-bold text-maroon mb-6 text-sm uppercase tracking-widest">{t.footer.infoTitle}</h4>
-                <p className="text-xs text-gray-500 mb-4">{t.footer.infoDesc}</p>
-              </div>
-            </div>
-            <div className="pt-8 border-t border-gold/10 flex flex-col md:flex-row justify-between items-center gap-4">
-              <p className="text-xs text-gray-400">{t.footer.rights}</p>
-              <p className="text-xs text-gray-400 font-serif italic">{t.footer.mantra}</p>
-            </div>
-          </div>
-        </footer>
+        <Footer />
+
         <ServiceModal 
           service={selectedService} 
           onClose={() => setSelectedService(null)} 
@@ -2149,6 +2023,7 @@ export default function App() {
         />
         <ChatWidget />
         <CallActionButton />
+        <GlobalSoundSystem />
       </div>
     </BrowserRouter>
   );
