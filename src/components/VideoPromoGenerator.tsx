@@ -11,7 +11,7 @@ import {
   ChevronDown
 } from 'lucide-react';
 import { useLanguage } from '../LanguageContext';
-import { GoogleGenAI } from '@google/genai';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 // Extend window interface for AI Studio helpers
 declare global {
@@ -77,17 +77,17 @@ export const VideoPromoGenerator = () => {
       }
 
       // Initialize AI instance right before call as per skill guidance
-      const apiKey = process.env.API_KEY;
+      const apiKey = process.env.GEMINI_API_KEY;
       if (!apiKey) {
         throw new Error('API key not found in environment');
       }
 
-      const ai = new GoogleGenAI({ apiKey });
+      const ai = new GoogleGenerativeAI(apiKey);
       
       const prompt = `Short promotional video for ${selectedService} ceremony. ${extraDetails}. Style: Spiritual, divine, cinematic, slow motion, warm lighting, incense smoke, traditional Vedic atmosphere.`;
 
-      let operation = await ai.models.generateVideos({
-        model: 'veo-3.1-lite-generate-preview',
+      const videoModel = ai.getGenerativeModel({ model: 'veo-3.1-lite-generate-preview' } as any);
+      let operation = await (videoModel as any).generateVideos({
         prompt: prompt,
         config: {
           numberOfVideos: 1,
@@ -101,7 +101,7 @@ export const VideoPromoGenerator = () => {
       // Poll for completion
       while (!operation.done) {
         await new Promise(resolve => setTimeout(resolve, 10000));
-        operation = await ai.operations.getVideosOperation({ operation: operation });
+        operation = await (ai as any).operations.getVideosOperation({ operation: operation });
       }
 
       const downloadLink = operation.response?.generatedVideos?.[0]?.video?.uri;

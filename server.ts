@@ -14,21 +14,25 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Initialize Firebase Admin
-const firebaseConfigPath = path.join(process.cwd(), "firebase-applet-config.json");
+// Initialize Firebase Admin lazily
 let firebaseAdminApp: admin.app.App | null = null;
+const getFirebaseAdmin = () => {
+  if (firebaseAdminApp) return firebaseAdminApp;
 
-if (fs.existsSync(firebaseConfigPath)) {
-  try {
-    const firebaseConfig = JSON.parse(fs.readFileSync(firebaseConfigPath, "utf-8"));
-    firebaseAdminApp = admin.initializeApp({
-      projectId: firebaseConfig.projectId,
-    });
-    console.log("Firebase Admin initialized");
-  } catch (error) {
-    console.error("Error initializing Firebase Admin:", error);
+  const firebaseConfigPath = path.join(process.cwd(), "firebase-applet-config.json");
+  if (fs.existsSync(firebaseConfigPath)) {
+    try {
+      const firebaseConfig = JSON.parse(fs.readFileSync(firebaseConfigPath, "utf-8"));
+      firebaseAdminApp = admin.initializeApp({
+        projectId: firebaseConfig.projectId,
+      });
+      console.log("Firebase Admin initialized");
+    } catch (error) {
+      console.error("Error initializing Firebase Admin:", error);
+    }
   }
-}
+  return firebaseAdminApp;
+};
 
 async function startServer() {
   const app = express();
@@ -48,7 +52,8 @@ async function startServer() {
 
   // Function to send push notification
   const sendPushNotification = async (userId: string, title: string, body: string) => {
-    if (!firebaseAdminApp) return;
+    const adminApp = getFirebaseAdmin();
+    if (!adminApp) return;
 
     try {
       const userRef = admin.firestore().collection("users").doc(userId);

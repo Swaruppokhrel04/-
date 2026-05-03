@@ -1,7 +1,7 @@
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { SERVICES, PUJA_SCHEDULE, AUSPICIOUS_DATES, CONTACT_INFO } from "../constants";
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+const ai = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 
 const systemInstruction = `
 You are the AI Spiritual Assistant for "Shri Nar Narayan Religious Services" (श्री नर नारायण धार्मिक सेवा).
@@ -38,19 +38,22 @@ Avoid:
 
 export async function getChatResponse(message: string, history: { role: 'user' | 'model', content: string }[]) {
   try {
-    const response = await ai.models.generateContent({
-      model: "gemini-3-flash-preview",
+    const model = ai.getGenerativeModel({ 
+      model: "gemini-1.5-flash", 
+      systemInstruction: systemInstruction 
+    });
+
+    const result = await model.generateContent({
       contents: [
         ...history.map(h => ({ role: h.role, parts: [{ text: h.content }] })),
         { role: 'user', parts: [{ text: message }] }
       ],
-      config: {
-        systemInstruction,
+      generationConfig: {
         temperature: 0.7,
       }
     });
 
-    return response.text;
+    return result.response.text();
   } catch (error) {
     console.error("Gemini AI Error:", error);
     return "I apologize, but I am having trouble connecting to my spiritual knowledge base right now. Please try again or contact us directly.";
