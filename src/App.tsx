@@ -46,7 +46,6 @@ import { useAuth } from './AuthContext';
 import { i18n } from './translations.ts';
 import { LanguageSwitcher } from './components/LanguageSwitcher.tsx';
 import { FAQ } from './components/FAQ.tsx';
-import Testimonials from './components/Testimonials';
 import { SplashScreen } from './components/SplashScreen.tsx';
 import { BottomNav } from './components/BottomNav.tsx';
 import { ChatWidget } from './components/ChatWidget.tsx';
@@ -54,7 +53,6 @@ import { BookingConfirmation } from './components/BookingConfirmation.tsx';
 import { Dashboard } from './components/Dashboard.tsx';
 import { ContactForm } from './components/ContactForm.tsx';
 import { AudioPlayer } from './components/AudioPlayer.tsx';
-import { PujaSchedule } from './components/PujaSchedule.tsx';
 import { CallActionButton } from './components/CallActionButton.tsx';
 
 const Navbar = () => {
@@ -1803,10 +1801,6 @@ const MainContent = ({ setSelectedService, handleBookNow, preselectedBookingId }
           </div>
         </div>
       </motion.section>
-
-      <PujaSchedule />
-
-      <Testimonials />
 
       <FAQ />
 

@@ -263,17 +263,6 @@ export const i18n = {
       errPhoneRequired: 'कृपया आफ्नो सम्पर्क नम्बर लेख्नुहोस्',
       errPhoneInvalid: 'कृपया सही सम्पर्क नम्बर लेख्नुहोस्',
       errMessageRequired: 'कृपया आफ्नो सन्देश लेख्नुहोस्'
-    },
-    schedule: {
-      title: 'नियमित पूजा तालिका',
-      subtitle: 'हाम्र पवित्र सेवाहरूको दैनिक र साप्ताहिक समय तालिका',
-      days: {
-        daily: 'दैनिक',
-        monday: 'सोमबार',
-        tuesday: 'मंगलबार',
-        friday: 'शुक्रबार',
-        saturday: 'शनिबार'
-      }
     }
   },
   hi: {
@@ -538,17 +527,6 @@ export const i18n = {
       errPhoneRequired: 'कृपया अपना फोन नंबर लिखें',
       errPhoneInvalid: 'कृपया सही फोन नंबर लिखें',
       errMessageRequired: 'कृपया अपना संदेश लिखें'
-    },
-    schedule: {
-      title: 'नियमित पूजा तालिका',
-      subtitle: 'हमारी पवित्र सेवाओं की दैनिक और साप्ताहिक समय सारिणी',
-      days: {
-        daily: 'दैनिक',
-        monday: 'सोमवार',
-        tuesday: 'मंगलवार',
-        friday: 'शुक्रवार',
-        saturday: 'शनिवार'
-      }
     }
   },
   en: {
@@ -813,17 +791,6 @@ export const i18n = {
       errPhoneRequired: 'Please enter your phone number',
       errPhoneInvalid: 'Please enter a valid phone number',
       errMessageRequired: 'Please enter your message'
-    },
-    schedule: {
-      title: 'Puja Schedule',
-      subtitle: 'Daily and weekly schedule of our sacred services',
-      days: {
-        daily: 'Daily',
-        monday: 'Monday',
-        tuesday: 'Tuesday',
-        friday: 'Friday',
-        saturday: 'Saturday'
-      }
     }
   }
 };
