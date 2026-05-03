@@ -154,8 +154,8 @@ export const Dashboard = () => {
   if (!user) {
     return (
       <div className="pt-32 pb-20 px-4 text-center">
-        <h2 className="text-2xl font-bold text-maroon mb-4">Access Denied</h2>
-        <p className="text-gray-600 mb-8">Please login to view your dashboard.</p>
+        <h2 className="text-2xl font-bold text-maroon mb-4">{t.dashboard.accessDenied}</h2>
+        <p className="text-gray-600 mb-8">{t.dashboard.loginRequired}</p>
       </div>
     );
   }
@@ -251,14 +251,14 @@ export const Dashboard = () => {
                     <div className="flex items-center justify-between">
                       <div>
                         <h2 className="text-3xl font-bold text-maroon font-serif">{t.dashboard.upcoming}</h2>
-                        <p className="text-gray-400 text-sm mt-1">{upcomingBookings.length} active rituals found</p>
+                        <p className="text-gray-400 text-sm mt-1">{upcomingBookings.length} {t.dashboard.ritualsFound}</p>
                       </div>
                     </div>
 
                     {loading ? (
                       <div className="flex flex-col items-center justify-center py-32 space-y-4">
                         <div className="w-12 h-12 border-4 border-gold/20 border-t-maroon rounded-full animate-spin"></div>
-                        <p className="text-xs font-bold text-maroon/40 uppercase tracking-widest">Loading Divine Schedule...</p>
+                        <p className="text-xs font-bold text-maroon/40 uppercase tracking-widest">{t.dashboard.loadingSchedule}</p>
                       </div>
                     ) : upcomingBookings.length > 0 ? (
                       <div className="grid gap-6">
@@ -335,8 +335,8 @@ export const Dashboard = () => {
                         <div className="w-20 h-20 bg-white rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-sm">
                           <Calendar className="w-10 h-10 text-gold/20" />
                         </div>
-                        <p className="text-maroon/40 font-bold tracking-tight">{t.dashboard.noBookings}</p>
-                        <p className="text-gray-400 text-xs mt-2">Your divine journey begins with your first booking.</p>
+                        <p className="text-maroon/40 font-bold tracking-tight">{t.dashboard.noBookingsTitle}</p>
+                        <p className="text-gray-400 text-xs mt-2">{t.dashboard.noBookingsDesc}</p>
                       </div>
                     )}
                   </div>
@@ -367,7 +367,7 @@ export const Dashboard = () => {
                                     <span className="text-sm font-bold text-maroon">
                                       {booking.date ? format(new Date(booking.date), 'MMMM d, yyyy') : 'N/A'}
                                     </span>
-                                    <span className="text-[10px] text-gray-400 font-medium">Completed via Vedic Rituals</span>
+                                    <span className="text-[10px] text-gray-400 font-medium">{t.dashboard.completedVia}</span>
                                   </div>
                                 </td>
                                 <td className="py-6">
@@ -397,7 +397,7 @@ export const Dashboard = () => {
                   <div className="space-y-10">
                     <div>
                       <h2 className="text-3xl font-bold text-maroon font-serif">{t.dashboard.profile}</h2>
-                      <p className="text-gray-400 text-sm mt-1">Manage your spiritual presence</p>
+                      <p className="text-gray-400 text-sm mt-1">{t.dashboard.manageProfile}</p>
                     </div>
                     
                     <div className="grid lg:grid-cols-5 gap-12">
@@ -425,15 +425,15 @@ export const Dashboard = () => {
                             </label>
                           </div>
                           <div className="flex-1 space-y-2">
-                            <h4 className="font-bold text-maroon text-lg">Sacred Identity</h4>
-                            <p className="text-xs text-gray-500 leading-relaxed max-w-[200px]">A clear profile image helps our Pandits recognize you during visits.</p>
+                            <h4 className="font-bold text-maroon text-lg">{t.dashboard.sacredIdentity}</h4>
+                            <p className="text-xs text-gray-500 leading-relaxed max-w-[200px]">{t.dashboard.profileImageDesc}</p>
                             {photoURL && (
                               <button 
                                 type="button"
                                 onClick={removePhoto}
                                 className="text-[10px] font-black uppercase tracking-widest text-red-400 flex items-center gap-2 hover:text-red-500 transition-colors pt-2"
                               >
-                                <Trash2 className="w-3.5 h-3.5" /> Remove Image
+                                <Trash2 className="w-3.5 h-3.5" /> {t.dashboard.removeImage}
                               </button>
                             )}
                           </div>
@@ -456,7 +456,7 @@ export const Dashboard = () => {
                           </div>
 
                           <div className="space-y-2">
-                            <label className="text-[10px] font-black uppercase tracking-[0.2em] text-maroon/40 ml-1">Contact Essence</label>
+                            <label className="text-[10px] font-black uppercase tracking-[0.2em] text-maroon/40 ml-1">{t.dashboard.contactEssence}</label>
                             <div className="grid md:grid-cols-2 gap-4">
                               <div className="relative">
                                 <input 
@@ -491,7 +491,7 @@ export const Dashboard = () => {
                           ) : (
                             <>
                               <Award className="w-6 h-6" />
-                              Update Sanctuary Profile
+                              {t.dashboard.updateProfile}
                             </>
                           )}
                         </button>
@@ -515,9 +515,9 @@ export const Dashboard = () => {
 
                           <div className="space-y-6 relative z-10">
                             {[
-                              { label: 'Member Since', value: '2024', icon: Calendar },
-                              { label: 'Total Rituals', value: bookings.length, icon: Award },
-                              { label: 'Last Blessing', value: historyBookings.length > 0 ? format(new Date(historyBookings[0].date), 'MMM d') : 'N/A', icon: History }
+                              { label: t.dashboard.memberSince, value: '2024', icon: Calendar },
+                              { label: t.dashboard.totalRituals, value: bookings.length, icon: Award },
+                              { label: t.dashboard.lastBlessing, value: historyBookings.length > 0 ? format(new Date(historyBookings[0].date), 'MMM d') : 'N/A', icon: History }
                             ].map((stat, i) => (
                               <div key={i} className="flex justify-between items-center group/item">
                                 <span className="text-gray-500 text-sm flex items-center gap-2">
@@ -533,15 +533,15 @@ export const Dashboard = () => {
 
                           <div className="mt-10 p-5 bg-white/50 rounded-2xl border border-maroon/5 backdrop-blur-sm">
                             <p className="text-[10px] text-gray-400 font-medium italic leading-relaxed text-center">
-                              "Dharma protects those who protect Dharma."
+                              {t.footer.mantra}
                             </p>
                           </div>
                         </section>
                         
                         <div className="p-6 bg-paper-dark rounded-[1.5rem] border border-gold/10">
-                          <h5 className="text-[10px] font-black uppercase tracking-widest text-maroon/40 mb-3 ml-1">Need Assistant?</h5>
+                          <h5 className="text-[10px] font-black uppercase tracking-widest text-maroon/40 mb-3 ml-1">{t.dashboard.needAssistant}</h5>
                           <button className="w-full py-4 text-maroon font-bold text-sm bg-white rounded-xl border border-gold/10 hover:border-gold transition-all shadow-sm">
-                            Connect with Pandit Ji
+                            {t.dashboard.connectPandit}
                           </button>
                         </div>
                       </div>

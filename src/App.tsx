@@ -26,8 +26,6 @@ import {
   Zap,
   Grid,
   Scroll,
-  Star,
-  ExternalLink,
   UserCheck,
   Compass,
   Heart,
@@ -35,9 +33,7 @@ import {
   Flower2,
   Sparkles,
   Search,
-  Loader2,
-  Sun,
-  Moon
+  Loader2
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { SERVICES, CONTACT_INFO } from './constants.ts';
@@ -48,7 +44,6 @@ import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 import { useLanguage } from './LanguageContext';
 import { useAuth } from './AuthContext';
-import { useTheme } from './ThemeContext';
 import { i18n } from './translations.ts';
 import { LanguageSwitcher } from './components/LanguageSwitcher.tsx';
 import { FAQ } from './components/FAQ.tsx';
@@ -61,15 +56,13 @@ import { ContactForm } from './components/ContactForm.tsx';
 import { AudioPlayer } from './components/AudioPlayer.tsx';
 import { CallActionButton } from './components/CallActionButton.tsx';
 import { Library } from './components/Library.tsx';
-import { Rashifal, SignKey } from './components/Rashifal.tsx';
-import { Assistant } from './components/Assistant.tsx';
+import { Rashifal } from './components/Rashifal.tsx';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [query, setQuery] = useState('');
   const { t, language } = useLanguage();
-  const { theme, toggleTheme } = useTheme();
   const { user, signIn, signOut } = useAuth();
   const searchRef = useRef<HTMLDivElement>(null);
 
@@ -93,7 +86,7 @@ const Navbar = () => {
   }) : [];
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 bg-paper/60 dark:bg-dark-bg/60 backdrop-blur-xl border-b border-gold/10 dark:border-white/5 transition-all duration-300">
+    <nav className="fixed top-0 left-0 w-full z-50 bg-paper/60 backdrop-blur-xl border-b border-gold/10 transition-all duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20 md:h-24">
           <div className="flex items-center gap-3 group cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
@@ -101,7 +94,7 @@ const Navbar = () => {
               🕉️
             </div>
             <div className="hidden sm:block leading-tight">
-              <h1 className="font-serif font-bold text-maroon dark:text-gold tracking-tight text-lg">श्री नर नारायण</h1>
+              <h1 className="font-serif font-bold text-maroon tracking-tight text-lg">श्री नर नारायण</h1>
               <p className="text-[10px] sm:text-xs text-saffron uppercase font-extrabold tracking-[0.2em] opacity-90">धार्मिक सेवा</p>
             </div>
           </div>
@@ -123,7 +116,7 @@ const Navbar = () => {
                     initial={{ opacity: 0, scale: 0.95, y: 10 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95, y: 10 }}
-                    className="absolute right-0 mt-2 w-80 bg-white dark:bg-dark-surface rounded-2xl shadow-2xl border border-maroon/10 dark:border-white/10 p-4 overflow-hidden"
+                    className="absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-2xl border border-maroon/10 p-4 overflow-hidden"
                   >
                     <div className="relative">
                       <input 
@@ -132,7 +125,7 @@ const Navbar = () => {
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
                         placeholder={(t.search as any).placeholder}
-                        className="w-full bg-paper dark:bg-dark-bg pl-10 pr-4 py-2.5 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-maroon/20 text-maroon dark:text-cream"
+                        className="w-full bg-paper pl-10 pr-4 py-2.5 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-maroon/20 text-maroon"
                       />
                       <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-maroon/40" />
                     </div>
@@ -150,10 +143,10 @@ const Navbar = () => {
                                   setIsSearchOpen(false);
                                   setQuery('');
                                 }}
-                                className="flex flex-col p-3 hover:bg-saffron/5 dark:hover:bg-saffron/10 rounded-xl transition-colors group"
+                                className="flex flex-col p-3 hover:bg-saffron/5 rounded-xl transition-colors group"
                               >
-                                <span className="text-sm font-bold text-maroon dark:text-gold group-hover:text-saffron transition-colors">{st?.name || s.name}</span>
-                                <span className="text-[10px] text-gray-400 dark:text-gray-500 line-clamp-1">{st?.desc || s.description}</span>
+                                <span className="text-sm font-bold text-maroon group-hover:text-saffron transition-colors">{st?.name || s.name}</span>
+                                <span className="text-[10px] text-gray-400 line-clamp-1">{st?.desc || s.description}</span>
                               </a>
                             );
                           })
@@ -169,45 +162,15 @@ const Navbar = () => {
               </AnimatePresence>
             </div>
 
-            <a href="/#services" className="text-sm font-bold text-maroon dark:text-cream hover:text-saffron transition-colors">{t.nav.services}</a>
-            <a href="https://www.drikpanchang.com/panchang/day-panchang.html" target="_blank" rel="noopener noreferrer" className="text-sm font-bold text-maroon dark:text-cream hover:text-saffron transition-colors">{(t.nav as any).panchang}</a>
-            <Link to="/library" className="text-sm font-bold text-maroon dark:text-cream hover:text-saffron transition-colors">{(t.nav as any).library}</Link>
-            <a href="/#about" className="text-sm font-bold text-maroon dark:text-cream hover:text-saffron transition-colors">{t.nav.about}</a>
-            <a href="/#faq" className="text-sm font-bold text-maroon dark:text-cream hover:text-saffron transition-colors">{t.nav.faq}</a>
+            <a href="/#services" className="text-sm font-bold text-maroon hover:text-saffron transition-colors">{t.nav.services}</a>
+            <Link to="/library" className="text-sm font-bold text-maroon hover:text-saffron transition-colors">{(t.nav as any).library}</Link>
+            <a href="/#about" className="text-sm font-bold text-maroon hover:text-saffron transition-colors">{t.nav.about}</a>
+            <a href="/#faq" className="text-sm font-bold text-maroon hover:text-saffron transition-colors">{t.nav.faq}</a>
             {user && (
-              <Link to="/dashboard" className="text-sm font-bold text-maroon dark:text-cream hover:text-saffron transition-colors">
+              <Link to="/dashboard" className="text-sm font-bold text-maroon hover:text-saffron transition-colors">
                 {(t.nav as any).dashboard}
               </Link>
             )}
-
-            <button
-              onClick={toggleTheme}
-              className="p-2 rounded-xl bg-maroon/5 dark:bg-maroon/20 text-maroon dark:text-saffron hover:bg-maroon/10 transition-all active:scale-90"
-              title="Toggle Theme"
-            >
-              <AnimatePresence mode="wait">
-                {theme === 'light' ? (
-                  <motion.div
-                    key="moon"
-                    initial={{ scale: 0, rotate: -90 }}
-                    animate={{ scale: 1, rotate: 0 }}
-                    exit={{ scale: 0, rotate: 90 }}
-                  >
-                    <Moon className="w-5 h-5" />
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="sun"
-                    initial={{ scale: 0, rotate: -90 }}
-                    animate={{ scale: 1, rotate: 0 }}
-                    exit={{ scale: 0, rotate: 90 }}
-                  >
-                    <Sun className="w-5 h-5" />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </button>
-
             <LanguageSwitcher />
             
             {user ? (
@@ -270,7 +233,7 @@ const Navbar = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="md:hidden absolute top-20 left-0 w-full bg-white dark:bg-dark-bg border-b border-gold/20 dark:border-white/10 p-4 shadow-xl z-50 transition-colors"
+            className="md:hidden absolute top-20 left-0 w-full bg-white border-b border-gold/20 p-4 shadow-xl z-50"
           >
             <div className="relative">
               <input 
@@ -279,7 +242,7 @@ const Navbar = () => {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder={(t.search as any).placeholder}
-                className="w-full bg-paper dark:bg-dark-surface pl-12 pr-4 py-3 rounded-2xl text-base focus:outline-none focus:ring-2 focus:ring-maroon/10 dark:focus:ring-maroon/30 text-maroon dark:text-cream"
+                className="w-full bg-paper pl-12 pr-4 py-3 rounded-2xl text-base focus:outline-none focus:ring-2 focus:ring-maroon/10 text-maroon"
               />
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-maroon/40" />
               <button 
@@ -342,7 +305,6 @@ const Navbar = () => {
             <div className="px-4 pt-2 pb-6 space-y-4 text-maroon">
               <Link to="/" onClick={() => setIsOpen(false)} className="block text-lg font-bold">{t.nav.home}</Link>
               <a href="/#services" onClick={() => setIsOpen(false)} className="block text-lg font-bold">{t.nav.services}</a>
-              <a href="https://www.drikpanchang.com/panchang/day-panchang.html" target="_blank" rel="noopener noreferrer" onClick={() => setIsOpen(false)} className="block text-lg font-bold">{(t.nav as any).panchang}</a>
               <Link to="/library" onClick={() => setIsOpen(false)} className="block text-lg font-bold">{(t.nav as any).library}</Link>
               <a href="/#about" onClick={() => setIsOpen(false)} className="block text-lg font-bold">{t.nav.about}</a>
               <a href="/#faq" onClick={() => setIsOpen(false)} className="block text-lg font-bold">{t.nav.faq}</a>
@@ -353,24 +315,6 @@ const Navbar = () => {
               )}
               
               <div className="py-2 flex items-center justify-between border-t border-gold/5 pt-6">
-                <div className="flex items-center gap-4">
-                  <button
-                    onClick={toggleTheme}
-                    className="p-3 rounded-2xl bg-maroon/5 dark:bg-maroon/20 text-maroon dark:text-saffron shadow-sm flex items-center gap-3 transition-all"
-                  >
-                    {theme === 'light' ? (
-                      <>
-                        <Moon className="w-5 h-5" />
-                        <span className="text-sm font-bold uppercase tracking-widest">Dark Mode</span>
-                      </>
-                    ) : (
-                      <>
-                        <Sun className="w-5 h-5" />
-                        <span className="text-sm font-bold uppercase tracking-widest">Light Mode</span>
-                      </>
-                    )}
-                  </button>
-                </div>
                 {user ? (
                   <div className="flex items-center gap-3">
                     {user.photoURL ? (
@@ -1396,7 +1340,6 @@ const PathSection = () => {
 
 const JyotishDetailSection = () => {
   const { t } = useLanguage();
-  const [preSelectedSign, setPreSelectedSign] = useState<SignKey | null>(null);
   return (
     <motion.section 
       id="jyotish-details" 
@@ -1441,20 +1384,6 @@ const JyotishDetailSection = () => {
                 'रत्न र मन्त्र सम्बन्धी सल्लाह',
                 'विशेष ग्रह हवन र पूजा'
               ]
-            },
-            { 
-              id: 'daily-panchang', 
-              image: 'https://images.unsplash.com/photo-1510074377623-8cf13fb86c08?auto=format&fit=crop&q=80&w=400',
-              icon: '📅',
-              title: "दैनिक हिन्दू पञ्चाङ्ग (Daily Hindu Panchang)",
-              desc: "आजको तिथि, नक्षत्र, योग र करण सहितको विस्तृत विववरण।",
-              isPanchang: true,
-              details: [
-                'शुभ र अशुभ समय (मुहूर्त)',
-                'सूर्योदय र सूर्यास्त समय',
-                'चन्द्रोदय र चन्द्रास्त समय',
-                'दैनिक पञ्चाङ्ग र विदाहरू'
-              ]
             }
           ].map((item, idx) => {
             const serviceData = SERVICES.find(s => s.id === item.id);
@@ -1495,27 +1424,6 @@ const JyotishDetailSection = () => {
                       </div>
                     ))}
                   </div>
-                  <div className="mt-10 flex justify-center md:justify-start">
-                    {(item as any).isPanchang ? (
-                      <a 
-                        href="https://www.drikpanchang.com/panchang/day-panchang.html"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-3 px-8 py-4 bg-gold text-maroon rounded-2xl font-bold uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-xl shadow-gold/20"
-                      >
-                        <ExternalLink className="w-5 h-5" />
-                        <span>आजको पञ्चाङ्ग हेर्नुहोस्</span>
-                      </a>
-                    ) : (
-                      <a 
-                        href="#booking"
-                        className="flex items-center gap-3 px-8 py-4 bg-gold text-maroon rounded-2xl font-bold uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-xl shadow-gold/20"
-                      >
-                        <Sparkles className="w-5 h-5" />
-                        <span>{t.services.bookNow}</span>
-                      </a>
-                    )}
-                  </div>
                 </div>
               </div>
             </motion.div>
@@ -1524,37 +1432,7 @@ const JyotishDetailSection = () => {
         </div>
         
         <div className="mt-20">
-          <div className="text-center mb-12">
-            <h3 className="text-2xl font-bold font-serif text-gold mb-2">दैनिक राशिफल</h3>
-            <p className="text-cream/60 text-sm">आफ्नो राशी अनुसार आजको भाग्य जान्नुहोस्</p>
-          </div>
-          
-          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-12 gap-3 mb-12">
-            {(Object.keys(t.rashifal.signs) as any[]).map((signKey) => (
-              <motion.button
-                key={signKey}
-                whileHover={{ scale: 1.05, y: -5 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => {
-                  const el = document.getElementById('rashifal-display');
-                  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                  setPreSelectedSign(signKey);
-                }}
-                className="flex flex-col items-center gap-2 p-4 bg-white/5 border border-gold/10 rounded-2xl hover:border-gold/40 hover:bg-white/10 transition-all group"
-              >
-                <div className="w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center text-gold group-hover:bg-gold group-hover:text-maroon transition-colors">
-                  <Star className="w-5 h-5" />
-                </div>
-                <span className="text-[10px] font-bold text-cream/80 uppercase tracking-tighter">
-                  {t.rashifal.signs[signKey].name}
-                </span>
-              </motion.button>
-            ))}
-          </div>
-
-          <div id="rashifal-display">
-            <Rashifal preSelectedSign={preSelectedSign} />
-          </div>
+          <Rashifal />
         </div>
       </div>
     </motion.section>
@@ -2149,8 +2027,8 @@ export default function App() {
                 </ul>
               </div>
               <div>
-                <h4 className="font-bold text-maroon mb-6 text-sm uppercase tracking-widest">हाम्रोबारे</h4>
-                <p className="text-xs text-gray-500 mb-4">हामी भक्तहरूको सेवामा सदैव समर्पित छौं।</p>
+                <h4 className="font-bold text-maroon mb-6 text-sm uppercase tracking-widest">{t.footer.infoTitle}</h4>
+                <p className="text-xs text-gray-500 mb-4">{t.footer.infoDesc}</p>
               </div>
             </div>
             <div className="pt-8 border-t border-gold/10 flex flex-col md:flex-row justify-between items-center gap-4">
@@ -2165,7 +2043,6 @@ export default function App() {
           onBookNow={handleBookNow}
         />
         <ChatWidget />
-        <Assistant />
         <CallActionButton />
       </div>
     </BrowserRouter>

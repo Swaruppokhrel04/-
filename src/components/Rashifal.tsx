@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Sparkles, 
@@ -12,14 +12,12 @@ import {
   Droplets,
   Wind,
   Flame,
-  Search,
-  Loader2
+  Search
 } from 'lucide-react';
 import { useLanguage } from '../LanguageContext';
 import { cn } from '../lib/utils';
-import { GoogleGenAI, Type } from "@google/genai";
 
-export type SignKey = 'aries' | 'taurus' | 'gemini' | 'cancer' | 'leo' | 'virgo' | 'libra' | 'scorpio' | 'sagittarius' | 'capricorn' | 'aquarius' | 'pisces';
+type SignKey = 'aries' | 'taurus' | 'gemini' | 'cancer' | 'leo' | 'virgo' | 'libra' | 'scorpio' | 'sagittarius' | 'capricorn' | 'aquarius' | 'pisces';
 
 interface Prediction {
   general: string;
@@ -30,10 +28,8 @@ interface Prediction {
   luckyColor: string;
 }
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-
-// Simple deterministic prediction generator as fallback
-const getDeterministicPredictions = (sign: SignKey, date: Date, lang: string): Prediction => {
+// Simple deterministic prediction generator based on date and sign
+const getPredictions = (sign: SignKey, date: Date, lang: string): Prediction => {
   const dayOfYear = Math.floor((date.getTime() - new Date(date.getFullYear(), 0, 0).getTime()) / 86400000);
   const seed = dayOfYear + sign.length;
   
@@ -138,69 +134,17 @@ const ElementIcon = ({ element }: { element: string }) => {
   }
 };
 
-export const Rashifal = ({ preSelectedSign }: { preSelectedSign?: SignKey | null }) => {
+export const Rashifal = () => {
   const { t, language } = useLanguage();
-  const [selectedSign, setSelectedSign] = useState<SignKey | null>(preSelectedSign || null);
+  const [selectedSign, setSelectedSign] = useState<SignKey | null>(null);
   const [prediction, setPrediction] = useState<Prediction | null>(null);
-  const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
-    if (preSelectedSign) {
-      setSelectedSign(preSelectedSign);
-    }
-  }, [preSelectedSign]);
-
-  const fetchHoroscope = useCallback(async (sign: SignKey) => {
-    setLoading(true);
-    try {
-      const prompt = `Generate a daily horoscope for the zodiac sign ${sign} for today ${new Date().toDateString()} in ${language === 'ne' ? 'Nepali' : language === 'hi' ? 'Hindi' : 'English'}. 
-      Include:
-      1. General outlook
-      2. Love & Relationships
-      3. Career & Money
-      4. Health & Wellness
-      5. Lucky Number (1-9)
-      6. Lucky Color
-      
-      Return the response in JSON format.`;
-
-      const response = await ai.models.generateContent({
-        model: "gemini-3-flash-preview",
-        contents: prompt,
-        config: {
-          responseMimeType: "application/json",
-          responseSchema: {
-            type: Type.OBJECT,
-            properties: {
-              general: { type: Type.STRING },
-              love: { type: Type.STRING },
-              career: { type: Type.STRING },
-              health: { type: Type.STRING },
-              luckyNumber: { type: Type.INTEGER },
-              luckyColor: { type: Type.STRING },
-            },
-            required: ["general", "love", "career", "health", "luckyNumber", "luckyColor"],
-          },
-        },
-      });
-
-      const data = JSON.parse(response.text);
-      setPrediction(data);
-    } catch (error) {
-      console.error("Gemini failed:", error);
-      // Fallback to deterministic
-      setPrediction(getDeterministicPredictions(sign, new Date(), language));
-    } finally {
-      setLoading(false);
-    }
-  }, [language]);
-
-  useEffect(() => {
     if (selectedSign) {
-      fetchHoroscope(selectedSign);
+      setPrediction(getPredictions(selectedSign, new Date(), language));
     }
-  }, [selectedSign, fetchHoroscope]);
+  }, [selectedSign, language]);
 
   const signsList = Object.keys(t.rashifal.signs) as SignKey[];
   const filteredSigns = signsList.filter(sign => 
@@ -208,18 +152,18 @@ export const Rashifal = ({ preSelectedSign }: { preSelectedSign?: SignKey | null
   );
 
   return (
-    <section className="bg-paper dark:bg-dark-surface rounded-[3rem] p-8 md:p-12 shadow-inner border border-maroon/5 dark:border-white/5 transition-colors">
+    <section className="bg-paper rounded-[3rem] p-8 md:p-12 shadow-inner border border-maroon/5">
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-col md:flex-row items-end justify-between gap-8 mb-12">
           <div className="flex-1">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-maroon/10 dark:bg-maroon/20 rounded-full text-maroon dark:text-saffron mb-4">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-maroon/10 rounded-full text-maroon mb-4">
               <Sparkles className="w-4 h-4" />
               <span className="text-xs font-bold uppercase tracking-widest">{t.rashifal.title}</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-serif font-bold text-maroon dark:text-gold mb-4">
+            <h2 className="text-4xl md:text-5xl font-serif font-bold text-maroon mb-4">
               {t.rashifal.title}
             </h2>
-            <p className="text-gray-500 dark:text-gray-400 max-w-xl">
+            <p className="text-gray-500 max-w-xl">
               {t.rashifal.subtitle}
             </p>
           </div>
@@ -232,7 +176,7 @@ export const Rashifal = ({ preSelectedSign }: { preSelectedSign?: SignKey | null
                 placeholder={t.rashifal.selectSign}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-4 bg-white dark:bg-dark-bg rounded-2xl border border-gold/10 dark:border-white/5 focus:border-maroon dark:focus:border-saffron focus:ring-1 focus:ring-maroon dark:focus:ring-saffron outline-none transition-all shadow-sm font-bold text-sm text-maroon dark:text-cream"
+                className="w-full pl-12 pr-4 py-4 bg-white rounded-2xl border border-gold/10 focus:border-maroon focus:ring-1 focus:ring-maroon outline-none transition-all shadow-sm font-bold text-sm"
               />
             </div>
           </div>
@@ -247,14 +191,14 @@ export const Rashifal = ({ preSelectedSign }: { preSelectedSign?: SignKey | null
                 "group flex flex-col items-center gap-2 p-3 rounded-2xl transition-all duration-300",
                 selectedSign === sign 
                   ? "bg-maroon text-cream shadow-xl shadow-maroon/20 scale-105" 
-                  : "bg-white dark:bg-dark-bg hover:bg-maroon/5 dark:hover:bg-maroon/20 text-maroon dark:text-gold border border-maroon/5 dark:border-white/5"
+                  : "bg-white hover:bg-maroon/5 text-maroon border border-maroon/5"
               )}
             >
               <div className={cn(
                 "w-10 h-10 rounded-xl flex items-center justify-center transition-colors",
-                selectedSign === sign ? "bg-white/20" : "bg-paper dark:bg-dark-surface group-hover:bg-maroon/10"
+                selectedSign === sign ? "bg-white/20" : "bg-paper group-hover:bg-maroon/10"
               )}>
-                <Star className={cn("w-5 h-5", selectedSign === sign ? "text-gold" : "text-maroon/40 dark:text-gold/20")} />
+                <Star className={cn("w-5 h-5", selectedSign === sign ? "text-gold" : "text-maroon/40")} />
               </div>
               <span className="text-[10px] font-bold uppercase tracking-tight truncate w-full text-center">
                 {t.rashifal.signs[sign].name}
@@ -264,18 +208,7 @@ export const Rashifal = ({ preSelectedSign }: { preSelectedSign?: SignKey | null
         </div>
 
         <AnimatePresence mode="wait">
-          {loading ? (
-            <motion.div
-              key="loader"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="flex flex-col items-center justify-center py-20 bg-white dark:bg-dark-bg rounded-[2rem] border border-gold/10"
-            >
-              <Loader2 className="w-12 h-12 text-maroon animate-spin mb-4" />
-              <p className="text-maroon dark:text-gold font-serif text-lg italic">अन्वेषण गरिँदै... Reading the stars...</p>
-            </motion.div>
-          ) : selectedSign && prediction ? (
+          {selectedSign && prediction ? (
             <motion.div
               key={selectedSign}
               initial={{ opacity: 0, y: 20 }}
@@ -284,8 +217,8 @@ export const Rashifal = ({ preSelectedSign }: { preSelectedSign?: SignKey | null
               className="grid md:grid-cols-3 gap-6"
             >
               <div className="md:col-span-1 space-y-6">
-                <div className="bg-white dark:bg-dark-bg p-8 rounded-[2rem] shadow-xl border border-gold/10 dark:border-white/5 relative overflow-hidden">
-                  <div className="absolute top-0 right-0 p-4 opacity-5 dark:opacity-10">
+                <div className="bg-white p-8 rounded-[2rem] shadow-xl border border-gold/10 relative overflow-hidden">
+                  <div className="absolute top-0 right-0 p-4 opacity-5">
                     <Star className="w-32 h-32" />
                   </div>
                   <div className="relative z-10">
@@ -294,10 +227,10 @@ export const Rashifal = ({ preSelectedSign }: { preSelectedSign?: SignKey | null
                         <Star className="w-6 h-6" />
                       </div>
                       <div>
-                        <h3 className="text-2xl font-serif font-bold text-maroon dark:text-gold">
+                        <h3 className="text-2xl font-serif font-bold text-maroon">
                           {t.rashifal.signs[selectedSign].name}
                         </h3>
-                        <div className="flex items-center gap-1 opacity-60 dark:text-gray-300">
+                        <div className="flex items-center gap-1 opacity-60">
                           <ElementIcon element={t.rashifal.signs[selectedSign].element} />
                           <span className="text-[10px] font-bold uppercase tracking-widest">{t.rashifal.signs[selectedSign].element}</span>
                         </div>
@@ -305,13 +238,13 @@ export const Rashifal = ({ preSelectedSign }: { preSelectedSign?: SignKey | null
                     </div>
 
                     <div className="space-y-4">
-                      <div className="p-4 bg-paper dark:bg-dark-surface rounded-2xl flex items-center justify-between transition-colors">
-                        <span className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">{t.rashifal.categories.luckyNumber}</span>
-                        <span className="text-xl font-black text-maroon dark:text-saffron">{prediction.luckyNumber}</span>
+                      <div className="p-4 bg-paper rounded-2xl flex items-center justify-between">
+                        <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">{t.rashifal.categories.luckyNumber}</span>
+                        <span className="text-xl font-black text-maroon">{prediction.luckyNumber}</span>
                       </div>
-                      <div className="p-4 bg-paper dark:bg-dark-surface rounded-2xl flex items-center justify-between transition-colors">
-                        <span className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">{t.rashifal.categories.luckyColor}</span>
-                        <span className="font-bold text-maroon dark:text-saffron">{prediction.luckyColor}</span>
+                      <div className="p-4 bg-paper rounded-2xl flex items-center justify-between">
+                        <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">{t.rashifal.categories.luckyColor}</span>
+                        <span className="font-bold text-maroon">{prediction.luckyColor}</span>
                       </div>
                     </div>
                   </div>
@@ -332,50 +265,50 @@ export const Rashifal = ({ preSelectedSign }: { preSelectedSign?: SignKey | null
               </div>
 
               <div className="md:col-span-2 grid sm:grid-cols-2 gap-4">
-                <div className="bg-white dark:bg-dark-bg p-6 rounded-[2rem] border border-gold/10 dark:border-white/5 hover:shadow-lg dark:hover:shadow-black/50 transition-all">
+                <div className="bg-white p-6 rounded-[2rem] border border-gold/10 hover:shadow-lg transition-shadow">
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="w-10 h-10 bg-maroon/5 dark:bg-maroon/20 rounded-xl flex items-center justify-center text-maroon dark:text-saffron">
+                    <div className="w-10 h-10 bg-maroon/5 rounded-xl flex items-center justify-center text-maroon">
                       <Zap className="w-5 h-5" />
                     </div>
-                    <h4 className="font-bold text-maroon dark:text-gold">{t.rashifal.categories.general}</h4>
+                    <h4 className="font-bold text-maroon">{t.rashifal.categories.general}</h4>
                   </div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed font-medium">
+                  <p className="text-sm text-gray-600 leading-relaxed font-medium">
                     {prediction.general}
                   </p>
                 </div>
 
-                <div className="bg-white dark:bg-dark-bg p-6 rounded-[2rem] border border-gold/10 dark:border-white/5 hover:shadow-lg dark:hover:shadow-black/50 transition-all">
+                <div className="bg-white p-6 rounded-[2rem] border border-gold/10 hover:shadow-lg transition-shadow">
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="w-10 h-10 bg-red-50 dark:bg-red-500/10 rounded-xl flex items-center justify-center text-red-500">
+                    <div className="w-10 h-10 bg-red-50 rounded-xl flex items-center justify-center text-red-500">
                       <Heart className="w-5 h-5" />
                     </div>
-                    <h4 className="font-bold text-maroon dark:text-gold">{t.rashifal.categories.love}</h4>
+                    <h4 className="font-bold text-maroon">{t.rashifal.categories.love}</h4>
                   </div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed font-medium">
+                  <p className="text-sm text-gray-600 leading-relaxed font-medium">
                     {prediction.love}
                   </p>
                 </div>
 
-                <div className="bg-white dark:bg-dark-bg p-6 rounded-[2rem] border border-gold/10 dark:border-white/5 hover:shadow-lg dark:hover:shadow-black/50 transition-all">
+                <div className="bg-white p-6 rounded-[2rem] border border-gold/10 hover:shadow-lg transition-shadow">
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="w-10 h-10 bg-blue-50 dark:bg-blue-500/10 rounded-xl flex items-center justify-center text-blue-500">
+                    <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center text-blue-500">
                       <Briefcase className="w-5 h-5" />
                     </div>
-                    <h4 className="font-bold text-maroon dark:text-gold">{t.rashifal.categories.career}</h4>
+                    <h4 className="font-bold text-maroon">{t.rashifal.categories.career}</h4>
                   </div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed font-medium">
+                  <p className="text-sm text-gray-600 leading-relaxed font-medium">
                     {prediction.career}
                   </p>
                 </div>
 
-                <div className="bg-white dark:bg-dark-bg p-6 rounded-[2rem] border border-gold/10 dark:border-white/5 hover:shadow-lg dark:hover:shadow-black/50 transition-all">
+                <div className="bg-white p-6 rounded-[2rem] border border-gold/10 hover:shadow-lg transition-shadow">
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="w-10 h-10 bg-emerald-50 dark:bg-emerald-500/10 rounded-xl flex items-center justify-center text-emerald-500">
+                    <div className="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-500">
                       <Activity className="w-5 h-5" />
                     </div>
-                    <h4 className="font-bold text-maroon dark:text-gold">{t.rashifal.categories.health}</h4>
+                    <h4 className="font-bold text-maroon">{t.rashifal.categories.health}</h4>
                   </div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed font-medium">
+                  <p className="text-sm text-gray-600 leading-relaxed font-medium">
                     {prediction.health}
                   </p>
                 </div>
@@ -385,13 +318,13 @@ export const Rashifal = ({ preSelectedSign }: { preSelectedSign?: SignKey | null
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="bg-white dark:bg-dark-bg py-20 rounded-[2rem] border border-dashed border-gold/30 dark:border-gold/10 text-center transition-colors"
+              className="bg-white py-20 rounded-[2rem] border border-dashed border-gold/30 text-center"
             >
-              <div className="w-20 h-20 bg-paper dark:bg-dark-surface rounded-full flex items-center justify-center mx-auto mb-6 text-gold dark:text-gold/20">
+              <div className="w-20 h-20 bg-paper rounded-full flex items-center justify-center mx-auto mb-6 text-gold">
                 <Search className="w-10 h-10" />
               </div>
-              <h3 className="text-xl font-serif font-bold text-maroon dark:text-gold mb-2">{t.rashifal.selectSign}</h3>
-              <p className="text-gray-400 dark:text-gray-600 text-sm">{t.rashifal.subtitle}</p>
+              <h3 className="text-xl font-serif font-bold text-maroon mb-2">{t.rashifal.selectSign}</h3>
+              <p className="text-gray-400 text-sm">{t.rashifal.subtitle}</p>
             </motion.div>
           )}
         </AnimatePresence>

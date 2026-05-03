@@ -12,7 +12,6 @@ export const i18n = {
       login: 'लगिन',
       logout: 'लगआउट',
       dashboard: 'ड्यासबोर्ड',
-      panchang: 'पञ्चाङ्ग',
       book: 'बुक गर्नुहोस्'
     },
     dashboard: {
@@ -32,7 +31,25 @@ export const i18n = {
       updateProfile: 'प्रोफाइल अपडेट गर्नुहोस्',
       displayName: 'नाम',
       saveChanges: 'परिवर्तन सुरक्षित गर्नुहोस्',
-      exportCalendar: 'क्यालेन्डरमा थप्नुहोस्'
+      exportCalendar: 'क्यालेन्डरमा थप्नुहोस्',
+      accessDenied: 'पहुँच अस्वीकृत',
+      loginRequired: 'कृपया आफ्नो डैशबोर्ड हेर्न लगइन गर्नुहोस्।',
+      ritualsFound: 'सक्रिय अनुष्ठानहरू फेला पर्यो',
+      loadingSchedule: 'दिव्य तालिकाहरू लोड हुँदैछ...',
+      noBookingsTitle: 'अझै कुनै बुकिंग छैन',
+      noBookingsDesc: 'तपाइँको पहिलो बुकिंगबाट दिव्य यात्रा सुरु हुनेछ।',
+      completedVia: 'वैदिक अनुष्ठान मार्फत सम्पन्न',
+      manageProfile: 'आफ्नो आध्यात्मिक उपस्थिति व्यवस्थापन गर्नुहोस्',
+      sacredIdentity: 'पवित्र पहिचान',
+      profileImageDesc: 'प्रोफाइल तस्विरले पंडितजीलाई चिन्न सजिलो बनाउँछ।',
+      removeImage: 'तस्विर हटाउनुहोस्',
+      contactEssence: 'सम्पर्क विवरण',
+      updateSuccess: 'प्रोफाइल सफलतापूर्वक अपडेट भयो',
+      memberSince: 'सदस्यता मिति',
+      totalRituals: 'कुल अनुष्ठान',
+      lastBlessing: 'अन्तिम आशीर्वाद',
+      needAssistant: 'सहयोग चाहियो?',
+      connectPandit: 'पण्डितजीसँग सम्पर्क गर्नुहोस्'
     },
     hero: {
       tag: 'ॐ नमो भगवते वासुदेवाय',
@@ -257,7 +274,13 @@ export const i18n = {
       welcome: 'प्रणाम !',
       subtitle: 'तपाईँको आध्यात्मिक यात्रामा हामी कसरी सहयोग गर्न सक्छौँ?',
       placeholder: 'सन्देश लेख्वुहोस्...',
-      supportName: 'सहयोग डेस्क'
+      supportName: 'सहयोग डेस्क',
+      aiAssistant: 'एआई सहायक',
+      onlineAi: 'अनलाइन एआई',
+      chatWelcome: 'नमस्कार! म श्री नर नारायणको एआई सहायक हुँ। म तपाईंलाई कसरी मद्दत गर्न सक्छु?',
+      chatDesc: 'पूजा, अनुष्ठान, शुभ समय वा ज्योतिषको बारेमा सोध्नुहोस्',
+      errConnection: 'प्रणाम। मलाई सेवामा जडान हुन केही समस्या भइरहेको छ। कृपया पछि फेरि प्रयास गर्नुहोस्।',
+      errReply: 'प्रणाम। म अहिले जवाफ दिन असमर्थ छु।'
     },
     search: {
       placeholder: 'सेवाहरू खोज्नुहोस्...',
@@ -291,12 +314,11 @@ export const i18n = {
       search: 'पुस्तक खोज्नुहोस्...',
       noBooks: 'नतिजा फेला परेन',
       viewPanchang: 'विस्तृत पञ्चाङ्ग हेर्नुहोस्',
-      assistant: {
-        title: 'सहयोगी',
-        placeholder: 'तपाईंको सन्देश लेख्नुहोस्...',
-        welcome: 'नमस्ते! म तपाईंको आध्यात्मिक सहयोगी हुँ। आज म तपाईंलाई कसरी मद्दत गर्न सक्छु?',
-        loading: 'सोच्दै...'
-      }
+      sacredMeaning: 'पवित्र अर्थ',
+      audio: 'ध्वनि',
+      by: 'द्वारा:',
+      noBooksDesc: 'शायद यो मौखिक परम्परामा अवस्थित छ।',
+      endOfPath: 'पाठको अन्त्य'
     },
     rashifal: {
       title: 'दैनिक राशिफल',
@@ -325,6 +347,33 @@ export const i18n = {
         luckyNumber: 'शुभ अंक',
         luckyColor: 'शुभ रङ'
       }
+    },
+    calendar: {
+      highlights: 'शुभ मुहूर्त',
+      highlyAuspicious: 'अत्यधिक शुभ',
+      auspicious: 'शुभ',
+      tithi: 'तिथि',
+      year: 'वर्ष',
+      selectSlot: 'शुभ मुहूर्त समय चयन गर्नुहोस्',
+      bookNote: 'अधिकतम आशीर्वादको लागि अत्यधिक शुभ समयमा पूजा बुक गर्नुहोस्',
+      viewPanchang: 'विस्तृत पंचांग हेर्नुहोस्',
+      weekDays: ['आइत', 'सोम', 'मङ्गल', 'बुध', 'बिही', 'शुक्र', 'शनि'],
+      slots: {
+        morning: 'ब्रह्म मुहूर्त (४ AM - ६ AM)',
+        'morning-2': 'प्रातः (८ AM - ११ AM)',
+        afternoon: 'मध्याह्न (१ PM - ३ PM)',
+        evening: 'सन्ध्या (५ PM - ७ PM)'
+      }
+    },
+    auspicious_dates: {
+      'Vaisakh Purnima': 'वैशाख पूर्णिमा',
+      'Akshaya Tritiya': 'अक्षय तृतीया',
+      'Ekadashi': 'एकादशी',
+      'Ganesh Chaturthi': 'गणेश चतुर्थी',
+      'Pradosh Vrat': 'प्रदोष व्रत',
+      'Purnima': 'पूर्णिमा',
+      'Ganga Dashahara': 'गंगा दशहारा',
+      'Nirjala Ekadashi': 'निर्जला एकादशी'
     }
   },
   hi: {
@@ -338,7 +387,6 @@ export const i18n = {
       login: 'लॉगिन',
       logout: 'लॉगआउट',
       dashboard: 'डैशबोर्ड',
-      panchang: 'पंचांग',
       book: 'बुक करें'
     },
     dashboard: {
@@ -358,7 +406,25 @@ export const i18n = {
       updateProfile: 'प्रोफ़ाइल अपडेट करें',
       displayName: 'नाम',
       saveChanges: 'परिवर्तन सहेजें',
-      exportCalendar: 'कैलेंडर में जोड़ें'
+      exportCalendar: 'कैलेंडर में जोड़ें',
+      accessDenied: 'पहुँच अस्वीकृत',
+      loginRequired: 'कृपया अपना डैशबोर्ड देखने के लिए लॉगिन करें।',
+      ritualsFound: 'सक्रिय अनुष्ठान मिले',
+      loadingSchedule: 'दिव्य कार्यक्रम लोड हो रहा है...',
+      noBookingsTitle: 'अभी कोई बुकिंग नहीं है',
+      noBookingsDesc: 'आपकी दिव्य यात्रा पहली बुकिंग के साथ शुरू होगी।',
+      completedVia: 'वैदिक अनुष्ठान के माध्यम से संपन्न',
+      manageProfile: 'अपनी आध्यात्मिक उपस्थिति व्यवस्थित करें',
+      sacredIdentity: 'पवित्र पहचान',
+      profileImageDesc: 'फोटो से पंडितजी को आपको पहचानने में आसानी होती है।',
+      removeImage: 'फोटो हटाएँ',
+      contactEssence: 'संपर्क विवरण',
+      updateSuccess: 'प्रोफ़ाइल सफलतापूर्वक अपडेट हो गई',
+      memberSince: 'सदस्यता तिथि',
+      totalRituals: 'कुल अनुष्ठान',
+      lastBlessing: 'अंतिम आशीर्वाद',
+      needAssistant: 'सहायता चाहिए?',
+      connectPandit: 'पंडितजी से संपर्क करें'
     },
     hero: {
       tag: 'ॐ नमो भगवते वासुदेवाय',
@@ -583,7 +649,13 @@ export const i18n = {
       welcome: 'प्रणाम !',
       subtitle: 'आपकी आध्यात्मिक यात्रा में हम कैसे सहायता कर सकते हैं?',
       placeholder: 'सन्देश लिखें...',
-      supportName: 'सहायता डेस्क'
+      supportName: 'सहायता डेस्क',
+      aiAssistant: 'एआई सहायक',
+      onlineAi: 'ऑनलाइन एआई',
+      chatWelcome: 'नमस्ते! मैं श्री नर नारायण का एआई सहायक हूं। मैं आपकी कैसे मदद कर सकता हूं?',
+      chatDesc: 'पूजा, अनुष्ठान, शुभ मुहूर्त या ज्योतिष के बारे में पूछें',
+      errConnection: 'प्रणाम। मुझे सेवा से जुड़ने में कुछ समस्या हो रही है। कृपया बाद में पुनः प्रयास करें।',
+      errReply: 'प्रणाम। मैं इस समय उत्तर देने में असमर्थ हूँ।'
     },
     search: {
       placeholder: 'सेवाएं खोजें...',
@@ -617,12 +689,11 @@ export const i18n = {
       search: 'पुस्तक खोजें...',
       noBooks: 'कोई परिणाम नहीं मिला',
       viewPanchang: 'विस्तृत पंचांग देखें',
-      assistant: {
-        title: 'सहायक',
-        placeholder: 'अपना संदेश लिखें...',
-        welcome: 'नमस्ते! मैं आपका आध्यात्मिक सहायक हूँ। आज मैं आपकी क्या मदद कर सकता हूँ?',
-        loading: 'सोच रहा हूँ...'
-      }
+      sacredMeaning: 'पवित्र अर्थ',
+      audio: 'ध्वनि',
+      by: 'द्वारा:',
+      noBooksDesc: 'शायद यह मौखिक परंपरा में मौजूद है।',
+      endOfPath: 'पाठ का अंत'
     },
     rashifal: {
       title: 'दैनिक राशिफल',
@@ -651,6 +722,33 @@ export const i18n = {
         luckyNumber: 'शुभ अंक',
         luckyColor: 'शुभ रंग'
       }
+    },
+    calendar: {
+      highlights: 'शुभ मुहूर्त',
+      highlyAuspicious: 'अत्यधिक शुभ',
+      auspicious: 'शुभ',
+      tithi: 'तिथि',
+      year: 'वर्ष',
+      selectSlot: 'शुभ मुहूर्त समय का चयन करें',
+      bookNote: 'अधिकतम आशीर्वाद के लिए अत्यधिक शुभ समय में पूजा बुक करें',
+      viewPanchang: 'विस्तृत पंचांग देखें',
+      weekDays: ['रवि', 'सोम', 'मंगल', 'बुध', 'गुरु', 'शुक्र', 'शनि'],
+      slots: {
+        morning: 'ब्रह्म मुहूर्त (४ AM - ६ AM)',
+        'morning-2': 'प्रातः (८ AM - ११ AM)',
+        afternoon: 'मध्याह्न (१ PM - ३ PM)',
+        evening: 'सन्ध्या (५ PM - ७ PM)'
+      }
+    },
+    auspicious_dates: {
+      'Vaisakh Purnima': 'वैशाख पूर्णिमा',
+      'Akshaya Tritiya': 'अक्षय तृतीया',
+      'Ekadashi': 'एकादशी',
+      'Ganesh Chaturthi': 'गणेश चतुर्थी',
+      'Pradosh Vrat': 'प्रदोष व्रत',
+      'Purnima': 'पूर्णिमा',
+      'Ganga Dashahara': 'गंगा दशहारा',
+      'Nirjala Ekadashi': 'निर्जला एकादशी'
     }
   },
   en: {
@@ -664,7 +762,6 @@ export const i18n = {
       login: 'Login',
       logout: 'Logout',
       dashboard: 'Dashboard',
-      panchang: 'Panchang',
       book: 'Book Now'
     },
     dashboard: {
@@ -684,7 +781,25 @@ export const i18n = {
       updateProfile: 'Update Profile',
       displayName: 'Name',
       saveChanges: 'Save Changes',
-      exportCalendar: 'Add to Calendar'
+      exportCalendar: 'Add to Calendar',
+      accessDenied: 'Access Denied',
+      loginRequired: 'Please login to view your dashboard.',
+      ritualsFound: 'active rituals found',
+      loadingSchedule: 'Loading Divine Schedule...',
+      noBookingsTitle: 'No bookings yet',
+      noBookingsDesc: 'Your divine journey begins with your first booking.',
+      completedVia: 'Completed via Vedic Rituals',
+      manageProfile: 'Manage your spiritual presence',
+      sacredIdentity: 'Sacred Identity',
+      profileImageDesc: 'A profile image helps our Pandits recognize you easily.',
+      removeImage: 'Remove Image',
+      contactEssence: 'Contact Details',
+      updateSuccess: 'Profile updated successfully',
+      memberSince: 'Member Since',
+      totalRituals: 'Total Rituals',
+      lastBlessing: 'Last Blessing',
+      needAssistant: 'Need Assistant?',
+      connectPandit: 'Connect with Pandit Ji'
     },
     hero: {
       tag: 'Om Namo Bhagavate Vasudevaya 🙏',
@@ -909,7 +1024,13 @@ export const i18n = {
       welcome: 'Pranam!',
       subtitle: 'How can we assist you in your spiritual journey today?',
       placeholder: 'Type your message...',
-      supportName: 'Support Desk'
+      supportName: 'Support Desk',
+      aiAssistant: 'AI Assistant',
+      onlineAi: 'Online AI',
+      chatWelcome: 'Namaste! I am the AI Assistant for Shri Nar Narayan. How can I help you today?',
+      chatDesc: 'Ask about Pujas, Rituals, Auspicious Dates, or Astrology',
+      errConnection: 'Pranam. I am having some trouble connecting to my service. Please try again later.',
+      errReply: 'Pranam. I am sorry, I am unable to reply at this moment.'
     },
     search: {
       placeholder: 'Search services...',
@@ -943,12 +1064,11 @@ export const i18n = {
       search: 'Search books...',
       noBooks: 'No books found',
       viewPanchang: 'View Detailed Panchang',
-      assistant: {
-        title: 'Assistant',
-        placeholder: 'Type your message...',
-        welcome: 'Namaste! I am your spiritual guide. How can I help you today?',
-        loading: 'Thinking...'
-      }
+      sacredMeaning: 'Sacred Meaning',
+      audio: 'Audio',
+      by: 'By',
+      noBooksDesc: 'Perhaps it exists in the oral tradition.',
+      endOfPath: 'End of Path'
     },
     rashifal: {
       title: 'Daily Horoscope',
@@ -977,6 +1097,33 @@ export const i18n = {
         luckyNumber: 'Lucky Number',
         luckyColor: 'Lucky Color'
       }
+    },
+    calendar: {
+      highlights: 'Auspicious Highlights',
+      highlyAuspicious: 'Highly Auspicious',
+      auspicious: 'Auspicious',
+      tithi: 'Tithi',
+      year: 'Year',
+      selectSlot: 'Select Auspicious Time Slot',
+      bookNote: 'Book Puja during Highly Auspicious times for maximum blessings',
+      viewPanchang: 'View Detailed Panchang',
+      weekDays: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+      slots: {
+        morning: 'Brahma Muhurat (4 AM - 6 AM)',
+        'morning-2': 'Pratah (8 AM - 11 AM)',
+        afternoon: 'Madhyahna (1 PM - 3 PM)',
+        evening: 'Sandhya (5 PM - 7 PM)'
+      }
+    },
+    auspicious_dates: {
+      'Vaisakh Purnima': 'Vaisakh Purnima',
+      'Akshaya Tritiya': 'Akshaya Tritiya',
+      'Ekadashi': 'Ekadashi',
+      'Ganesh Chaturthi': 'Ganesh Chaturthi',
+      'Pradosh Vrat': 'Pradosh Vrat',
+      'Purnima': 'Purnima',
+      'Ganga Dashahara': 'Ganga Dashahara',
+      'Nirjala Ekadashi': 'Nirjala Ekadashi'
     }
   }
 };

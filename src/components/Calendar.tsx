@@ -14,6 +14,7 @@ import {
   isBefore,
   startOfDay
 } from 'date-fns';
+import { hi, enUS } from 'date-fns/locale';
 import { ChevronLeft, ChevronRight, Info, Sparkles, ExternalLink } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { AUSPICIOUS_DATES } from '../constants';
@@ -42,6 +43,14 @@ const TIME_SLOTS = [
 
 export const CalendarView = ({ selectedDate, selectedTime, onDateSelect, onTimeSelect }: CalendarProps) => {
   const { language, t } = useLanguage();
+  const locale = language === 'hi' ? hi : enUS;
+
+  const AUSPICIOUS_COLORS: Record<string, string> = {
+    'Highly Auspicious': 'bg-saffron text-white',
+    'Auspicious': 'bg-gold/20 text-maroon border border-gold/50',
+    'Tithi': 'bg-maroon/10 text-maroon border border-maroon/20',
+  };
+
   const [currentMonth, setCurrentMonth] = useState(new Date(2026, 4)); // Default to May 2026
   const [hoveredDate, setHoveredDate] = useState<string | null>(null);
   const timeSlotsRef = useRef<HTMLDivElement>(null);
@@ -85,7 +94,7 @@ export const CalendarView = ({ selectedDate, selectedTime, onDateSelect, onTimeS
     end: endDate,
   });
 
-  const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const weekDays = t.calendar.weekDays;
 
   const upcomingAuspicious = Object.entries(AUSPICIOUS_DATES)
     .filter(([date]) => {
@@ -96,29 +105,15 @@ export const CalendarView = ({ selectedDate, selectedTime, onDateSelect, onTimeS
     .slice(0, 4);
 
   return (
-    <div className="bg-white dark:bg-dark-surface rounded-[2.5rem] shadow-2xl border border-gold/10 dark:border-white/5 overflow-hidden flex flex-col md:flex-row transition-colors">
+    <div className="bg-white rounded-[2.5rem] shadow-2xl border border-gold/10 overflow-hidden flex flex-col md:flex-row">
       {/* Sidebar for Auspicious Info */}
-      <div className="w-full md:w-64 bg-maroon/5 dark:bg-maroon/10 p-6 border-b md:border-b-0 md:border-r border-gold/10 dark:border-white/5">
-        <div className="flex items-center gap-2 text-maroon dark:text-gold mb-6">
+      <div className="w-full md:w-64 bg-maroon/5 p-6 border-b md:border-b-0 md:border-r border-gold/10">
+        <div className="flex items-center gap-2 text-maroon mb-6">
           <Info className="w-5 h-5 text-gold" />
-          <h4 className="font-bold uppercase tracking-widest text-[10px]">Auspicious Highlights</h4>
+          <h4 className="font-bold uppercase tracking-widest text-[10px]">{t.calendar.highlights}</h4>
         </div>
         
         <div className="space-y-4">
-          {/* Today's Panchang Link */}
-          <a 
-            href="https://www.drikpanchang.com/panchang/day-panchang.html"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex flex-col items-center justify-center p-4 bg-maroon rounded-2xl text-cream text-center shadow-lg shadow-maroon/20 group hover:scale-[1.02] transition-all border border-gold/30"
-          >
-            <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center mb-2 group-hover:rotate-12 transition-transform">
-              <ExternalLink className="w-5 h-5 text-gold" />
-            </div>
-            <p className="text-[10px] font-bold uppercase tracking-[0.1em]">आजको पञ्चाङ्ग</p>
-            <p className="text-xs font-bold text-gold">Daily Hindu Panchang</p>
-          </a>
-
           {upcomingAuspicious.map(([date, info]) => (
             <div 
               key={date}
@@ -126,14 +121,16 @@ export const CalendarView = ({ selectedDate, selectedTime, onDateSelect, onTimeS
               className="group cursor-pointer p-3 bg-white rounded-xl border border-gold/5 hover:border-gold/30 hover:shadow-md transition-all"
             >
               <p className="text-[10px] font-bold text-gold uppercase tracking-tighter mb-1">
-                {format(new Date(date), 'MMM d, EEE')}
+                {format(new Date(date), 'MMM d, EEE', { locale })}
               </p>
               <h5 className="text-xs font-bold text-maroon truncate group-hover:text-saffron transition-colors">
-                {info.label}
+                {(t.auspicious_dates as any)[info.label] || info.label}
               </h5>
               <div className="flex items-center gap-1 mt-1">
                 <div className={cn("w-1.5 h-1.5 rounded-full", info.type === 'Highly Auspicious' ? 'bg-saffron' : 'bg-gold')} />
-                <span className="text-[9px] text-gray-400 font-bold">{info.type}</span>
+                <span className="text-[9px] text-gray-400 font-bold">
+                  {info.type === 'Highly Auspicious' ? t.calendar.highlyAuspicious : info.type === 'Auspicious' ? t.calendar.auspicious : t.calendar.tithi}
+                </span>
               </div>
             </div>
           ))}
@@ -141,7 +138,9 @@ export const CalendarView = ({ selectedDate, selectedTime, onDateSelect, onTimeS
           <div className="mt-8 p-4 bg-maroon rounded-2xl text-cream text-center">
             <Sparkles className="w-6 h-6 text-gold mx-auto mb-2" />
             <p className="text-[10px] font-bold uppercase tracking-widest leading-relaxed">
-              Book Puja during <br/> <span className="text-gold">Highly Auspicious</span> <br/> times for maximum blessings
+              {t.calendar.bookNote.split('Highly Auspicious')[0]}
+              <span className="text-gold">{t.calendar.highlyAuspicious}</span>
+              {t.calendar.bookNote.split('Highly Auspicious')[1]}
             </p>
           </div>
         </div>
@@ -152,9 +151,9 @@ export const CalendarView = ({ selectedDate, selectedTime, onDateSelect, onTimeS
         <div className="flex items-center justify-between mb-8">
           <div>
             <h3 className="font-serif text-3xl font-bold text-maroon mb-1">
-              {format(currentMonth, 'MMMM')}
+              {format(currentMonth, 'MMMM', { locale })}
             </h3>
-            <p className="text-gold font-bold uppercase tracking-widest text-[10px]">Year {format(currentMonth, 'yyyy')}</p>
+            <p className="text-gold font-bold uppercase tracking-widest text-[10px]">{t.calendar.year} {format(currentMonth, 'yyyy')}</p>
           </div>
           <div className="flex items-center gap-4">
             {selectedDate && (
@@ -162,7 +161,7 @@ export const CalendarView = ({ selectedDate, selectedTime, onDateSelect, onTimeS
                 href={`https://www.drikpanchang.com/panchang/day-panchang.html?date=${format(new Date(selectedDate), 'dd/MM/yyyy')}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hidden md:flex items-center gap-2 px-4 py-2 bg-maroon/5 dark:bg-maroon/20 hover:bg-maroon/10 text-maroon dark:text-saffron rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all border border-gold/10 dark:border-white/5"
+                className="hidden md:flex items-center gap-2 px-4 py-2 bg-maroon/5 hover:bg-maroon/10 text-maroon rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all border border-gold/10"
               >
                 <span>{t.library.viewPanchang}</span>
                 <ExternalLink className="w-3 h-3" />
@@ -172,14 +171,14 @@ export const CalendarView = ({ selectedDate, selectedTime, onDateSelect, onTimeS
               <button 
                 type="button"
                 onClick={prevMonth}
-                className="p-3 bg-paper dark:bg-dark-bg hover:bg-maroon/5 dark:hover:bg-maroon/20 rounded-2xl transition-all text-maroon dark:text-gold border border-gold/5 dark:border-white/5 active:scale-95"
+                className="p-3 bg-paper hover:bg-maroon/5 rounded-2xl transition-all text-maroon border border-gold/5 active:scale-95"
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
               <button 
                 type="button"
                 onClick={nextMonth}
-                className="p-3 bg-paper dark:bg-dark-bg hover:bg-maroon/5 dark:hover:bg-maroon/20 rounded-2xl transition-all text-maroon dark:text-gold border border-gold/5 dark:border-white/5 active:scale-95"
+                className="p-3 bg-paper hover:bg-maroon/5 rounded-2xl transition-all text-maroon border border-gold/5 active:scale-95"
               >
                 <ChevronRight className="w-5 h-5" />
               </button>
@@ -189,7 +188,7 @@ export const CalendarView = ({ selectedDate, selectedTime, onDateSelect, onTimeS
 
         <div className="grid grid-cols-7 gap-2 mb-4">
           {weekDays.map(day => (
-            <div key={day} className="text-center text-[10px] font-black uppercase tracking-widest text-maroon/30 dark:text-gold/20 py-2">
+            <div key={day} className="text-center text-[10px] font-black uppercase tracking-widest text-maroon/30 py-2">
               {day}
             </div>
           ))}
@@ -215,10 +214,10 @@ export const CalendarView = ({ selectedDate, selectedTime, onDateSelect, onTimeS
                 disabled={isPast}
                 className={cn(
                   "relative aspect-square w-full flex flex-col items-center justify-center rounded-2xl transition-all duration-300 text-sm font-bold",
-                  !isCurrentMonth ? 'text-gray-200 dark:text-gray-800' : 'text-gray-700 dark:text-gray-300',
+                  !isCurrentMonth ? 'text-gray-200' : 'text-gray-700',
                   isSelected ? 'bg-maroon text-cream shadow-xl z-10' : '',
-                  !isSelected && !isPast && isAuspicious ? "bg-saffron/5 dark:bg-saffron/10 border border-saffron/20 dark:border-saffron/40 text-maroon dark:text-saffron" : '',
-                  !isSelected && !isPast && !isAuspicious ? 'hover:bg-maroon/5 dark:hover:bg-maroon/20' : '',
+                  !isSelected && !isPast && isAuspicious ? "bg-saffron/5 border border-saffron/20 text-maroon" : '',
+                  !isSelected && !isPast && !isAuspicious ? 'hover:bg-maroon/5' : '',
                   isPast ? 'opacity-20 cursor-not-allowed' : 'cursor-pointer'
                 )}
               >
@@ -251,9 +250,9 @@ export const CalendarView = ({ selectedDate, selectedTime, onDateSelect, onTimeS
                     >
                       <div className="flex items-center gap-2 font-bold mb-2 pb-2 border-b border-white/10">
                         <Sparkles className="w-3 h-3 text-gold" />
-                        {isAuspicious.type}
+                        {isAuspicious.type === 'Highly Auspicious' ? t.calendar.highlyAuspicious : isAuspicious.type === 'Auspicious' ? t.calendar.auspicious : t.calendar.tithi}
                       </div>
-                      <p className="leading-relaxed opacity-90">{isAuspicious.label}</p>
+                      <p className="leading-relaxed opacity-90">{(t.auspicious_dates as any)[isAuspicious.label] || isAuspicious.label}</p>
                       <div className="absolute top-full left-1/2 -translate-x-1/2 border-[8px] border-transparent border-t-maroon" />
                     </motion.div>
                   )}
@@ -271,49 +270,52 @@ export const CalendarView = ({ selectedDate, selectedTime, onDateSelect, onTimeS
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="mt-8 pt-8 border-t border-gold/10 dark:border-white/5 overflow-hidden"
+            className="mt-8 pt-8 border-t border-gold/10 overflow-hidden"
           >
-            <h4 className="font-serif text-xl font-bold text-maroon dark:text-gold mb-4 flex items-center gap-2">
+            <h4 className="font-serif text-xl font-bold text-maroon mb-4 flex items-center gap-2">
               <span className="w-8 h-8 bg-gold/10 rounded-full flex items-center justify-center text-gold text-sm">
                 🕉️
               </span>
-              Select Auspicious Time Slot
+              {t.calendar.selectSlot}
             </h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {TIME_SLOTS.map((slot) => (
-                <button
-                  key={slot.id}
-                  type="button"
-                  onClick={() => onTimeSelect(slot.label)}
-                  className={`
-                    flex items-center gap-3 p-4 rounded-2xl border-2 transition-all duration-300 text-left
-                    ${selectedTime === slot.label 
-                      ? 'border-maroon dark:border-saffron bg-maroon/5 dark:bg-maroon/20 shadow-md shadow-maroon/5 ring-1 ring-maroon dark:ring-saffron' 
-                      : 'border-gold/10 dark:border-white/5 hover:border-maroon/30 hover:bg-maroon/5 dark:hover:bg-maroon/20'
-                    }
-                  `}
-                >
-                  <span className="text-2xl">{slot.icon}</span>
-                  <div>
-                    <div className={`text-sm font-bold ${selectedTime === slot.label ? 'text-maroon dark:text-saffron' : 'text-gray-700 dark:text-gray-300'}`}>
-                      {slot.label.split(' (')[0]}
+              {TIME_SLOTS.map((slot) => {
+                const translatedLabel = (t.calendar.slots as any)[slot.id] || slot.label;
+                return (
+                  <button
+                    key={slot.id}
+                    type="button"
+                    onClick={() => onTimeSelect(translatedLabel)}
+                    className={`
+                      flex items-center gap-3 p-4 rounded-2xl border-2 transition-all duration-300 text-left
+                      ${selectedTime === translatedLabel 
+                        ? 'border-maroon bg-maroon/5 shadow-md shadow-maroon/5 ring-1 ring-maroon' 
+                        : 'border-gold/10 hover:border-maroon/30 hover:bg-maroon/5'
+                      }
+                    `}
+                  >
+                    <span className="text-2xl">{slot.icon}</span>
+                    <div>
+                      <div className={`text-sm font-bold ${selectedTime === translatedLabel ? 'text-maroon' : 'text-gray-700'}`}>
+                        {translatedLabel.split(' (')[0]}
+                      </div>
+                      <div className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">
+                        ({translatedLabel.split(' (')[1]}
+                      </div>
                     </div>
-                    <div className="text-[10px] text-gray-400 dark:text-gray-500 font-bold uppercase tracking-wider">
-                      ({slot.label.split(' (')[1]}
-                    </div>
-                  </div>
-                  {selectedTime === slot.label && (
-                    <motion.div 
-                      layoutId="slot-check"
-                      className="ml-auto w-5 h-5 bg-maroon dark:bg-saffron rounded-full flex items-center justify-center text-cream"
-                    >
-                      <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                      </svg>
-                    </motion.div>
-                  )}
-                </button>
-              ))}
+                    {selectedTime === translatedLabel && (
+                      <motion.div 
+                        layoutId="slot-check"
+                        className="ml-auto w-5 h-5 bg-maroon rounded-full flex items-center justify-center text-cream"
+                      >
+                        <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                        </svg>
+                      </motion.div>
+                    )}
+                  </button>
+                );
+              })}
             </div>
 
             {/* Mobile-only link */}
@@ -322,7 +324,7 @@ export const CalendarView = ({ selectedDate, selectedTime, onDateSelect, onTimeS
                 href={`https://www.drikpanchang.com/panchang/day-panchang.html?date=${format(new Date(selectedDate), 'dd/MM/yyyy')}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-3 p-4 bg-maroon dark:bg-maroon text-white rounded-2xl font-bold text-xs uppercase tracking-widest shadow-lg shadow-maroon/20 active:scale-95 transition-all"
+                className="flex items-center justify-center gap-3 p-4 bg-maroon text-white rounded-2xl font-bold text-xs uppercase tracking-widest shadow-lg shadow-maroon/20 active:scale-95 transition-all"
               >
                 <div className="w-6 h-6 bg-white/20 rounded-lg flex items-center justify-center">
                   <ExternalLink className="w-3 h-3 text-white" />
@@ -334,18 +336,18 @@ export const CalendarView = ({ selectedDate, selectedTime, onDateSelect, onTimeS
         )}
       </AnimatePresence>
 
-      <div className="mt-8 pt-6 border-t border-gold/10 dark:border-white/5 grid grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="mt-8 pt-6 border-t border-gold/10 grid grid-cols-2 lg:grid-cols-3 gap-4">
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 rounded-full bg-saffron" />
-          <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-600">Highly Auspicious</span>
+          <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400">{t.calendar.highlyAuspicious}</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 rounded-full border border-gold bg-gold/20" />
-          <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-600">Auspicious</span>
+          <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400">{t.calendar.auspicious}</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 rounded-full border border-maroon/20 bg-maroon/10" />
-          <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-600">Tithi</span>
+          <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400">{t.calendar.tithi}</span>
         </div>
       </div>
     </div>

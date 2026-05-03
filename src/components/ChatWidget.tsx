@@ -75,34 +75,18 @@ export const ChatWidget: React.FC = () => {
       aiResponseText = data.response;
     } catch (err) {
       console.error('Chat error:', err);
-      aiResponseText = 'Pranam. I am having some trouble connecting to my service. Please try again later.';
+      aiResponseText = t.chat.errConnection;
     }
     
     const assistantMessage: Message = {
       id: (Date.now() + 1).toString(),
-      text: aiResponseText || 'Pranam. I am sorry, I am unable to reply at this moment.',
+      text: aiResponseText || t.chat.errReply,
       sender: 'assistant',
       timestamp: new Date().toISOString(),
     };
 
     setMessages((prev) => [...prev, assistantMessage]);
     setIsTyping(false);
-  };
-
-  const getWelcomeMessage = () => {
-    switch(language) {
-      case 'ne': return 'नमस्कार! म श्री नर नारायणको एआई सहायक हुँ। म तपाईंलाई कसरी मद्दत गर्न सक्छु?';
-      case 'hi': return 'नमस्ते! मैं श्री नर नारायण का एआई सहायक हूं। मैं आपकी कैसे मदद कर सकता हूं?';
-      default: return 'Namaste! I am the AI Assistant for Shri Nar Narayan. How can I help you today?';
-    }
-  };
-
-  const getChatTitle = () => {
-    switch(language) {
-      case 'ne': return 'एआई सहायक';
-      case 'hi': return 'एआई सहायक';
-      default: return 'Spiritual Assistant';
-    }
   };
 
   return (
@@ -122,11 +106,11 @@ export const ChatWidget: React.FC = () => {
                   <Bot className="w-6 h-6 text-maroon" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-sm">{getChatTitle()}</h3>
+                  <h3 className="font-bold text-sm">{t.chat.aiAssistant}</h3>
                   <div className="flex items-center gap-1.5">
                     <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
                     <span className="text-[10px] opacity-70 uppercase tracking-widest font-bold">
-                      Online AI
+                      {t.chat.onlineAi}
                     </span>
                   </div>
                 </div>
@@ -149,9 +133,9 @@ export const ChatWidget: React.FC = () => {
                   <div className="w-16 h-16 bg-saffron/10 rounded-full flex items-center justify-center text-saffron mb-4 border border-saffron/20">
                     <Sparkles className="w-8 h-8" />
                   </div>
-                  <p className="text-maroon font-bold text-sm">{getWelcomeMessage()}</p>
+                  <p className="text-maroon font-bold text-sm">{t.chat.chatWelcome}</p>
                   <p className="text-[10px] text-gray-400 mt-2 uppercase tracking-widest leading-loose">
-                    Ask about Pujas, Rituals, Auspicious Dates, or Astrology
+                    {t.chat.chatDesc}
                   </p>
                 </div>
               ) : (
@@ -197,7 +181,7 @@ export const ChatWidget: React.FC = () => {
                 type="text"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                placeholder={language === 'ne' ? 'यहाँ लेख्नुहोस्...' : language === 'hi' ? 'यहाँ लिखें...' : 'Type your spiritual question...'}
+                placeholder={t.chat.placeholder}
                 className="flex-1 bg-paper px-4 py-2.5 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-maroon/20"
                 disabled={isTyping}
               />
