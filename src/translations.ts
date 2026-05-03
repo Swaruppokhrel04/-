@@ -288,7 +288,36 @@ export const i18n = {
       readNow: 'अहिले पढ्नुहोस्',
       back: 'पुस्तकालयमा फर्कनुहोस्',
       search: 'पुस्तक खोज्नुहोस्...',
-      noBooks: 'नतिजा फेला परेन'
+      noBooks: 'नतिजा फेला परेन',
+      viewPanchang: 'विस्तृत पञ्चाङ्ग हेर्नुहोस्'
+    },
+    rashifal: {
+      title: 'दैनिक राशिफल',
+      subtitle: 'तपाईँको आजको दिन कस्तो रहनेछ? ग्रहताराको स्थिति र भविष्यवाचक विश्लेषण।',
+      date: 'आजको मिति',
+      selectSign: 'आफ्नो राशि छनौट गर्नुहोस्',
+      signs: {
+        aries: { name: 'मेष', element: 'अग्नि' },
+        taurus: { name: 'वृष', element: 'पृथ्वी' },
+        gemini: { name: 'मिथुन', element: 'वायु' },
+        cancer: { name: 'कर्कट', element: 'जल' },
+        leo: { name: 'सिंह', element: 'अग्नि' },
+        virgo: { name: 'कन्या', element: 'पृथ्वी' },
+        libra: { name: 'तुला', element: 'वायु' },
+        scorpio: { name: 'वृश्चिक', element: 'जल' },
+        sagittarius: { name: 'धनु', element: 'अग्नि' },
+        capricorn: { name: 'मकर', element: 'पृथ्वी' },
+        aquarius: { name: 'कुम्भ', element: 'वायु' },
+        pisces: { name: 'मीन', element: 'जल' }
+      },
+      categories: {
+        general: 'सामान्य',
+        love: 'प्रेम र सम्बन्ध',
+        career: 'कार्य र व्यापार',
+        health: 'स्वास्थ्य',
+        luckyNumber: 'शुभ अंक',
+        luckyColor: 'शुभ रङ'
+      }
     }
   },
   hi: {
@@ -578,7 +607,36 @@ export const i18n = {
       readNow: 'अभी पढ़ें',
       back: 'पुस्तकालय पर वापस जाएं',
       search: 'पुस्तक खोजें...',
-      noBooks: 'कोई परिणाम नहीं मिला'
+      noBooks: 'कोई परिणाम नहीं मिला',
+      viewPanchang: 'विस्तृत पंचांग देखें'
+    },
+    rashifal: {
+      title: 'दैनिक राशिफल',
+      subtitle: 'आपका आज का दिन कैसा रहेगा? ग्रहों की स्थिति और ज्योतिषीय विश्लेषण।',
+      date: 'आज की तिथि',
+      selectSign: 'अपनी राशि चुनें',
+      signs: {
+        aries: { name: 'मेष', element: 'अग्नि' },
+        taurus: { name: 'वृष', element: 'पृथ्वी' },
+        gemini: { name: 'मिथुन', element: 'वायु' },
+        cancer: { name: 'कर्कट', element: 'जल' },
+        leo: { name: 'सिंह', element: 'अग्नि' },
+        virgo: { name: 'कन्या', element: 'पृथ्वी' },
+        libra: { name: 'तुला', element: 'वायु' },
+        scorpio: { name: 'वृश्चिक', element: 'जल' },
+        sagittarius: { name: 'धनु', element: 'अग्नि' },
+        capricorn: { name: 'मकर', element: 'पृथ्वी' },
+        aquarius: { name: 'कुम्भ', element: 'वायु' },
+        pisces: { name: 'मीन', element: 'जल' }
+      },
+      categories: {
+        general: 'सामान्य',
+        love: 'प्रेम और संबंध',
+        career: 'कार्य और व्यापार',
+        health: 'स्वास्थ्य',
+        luckyNumber: 'शुभ अंक',
+        luckyColor: 'शुभ रंग'
+      }
     }
   },
   en: {
@@ -868,7 +926,36 @@ export const i18n = {
       readNow: 'Read Now',
       back: 'Back to Library',
       search: 'Search books...',
-      noBooks: 'No books found'
+      noBooks: 'No books found',
+      viewPanchang: 'View Detailed Panchang'
+    },
+    rashifal: {
+      title: 'Daily Horoscope',
+      subtitle: 'What do the stars have in store for you today? Planetary analysis.',
+      date: 'Today\'s Date',
+      selectSign: 'Choose Your Zodiac Sign',
+      signs: {
+        aries: { name: 'Aries', element: 'Fire' },
+        taurus: { name: 'Taurus', element: 'Earth' },
+        gemini: { name: 'Gemini', element: 'Air' },
+        cancer: { name: 'Cancer', element: 'Water' },
+        leo: { name: 'Leo', element: 'Fire' },
+        virgo: { name: 'Virgo', element: 'Earth' },
+        libra: { name: 'Libra', element: 'Air' },
+        scorpio: { name: 'Scorpio', element: 'Water' },
+        sagittarius: { name: 'Sagittarius', element: 'Fire' },
+        capricorn: { name: 'Capricorn', element: 'Earth' },
+        aquarius: { name: 'Aquarius', element: 'Air' },
+        pisces: { name: 'Pisces', element: 'Water' }
+      },
+      categories: {
+        general: 'Overview',
+        love: 'Love & Relation',
+        career: 'Career & Business',
+        health: 'Health',
+        luckyNumber: 'Lucky Number',
+        luckyColor: 'Lucky Color'
+      }
     }
   }
 };

@@ -12,6 +12,12 @@
   --color-paper: #FDFBF7;
   --color-paper-dark: #F5EFE6;
 
+  /* Dark mode specific colors */
+  --color-dark-bg: #0f0a0a;
+  --color-dark-surface: #1a1414;
+  --color-dark-border: #2d1f1f;
+  --color-dark-text: #e5e7eb;
+
   @keyframes glow {
     0%, 100% { filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.4)); }
     50% { filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.8)); }
@@ -50,6 +56,11 @@ body {
   font-family: var(--font-sans);
   background-color: var(--color-paper);
   color: #2D2D2D;
+  @apply transition-colors duration-300;
+}
+
+.dark body {
+  @apply bg-dark-bg text-dark-text;
 }
 
 h1, h2, h3, h4, h5, h6 {

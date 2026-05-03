@@ -146,6 +146,10 @@ export const AUSPICIOUS_DATES: Record<string, { label: string; type: string }> =
   '2026-05-22': { label: 'Ganesh Chaturthi', type: 'Tithi' },
   '2026-05-27': { label: 'Pradosh Vrat', type: 'Tithi' },
   '2026-05-30': { label: 'Purnima', type: 'Highly Auspicious' },
+  '2026-06-11': { label: 'Ekadashi', type: 'Tithi' },
+  '2026-06-21': { label: 'Ganga Dashahara', type: 'Highly Auspicious' },
+  '2026-06-25': { label: 'Nirjala Ekadashi', type: 'Highly Auspicious' },
+  '2026-06-29': { label: 'Purnima', type: 'Highly Auspicious' },
 };
 
 export const PUJA_SCHEDULE = [

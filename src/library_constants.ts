@@ -6,6 +6,7 @@ export interface Book {
   category: string;
   description: Record<string, string>;
   image: string;
+  audioUrl?: string;
   content: {
     sectionTitle?: Record<string, string>;
     verses: {
@@ -37,6 +38,7 @@ export const RELIGIOUS_BOOKS: Book[] = [
       en: 'A 40-verse devotional hymn dedicated to Lord Hanuman.'
     },
     image: 'https://images.unsplash.com/photo-1620211105435-090c29b9f345?auto=format&fit=crop&q=80&w=800',
+    audioUrl: 'https://cdn.pixabay.com/audio/2022/08/03/audio_a8521a19d1.mp3',
     content: [
       {
         sectionTitle: { ne: 'दोहा', hi: 'दोहा', en: 'Doha' },

@@ -11,13 +11,50 @@ import {
   SearchX,
   X,
   Maximize2,
-  Minimize2
+  Minimize2,
+  Volume2,
+  VolumeX,
+  Play,
+  Pause,
+  Music
 } from 'lucide-react';
 import { useLanguage } from '../LanguageContext';
 import { RELIGIOUS_BOOKS, Book } from '../library_constants';
 
 const ReadingModal = ({ book, onClose, language, t }: { book: Book, onClose: () => void, language: string, t: any }) => {
   const [isFullScreen, setIsFullScreen] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+  const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    if (book.audioUrl) {
+      const newAudio = new Audio(book.audioUrl);
+      newAudio.onended = () => setIsPlaying(false);
+      setAudio(newAudio);
+    }
+    return () => {
+      if (audio) {
+        audio.pause();
+      }
+    };
+  }, [book.audioUrl]);
+
+  const togglePlay = () => {
+    if (!audio) return;
+    if (isPlaying) {
+      audio.pause();
+    } else {
+      audio.play();
+    }
+    setIsPlaying(!isPlaying);
+  };
+
+  const toggleMute = () => {
+    if (!audio) return;
+    audio.muted = !isMuted;
+    setIsMuted(!isMuted);
+  };
 
   // Prevent body scroll when modal is open
   useEffect(() => {
@@ -39,35 +76,60 @@ const ReadingModal = ({ book, onClose, language, t }: { book: Book, onClose: () 
         initial={{ opacity: 0, scale: 0.9, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.9, y: 20 }}
-        className={`bg-white w-full max-w-5xl rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col transition-all duration-500 ${isFullScreen ? 'h-full max-w-full m-0 rounded-none' : 'h-[90vh]'}`}
+        className={`bg-white dark:bg-dark-bg w-full max-w-5xl rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col transition-all duration-500 ${isFullScreen ? 'h-full max-w-full m-0 rounded-none' : 'h-[90vh]'}`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
-        <div className="bg-white px-6 md:px-10 py-6 border-b border-gold/10 flex items-center justify-between sticky top-0 z-10">
+        <div className="bg-white dark:bg-dark-surface px-6 md:px-10 py-6 border-b border-gold/10 dark:border-gold/5 flex items-center justify-between sticky top-0 z-10">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-maroon/5 rounded-xl flex items-center justify-center text-maroon">
+            <div className="w-12 h-12 bg-maroon/5 dark:bg-maroon/20 rounded-xl flex items-center justify-center text-maroon dark:text-saffron">
               <BookIcon className="w-6 h-6" />
             </div>
             <div>
-              <h2 className="text-xl md:text-2xl font-bold text-maroon font-serif leading-tight">
+              <h2 className="text-xl md:text-2xl font-bold text-maroon dark:text-cream font-serif leading-tight">
                 {book.title[language] || book.title['en']}
               </h2>
-              <p className="text-[10px] text-gold font-bold uppercase tracking-widest">
+              <p className="text-[10px] text-gold dark:text-saffron font-bold uppercase tracking-widest">
                 {book.author[language] || book.author['en']}
               </p>
             </div>
           </div>
           <div className="flex items-center gap-2">
+            {book.audioUrl && (
+              <div className="flex items-center gap-1 bg-maroon/5 dark:bg-maroon/20 rounded-xl p-1 mr-4">
+                <button 
+                  onClick={togglePlay}
+                  className="p-2.5 bg-maroon text-white rounded-lg hover:bg-saffron transition-all active:scale-90"
+                  title={isPlaying ? "Pause" : "Play Audio"}
+                >
+                  {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 ml-0.5" />}
+                </button>
+                <button 
+                  onClick={toggleMute}
+                  className="p-2.5 text-maroon dark:text-saffron hover:bg-maroon/10 rounded-lg transition-colors"
+                >
+                  {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+                </button>
+                <div className="px-3 py-1 flex items-center gap-2">
+                  <div className={`w-1 h-4 bg-maroon/20 dark:bg-maroon/40 rounded-full overflow-hidden relative`}>
+                    {isPlaying && (
+                      <div className="absolute inset-0 bg-maroon dark:bg-saffron animate-pulse" />
+                    )}
+                  </div>
+                  <span className="text-[10px] font-bold text-maroon dark:text-saffron uppercase tracking-widest hidden sm:inline">Audio</span>
+                </div>
+              </div>
+            )}
             <button 
               onClick={() => setIsFullScreen(!isFullScreen)}
-              className="p-3 text-gold hover:bg-gold/10 rounded-xl transition-colors hidden md:block"
+              className="p-3 text-gold dark:text-saffron hover:bg-gold/10 dark:hover:bg-gold/5 rounded-xl transition-colors hidden md:block"
               title={isFullScreen ? "Minimize" : "Maximize"}
             >
               {isFullScreen ? <Minimize2 className="w-5 h-5" /> : <Maximize2 className="w-5 h-5" />}
             </button>
             <button 
               onClick={onClose}
-              className="p-3 bg-red-50 text-red-500 hover:bg-red-500 hover:text-white rounded-xl transition-all"
+              className="p-3 bg-red-50 dark:bg-red-500/10 text-red-500 dark:text-red-400 hover:bg-red-500 dark:hover:bg-red-500 hover:text-white rounded-xl transition-all"
             >
               <X className="w-5 h-5" />
             </button>
@@ -75,17 +137,17 @@ const ReadingModal = ({ book, onClose, language, t }: { book: Book, onClose: () 
         </div>
 
         {/* Scrollable Content */}
-        <div className="flex-1 overflow-y-auto bg-paper-dark/30 scroll-smooth">
+        <div className="flex-1 overflow-y-auto bg-paper-dark/30 dark:bg-dark-bg/50 scroll-smooth">
           <div className="max-w-3xl mx-auto py-12 px-6 md:px-10">
             <div className="space-y-16">
               {book.content.map((section, sIdx) => (
                 <div key={sIdx} className="space-y-10">
                   {section.sectionTitle && (
                     <div className="text-center">
-                      <div className="inline-block px-8 py-3 border-y border-gold/20 relative">
-                        <div className="absolute left-0 top-1/2 -translate-y-1/2 -ml-1 w-2 h-2 rounded-full bg-gold" />
-                        <div className="absolute right-0 top-1/2 -translate-y-1/2 -mr-1 w-2 h-2 rounded-full bg-gold" />
-                        <h3 className="text-2xl md:text-3xl font-bold text-maroon font-serif">
+                      <div className="inline-block px-8 py-3 border-y border-gold/20 dark:border-gold/10 relative">
+                        <div className="absolute left-0 top-1/2 -translate-y-1/2 -ml-1 w-2 h-2 rounded-full bg-gold dark:bg-saffron" />
+                        <div className="absolute right-0 top-1/2 -translate-y-1/2 -mr-1 w-2 h-2 rounded-full bg-gold dark:bg-saffron" />
+                        <h3 className="text-2xl md:text-3xl font-bold text-maroon dark:text-gold font-serif">
                           {section.sectionTitle[language] || section.sectionTitle['en']}
                         </h3>
                       </div>
@@ -99,27 +161,27 @@ const ReadingModal = ({ book, onClose, language, t }: { book: Book, onClose: () 
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="bg-white rounded-[2rem] p-8 md:p-10 border border-gold/10 shadow-sm hover:border-gold/30 hover:shadow-xl transition-all duration-300 relative group"
+                        className="bg-white dark:bg-dark-surface rounded-[2rem] p-8 md:p-10 border border-gold/10 dark:border-gold/5 shadow-sm hover:border-gold/30 hover:shadow-xl dark:hover:shadow-black/50 transition-all duration-300 relative group"
                       >
                         {verse.number && (
-                          <div className="absolute -left-3 top-8 w-8 h-8 rounded-xl bg-maroon text-cream flex items-center justify-center text-xs font-black shadow-lg shadow-maroon/20">
+                          <div className="absolute -left-3 top-8 w-8 h-8 rounded-xl bg-maroon dark:bg-maroon text-cream flex items-center justify-center text-xs font-black shadow-lg shadow-maroon/20">
                             {verse.number}
                           </div>
                         )}
                         
                         <div className="text-center space-y-6">
-                          <p className="text-2xl md:text-3xl font-bold text-maroon leading-[1.6] whitespace-pre-line font-serif">
+                          <p className="text-2xl md:text-3xl font-bold text-maroon dark:text-cream leading-[1.6] whitespace-pre-line font-serif">
                             {verse.original}
                           </p>
                           
-                          <div className="h-px w-24 bg-gradient-to-r from-transparent via-gold/30 to-transparent mx-auto" />
+                          <div className="h-px w-24 bg-gradient-to-r from-transparent via-gold/30 dark:via-gold/10 to-transparent mx-auto" />
                           
                           <div className="space-y-4">
-                            <div className="flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-gold mb-3">
+                            <div className="flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-gold dark:text-saffron mb-3">
                               <GraduationCap className="w-4 h-4" />
                               Sacred Meaning
                             </div>
-                            <p className="text-gray-600 leading-relaxed italic text-lg md:text-xl font-medium px-4">
+                            <p className="text-gray-600 dark:text-gray-400 leading-relaxed italic text-lg md:text-xl font-medium px-4">
                               {verse.translation[language] || verse.translation['en']}
                             </p>
                           </div>
@@ -131,14 +193,14 @@ const ReadingModal = ({ book, onClose, language, t }: { book: Book, onClose: () 
               ))}
             </div>
 
-            <div className="mt-24 pt-12 border-t border-gold/10 text-center space-y-4">
-              <div className="flex items-center justify-center gap-4 text-gold/30">
+            <div className="mt-24 pt-12 border-t border-gold/10 dark:border-gold/5 text-center space-y-4">
+              <div className="flex items-center justify-center gap-4 text-gold/30 dark:text-gold/10">
                 <div className="h-px w-16 bg-gradient-to-l from-gold/30 to-transparent" />
                 <Sparkles className="w-6 h-6" />
                 <div className="h-px w-16 bg-gradient-to-r from-gold/30 to-transparent" />
               </div>
-              <p className="text-maroon font-serif italic text-2xl">शुभमस्तु ।</p>
-              <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">End of Path</p>
+              <p className="text-maroon dark:text-gold font-serif italic text-2xl">शुभमस्तु ।</p>
+              <p className="text-[10px] text-gray-400 dark:text-gray-600 font-bold uppercase tracking-widest">End of Path</p>
             </div>
           </div>
         </div>

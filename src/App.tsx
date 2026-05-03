@@ -13,6 +13,7 @@ import {
   Calendar, 
   Clock, 
   ChevronRight, 
+  ChevronLeft,
   ChevronDown,
   ChevronUp,
   Menu, 
@@ -25,6 +26,7 @@ import {
   Zap,
   Grid,
   Scroll,
+  Star,
   UserCheck,
   Compass,
   Heart,
@@ -32,7 +34,9 @@ import {
   Flower2,
   Sparkles,
   Search,
-  Loader2
+  Loader2,
+  Sun,
+  Moon
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { SERVICES, CONTACT_INFO } from './constants.ts';
@@ -43,6 +47,7 @@ import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 import { useLanguage } from './LanguageContext';
 import { useAuth } from './AuthContext';
+import { useTheme } from './ThemeContext';
 import { i18n } from './translations.ts';
 import { LanguageSwitcher } from './components/LanguageSwitcher.tsx';
 import { FAQ } from './components/FAQ.tsx';
@@ -55,12 +60,14 @@ import { ContactForm } from './components/ContactForm.tsx';
 import { AudioPlayer } from './components/AudioPlayer.tsx';
 import { CallActionButton } from './components/CallActionButton.tsx';
 import { Library } from './components/Library.tsx';
+import { Rashifal, SignKey } from './components/Rashifal.tsx';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [query, setQuery] = useState('');
   const { t, language } = useLanguage();
+  const { theme, toggleTheme } = useTheme();
   const { user, signIn, signOut } = useAuth();
   const searchRef = useRef<HTMLDivElement>(null);
 
@@ -84,7 +91,7 @@ const Navbar = () => {
   }) : [];
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 bg-paper/60 backdrop-blur-xl border-b border-gold/10 transition-all duration-300">
+    <nav className="fixed top-0 left-0 w-full z-50 bg-paper/60 dark:bg-dark-bg/60 backdrop-blur-xl border-b border-gold/10 dark:border-white/5 transition-all duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20 md:h-24">
           <div className="flex items-center gap-3 group cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
@@ -92,7 +99,7 @@ const Navbar = () => {
               🕉️
             </div>
             <div className="hidden sm:block leading-tight">
-              <h1 className="font-serif font-bold text-maroon tracking-tight text-lg">श्री नर नारायण</h1>
+              <h1 className="font-serif font-bold text-maroon dark:text-gold tracking-tight text-lg">श्री नर नारायण</h1>
               <p className="text-[10px] sm:text-xs text-saffron uppercase font-extrabold tracking-[0.2em] opacity-90">धार्मिक सेवा</p>
             </div>
           </div>
@@ -114,7 +121,7 @@ const Navbar = () => {
                     initial={{ opacity: 0, scale: 0.95, y: 10 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95, y: 10 }}
-                    className="absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-2xl border border-maroon/10 p-4 overflow-hidden"
+                    className="absolute right-0 mt-2 w-80 bg-white dark:bg-dark-surface rounded-2xl shadow-2xl border border-maroon/10 dark:border-white/10 p-4 overflow-hidden"
                   >
                     <div className="relative">
                       <input 
@@ -123,7 +130,7 @@ const Navbar = () => {
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
                         placeholder={(t.search as any).placeholder}
-                        className="w-full bg-paper pl-10 pr-4 py-2.5 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-maroon/20 text-maroon"
+                        className="w-full bg-paper dark:bg-dark-bg pl-10 pr-4 py-2.5 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-maroon/20 text-maroon dark:text-cream"
                       />
                       <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-maroon/40" />
                     </div>
@@ -141,10 +148,10 @@ const Navbar = () => {
                                   setIsSearchOpen(false);
                                   setQuery('');
                                 }}
-                                className="flex flex-col p-3 hover:bg-saffron/5 rounded-xl transition-colors group"
+                                className="flex flex-col p-3 hover:bg-saffron/5 dark:hover:bg-saffron/10 rounded-xl transition-colors group"
                               >
-                                <span className="text-sm font-bold text-maroon group-hover:text-saffron transition-colors">{st?.name || s.name}</span>
-                                <span className="text-[10px] text-gray-400 line-clamp-1">{st?.desc || s.description}</span>
+                                <span className="text-sm font-bold text-maroon dark:text-gold group-hover:text-saffron transition-colors">{st?.name || s.name}</span>
+                                <span className="text-[10px] text-gray-400 dark:text-gray-500 line-clamp-1">{st?.desc || s.description}</span>
                               </a>
                             );
                           })
@@ -160,15 +167,44 @@ const Navbar = () => {
               </AnimatePresence>
             </div>
 
-            <a href="/#services" className="text-sm font-bold text-maroon hover:text-saffron transition-colors">{t.nav.services}</a>
-            <Link to="/library" className="text-sm font-bold text-maroon hover:text-saffron transition-colors">{(t.nav as any).library}</Link>
-            <a href="/#about" className="text-sm font-bold text-maroon hover:text-saffron transition-colors">{t.nav.about}</a>
-            <a href="/#faq" className="text-sm font-bold text-maroon hover:text-saffron transition-colors">{t.nav.faq}</a>
+            <a href="/#services" className="text-sm font-bold text-maroon dark:text-cream hover:text-saffron transition-colors">{t.nav.services}</a>
+            <Link to="/library" className="text-sm font-bold text-maroon dark:text-cream hover:text-saffron transition-colors">{(t.nav as any).library}</Link>
+            <a href="/#about" className="text-sm font-bold text-maroon dark:text-cream hover:text-saffron transition-colors">{t.nav.about}</a>
+            <a href="/#faq" className="text-sm font-bold text-maroon dark:text-cream hover:text-saffron transition-colors">{t.nav.faq}</a>
             {user && (
-              <Link to="/dashboard" className="text-sm font-bold text-maroon hover:text-saffron transition-colors">
+              <Link to="/dashboard" className="text-sm font-bold text-maroon dark:text-cream hover:text-saffron transition-colors">
                 {(t.nav as any).dashboard}
               </Link>
             )}
+
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-xl bg-maroon/5 dark:bg-maroon/20 text-maroon dark:text-saffron hover:bg-maroon/10 transition-all active:scale-90"
+              title="Toggle Theme"
+            >
+              <AnimatePresence mode="wait">
+                {theme === 'light' ? (
+                  <motion.div
+                    key="moon"
+                    initial={{ scale: 0, rotate: -90 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    exit={{ scale: 0, rotate: 90 }}
+                  >
+                    <Moon className="w-5 h-5" />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="sun"
+                    initial={{ scale: 0, rotate: -90 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    exit={{ scale: 0, rotate: 90 }}
+                  >
+                    <Sun className="w-5 h-5" />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </button>
+
             <LanguageSwitcher />
             
             {user ? (
@@ -231,7 +267,7 @@ const Navbar = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="md:hidden absolute top-20 left-0 w-full bg-white border-b border-gold/20 p-4 shadow-xl z-50"
+            className="md:hidden absolute top-20 left-0 w-full bg-white dark:bg-dark-bg border-b border-gold/20 dark:border-white/10 p-4 shadow-xl z-50 transition-colors"
           >
             <div className="relative">
               <input 
@@ -240,7 +276,7 @@ const Navbar = () => {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder={(t.search as any).placeholder}
-                className="w-full bg-paper pl-12 pr-4 py-3 rounded-2xl text-base focus:outline-none focus:ring-2 focus:ring-maroon/10 text-maroon"
+                className="w-full bg-paper dark:bg-dark-surface pl-12 pr-4 py-3 rounded-2xl text-base focus:outline-none focus:ring-2 focus:ring-maroon/10 dark:focus:ring-maroon/30 text-maroon dark:text-cream"
               />
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-maroon/40" />
               <button 
@@ -313,6 +349,24 @@ const Navbar = () => {
               )}
               
               <div className="py-2 flex items-center justify-between border-t border-gold/5 pt-6">
+                <div className="flex items-center gap-4">
+                  <button
+                    onClick={toggleTheme}
+                    className="p-3 rounded-2xl bg-maroon/5 dark:bg-maroon/20 text-maroon dark:text-saffron shadow-sm flex items-center gap-3 transition-all"
+                  >
+                    {theme === 'light' ? (
+                      <>
+                        <Moon className="w-5 h-5" />
+                        <span className="text-sm font-bold uppercase tracking-widest">Dark Mode</span>
+                      </>
+                    ) : (
+                      <>
+                        <Sun className="w-5 h-5" />
+                        <span className="text-sm font-bold uppercase tracking-widest">Light Mode</span>
+                      </>
+                    )}
+                  </button>
+                </div>
                 {user ? (
                   <div className="flex items-center gap-3">
                     {user.photoURL ? (
@@ -579,18 +633,25 @@ const Hero = () => {
             {t.hero.p}
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12 md:mb-16">
-            <a 
+            <motion.a 
               href="#booking"
-              className="w-full sm:w-auto bg-maroon text-cream px-10 py-5 rounded-full font-bold flex items-center justify-center gap-2 hover:bg-saffron transition-all duration-300 shadow-xl shadow-maroon/20 group"
+              whileHover={{ 
+                y: -5,
+                boxShadow: "0 20px 40px -10px rgba(122, 12, 12, 0.3), 0 0 20px rgba(212, 175, 55, 0.4)"
+              }}
+              whileTap={{ scale: 0.98 }}
+              className="w-full sm:w-auto bg-maroon text-cream px-10 py-5 rounded-full font-bold flex items-center justify-center gap-2 transition-all duration-300 shadow-xl shadow-maroon/20 group cursor-pointer"
             >
               {t.hero.btnConsult} <Trishul className="w-5 h-5 group-hover:rotate-12 transition-transform" />
-            </a>
-            <a 
+            </motion.a>
+            <motion.a 
               href="#services"
-              className="w-full sm:w-auto bg-white/50 backdrop-blur-sm border border-maroon/20 text-maroon px-10 py-5 rounded-full font-bold hover:bg-maroon hover:text-white transition-all duration-300"
+              whileHover={{ y: -3, backgroundColor: "rgba(122, 12, 12, 1)", color: "#fff" }}
+              whileTap={{ scale: 0.98 }}
+              className="w-full sm:w-auto bg-white/50 backdrop-blur-sm border border-maroon/20 text-maroon px-10 py-5 rounded-full font-bold transition-all duration-300 cursor-pointer"
             >
               {t.hero.btnServices}
-            </a>
+            </motion.a>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 pt-12 border-t border-maroon/10">
@@ -1331,6 +1392,7 @@ const PathSection = () => {
 
 const JyotishDetailSection = () => {
   const { t } = useLanguage();
+  const [preSelectedSign, setPreSelectedSign] = useState<SignKey | null>(null);
   return (
     <motion.section 
       id="jyotish-details" 
@@ -1420,6 +1482,40 @@ const JyotishDetailSection = () => {
             </motion.div>
             );
           })}
+        </div>
+        
+        <div className="mt-20">
+          <div className="text-center mb-12">
+            <h3 className="text-2xl font-bold font-serif text-gold mb-2">दैनिक राशिफल</h3>
+            <p className="text-cream/60 text-sm">आफ्नो राशी अनुसार आजको भाग्य जान्नुहोस्</p>
+          </div>
+          
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-12 gap-3 mb-12">
+            {(Object.keys(t.rashifal.signs) as any[]).map((signKey) => (
+              <motion.button
+                key={signKey}
+                whileHover={{ scale: 1.05, y: -5 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => {
+                  const el = document.getElementById('rashifal-display');
+                  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                  setPreSelectedSign(signKey);
+                }}
+                className="flex flex-col items-center gap-2 p-4 bg-white/5 border border-gold/10 rounded-2xl hover:border-gold/40 hover:bg-white/10 transition-all group"
+              >
+                <div className="w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center text-gold group-hover:bg-gold group-hover:text-maroon transition-colors">
+                  <Star className="w-5 h-5" />
+                </div>
+                <span className="text-[10px] font-bold text-cream/80 uppercase tracking-tighter">
+                  {t.rashifal.signs[signKey].name}
+                </span>
+              </motion.button>
+            ))}
+          </div>
+
+          <div id="rashifal-display">
+            <Rashifal preSelectedSign={preSelectedSign} />
+          </div>
         </div>
       </div>
     </motion.section>
@@ -1646,6 +1742,124 @@ const ContactSection = () => {
   );
 };
 
+const Testimonials = () => {
+  const { t } = useLanguage();
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const testimonials = t.testimonials.list;
+
+  const next = () => {
+    setCurrentIndex((prev) => (prev + 1) % testimonials.length);
+  };
+
+  const prev = () => {
+    setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+  };
+
+  useEffect(() => {
+    const timer = setInterval(next, 5000);
+    return () => clearInterval(timer);
+  }, [testimonials.length]);
+
+  return (
+    <motion.section 
+      id="testimonials" 
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.8 }}
+      className="py-24 bg-paper relative overflow-hidden"
+    >
+      <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
+        <AnimatedSwastik className="absolute top-10 left-10 w-32 h-32" />
+        <AnimatedSwastik className="absolute bottom-10 right-10 w-32 h-32" />
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 relative z-10">
+        <div className="text-center mb-16">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="inline-block p-3 bg-saffron/10 rounded-2xl text-saffron mb-4"
+          >
+            <Users className="w-8 h-8" />
+          </motion.div>
+          <h2 className="text-3xl md:text-4xl font-bold font-serif text-maroon mb-4">{t.testimonials.title}</h2>
+          <p className="text-gray-500 max-w-2xl mx-auto">{t.testimonials.subtitle}</p>
+        </div>
+
+        <div className="relative max-w-4xl mx-auto">
+          <div className="overflow-hidden relative min-h-[400px] flex items-center">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentIndex}
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -50 }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
+                className="w-full flex flex-col items-center text-center px-4 md:px-12"
+              >
+                <div className="relative mb-8">
+                  <div className="absolute -top-6 -left-6 md:-top-10 md:-left-10 text-gold/20">
+                    <svg width="60" height="60" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M14.017 21L14.017 18C14.017 16.8954 14.9124 16 16.017 16H19.017V14C19.017 11.7909 17.2261 10 15.017 10H14.017V7H15.017C18.883 7 22.017 10.134 22.017 14V21H14.017ZM2.01697 21L2.01697 18C2.01697 16.8954 2.9124 16 4.01697 16H7.01697V14C7.01697 11.7909 5.22606 10 3.01697 10H2.01697V7H3.01697C6.88297 7 10.017 10.134 10.017 14V21H2.01697Z" />
+                    </svg>
+                  </div>
+                  <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-paper border-4 border-gold/20 overflow-hidden mx-auto shadow-xl relative z-10">
+                    <img 
+                      src={`https://i.pravatar.cc/150?u=${testimonials[currentIndex].name}`} 
+                      alt={testimonials[currentIndex].name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="absolute -bottom-2 -right-2 bg-saffron text-white p-2 rounded-full shadow-lg z-20">
+                    <Sparkles className="w-4 h-4" />
+                  </div>
+                </div>
+
+                <p className="text-lg md:text-2xl font-serif text-maroon italic mb-8 leading-relaxed">
+                  "{testimonials[currentIndex].content}"
+                </p>
+
+                <div className="mb-8">
+                  <h4 className="text-xl font-bold text-maroon">{testimonials[currentIndex].name}</h4>
+                  <p className="text-saffron font-bold text-xs uppercase tracking-widest mt-1">{testimonials[currentIndex].role}</p>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          <div className="flex items-center justify-center gap-4 mt-8">
+            <button 
+              onClick={prev}
+              className="p-3 rounded-full bg-white border border-gold/20 text-maroon hover:bg-maroon hover:text-white transition-all shadow-md group"
+            >
+              <ChevronLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
+            </button>
+            <div className="flex gap-2">
+              {testimonials.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setCurrentIndex(idx)}
+                  className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                    currentIndex === idx ? 'bg-saffron w-8' : 'bg-gold/30 hover:bg-gold/50'
+                  }`}
+                />
+              ))}
+            </div>
+            <button 
+              onClick={next}
+              className="p-3 rounded-full bg-white border border-gold/20 text-maroon hover:bg-maroon hover:text-white transition-all shadow-md group"
+            >
+              <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </motion.section>
+  );
+};
+
 const MainContent = ({ setSelectedService, handleBookNow, preselectedBookingId }: any) => {
   const { t } = useLanguage();
   return (
@@ -1698,6 +1912,8 @@ const MainContent = ({ setSelectedService, handleBookNow, preselectedBookingId }
       <PathSection />
 
       <JyotishDetailSection />
+
+      <Testimonials />
 
       {/* About Section */}
       <motion.section 
