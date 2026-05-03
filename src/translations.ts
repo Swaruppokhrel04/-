@@ -66,7 +66,14 @@ export const i18n = {
         step4Title: 'वैदिक उपायहरू',
         step4Desc: 'रत्न, मन्त्र र जीवनशैलीको लागि व्यावहारिक सुझावहरू।'
       },
-      btnConsult: 'अहिले परामर्श लिनुहोस्'
+      btnConsult: 'अहिले परामर्श लिनुहोस्',
+      faq_title: 'ज्योतिष सम्बन्धी जिज्ञासाहरू',
+      faqs: [
+        { q: 'कुण्डली निर्माणको लागि जन्म समय कत्तिको महत्वपूर्ण छ?', a: '४-५ मिनेटको फरकले पनि लग्न वा नक्षत्र परिवर्तन हुन सक्छ। यदि समय थाहा छैन भने हामी "प्रश्न कुण्डली" मार्फत परामर्श दिन्छौँ।' },
+        { q: 'के ग्रह दोष पूर्ण रूपमा निको हुन्छ?', a: 'शान्ति अनुष्ठानले ग्रहको नकारात्मक प्रभावलाई कम गर्छ। वैदिक उपाय र अनुशासित जीवनशैलीले कठिन समयलाई सहज बनाउन मद्दत गर्छ।' },
+        { q: 'एउटा परामर्श कति समयको हुन्छ?', a: 'सामान्य कुण्डली विश्लेषण ३० देखि ४५ मिनेटको हुन्छ। विस्तृत दशा वा विशेष दोष विश्लेषणमा बढी समय लाग्न सक्छ।' },
+        { q: 'के महँगो रत्न मात्र उपाय हो?', a: 'होइन, पण्डित जीले तपाईँको क्षमता अनुसार उपायहरू सुझाउनुहुन्छ। मन्त्र जप, दान र जीवनशैली परिवर्तन पनि उत्तिकै प्रभावकारी हुन्छन्।' }
+      ]
     },
     hero: {
       tag: 'ॐ नमो भगवते वासुदेवाय',
@@ -475,7 +482,14 @@ export const i18n = {
         step4Title: 'वैदिक उपाय',
         step4Desc: 'रत्न, मंत्र और जीवनशैली के लिए व्यावहारिक सुझाव।'
       },
-      btnConsult: 'अभी परामर्श लें'
+      btnConsult: 'अभी परामर्श लें',
+      faq_title: 'ज्योतिष संबंधी जिज्ञासाएं',
+      faqs: [
+        { q: 'कुंडली निर्माण के लिए जन्म समय कितना महत्वपूर्ण है?', a: '४-५ मिनट का अंतर भी लग्न या नक्षत्र बदल सकता है। यदि समय पता नहीं है, तो हम "प्रश्न कुंडली" के माध्यम से परामर्श देते हैं।' },
+        { q: 'क्या ग्रह दोष पूर्णतः ठीक हो जाता है?', a: 'शांति अनुष्ठान ग्रहों के नकारात्मक प्रभाव को कम करते हैं। वैदिक उपायों और अनुशासित जीवनशैली से कठिन समय को सहनीय बनाया जा सकता है।' },
+        { q: 'एक परामर्श कितनी देर चलता है?', a: 'सामान्य कुंडली विश्लेषण ३० से ४५ मिनट का होता है। विस्तृत दशा या विशेष दोष विश्लेषण में अधिक समय लग सकता।' },
+        { q: 'क्या महंगे रत्न ही एकमात्र उपाय हैं?', a: 'नहीं, पंडित जी आपकी क्षमता के अनुसार उपाय सुझाते हैं। मंत्र जप, दान और जीवनशैली में बदलाव भी उतने ही प्रभावी होते हैं।' }
+      ]
     },
     hero: {
       tag: 'ॐ नमो भगवते वासुदेवाय',
@@ -884,7 +898,14 @@ export const i18n = {
         step4Title: 'Vedic Remedies',
         step4Desc: 'Practical suggestions for gemstones, mantras, and lifestyle.'
       },
-      btnConsult: 'Consult Now'
+      btnConsult: 'Consult Now',
+      faq_title: 'Astrology FAQs',
+      faqs: [
+        { q: "Is exact birth time necessary for Kundali?", a: "Yes, even a 4-5 minute difference can change the Lagna (Ascendant) or Nakshatra. If time is unknown, we use Prashna Kundali (Horary Astrology)." },
+        { q: "Can Graha Dosh be fully cured?", a: "Rituals mitigate negative planetary effects. While karma plays its role, Vedic remedies and lifestyle changes significantly reduce life's obstacles." },
+        { q: "How long does a consultation last?", a: "A standard consultation lasts 30-45 minutes. Detailed life analysis or specific dosha analysis may take longer." },
+        { q: "Do you suggest expensive gemstones?", a: "Pandit Ji suggests remedies based on your capacity. Mantras, Yantras, and dietary changes are often as effective as gemstones." }
+      ]
     },
     hero: {
       tag: 'Om Namo Bhagavate Vasudevaya 🙏',

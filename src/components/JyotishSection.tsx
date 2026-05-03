@@ -1,6 +1,6 @@
-import React from 'react';
-import { motion } from 'motion/react';
-import { Sparkles, Star, Moon, Sun, ChevronRight, CheckCircle2 } from 'lucide-react';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { Sparkles, Star, Moon, Sun, ChevronRight, CheckCircle2, Plus, Minus, HelpCircle } from 'lucide-react';
 import { SERVICES } from '../constants.ts';
 import { useLanguage } from '../LanguageContext.tsx';
 
@@ -10,6 +10,7 @@ interface JyotishSectionProps {
 
 export const JyotishSection: React.FC<JyotishSectionProps> = ({ onSelectService }) => {
   const { t } = useLanguage();
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
   const astrologyServices = SERVICES.filter(s => s.category === 'Astrology');
   const jt = (t as any).jyotish_section;
 
@@ -118,7 +119,7 @@ export const JyotishSection: React.FC<JyotishSectionProps> = ({ onSelectService 
           </motion.div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
           {astrologyServices.map((service, idx) => (
             <motion.div
               key={service.id}
@@ -161,6 +162,66 @@ export const JyotishSection: React.FC<JyotishSectionProps> = ({ onSelectService 
             </motion.div>
           ))}
         </div>
+
+        {/* FAQ Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          className="max-w-4xl mx-auto"
+        >
+          <div className="text-center mb-16">
+            <div className="inline-flex p-3 rounded-2xl bg-gold/10 text-gold mb-6">
+              <HelpCircle className="w-6 h-6" />
+            </div>
+            <h2 className="text-3xl md:text-4xl font-serif font-bold text-white mb-4">{jt.faq_title}</h2>
+          </div>
+
+          <div className="space-y-4">
+            {jt.faqs.map((faq: { q: string, a: string }, idx: number) => (
+              <motion.div
+                key={idx}
+                initial={false}
+                className={`rounded-3xl border transition-all duration-500 overflow-hidden ${
+                  openFaq === idx 
+                    ? 'bg-paper border-gold shadow-2xl shadow-gold/10' 
+                    : 'bg-white/5 border-white/10 hover:border-gold/30'
+                }`}
+              >
+                <button
+                  onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
+                  className="w-full px-8 py-6 flex items-center justify-between text-left group"
+                >
+                  <span className={`text-lg font-bold transition-colors ${openFaq === idx ? 'text-maroon' : 'text-cream'}`}>
+                    {faq.q}
+                  </span>
+                  <div className={`shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-all ${
+                    openFaq === idx ? 'bg-maroon text-white rotate-180' : 'bg-white/10 text-gold group-hover:bg-gold/20'
+                  }`}>
+                    {openFaq === idx ? <Minus className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
+                  </div>
+                </button>
+                
+                <AnimatePresence>
+                  {openFaq === idx && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3, ease: 'easeInOut' }}
+                    >
+                      <div className="px-8 pb-8">
+                        <div className="h-px bg-maroon/10 mb-6" />
+                        <p className="text-maroon/70 leading-relaxed">
+                          {faq.a}
+                        </p>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
       </div>
 
       {/* Language support helper */}
