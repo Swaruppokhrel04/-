@@ -54,6 +54,7 @@ import { Dashboard } from './components/Dashboard.tsx';
 import { ContactForm } from './components/ContactForm.tsx';
 import { AudioPlayer } from './components/AudioPlayer.tsx';
 import { CallActionButton } from './components/CallActionButton.tsx';
+import { Library } from './components/Library.tsx';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -160,6 +161,7 @@ const Navbar = () => {
             </div>
 
             <a href="/#services" className="text-sm font-bold text-maroon hover:text-saffron transition-colors">{t.nav.services}</a>
+            <Link to="/library" className="text-sm font-bold text-maroon hover:text-saffron transition-colors">{(t.nav as any).library}</Link>
             <a href="/#about" className="text-sm font-bold text-maroon hover:text-saffron transition-colors">{t.nav.about}</a>
             <a href="/#faq" className="text-sm font-bold text-maroon hover:text-saffron transition-colors">{t.nav.faq}</a>
             {user && (
@@ -301,6 +303,7 @@ const Navbar = () => {
             <div className="px-4 pt-2 pb-6 space-y-4 text-maroon">
               <Link to="/" onClick={() => setIsOpen(false)} className="block text-lg font-bold">{t.nav.home}</Link>
               <a href="/#services" onClick={() => setIsOpen(false)} className="block text-lg font-bold">{t.nav.services}</a>
+              <Link to="/library" onClick={() => setIsOpen(false)} className="block text-lg font-bold">{(t.nav as any).library}</Link>
               <a href="/#about" onClick={() => setIsOpen(false)} className="block text-lg font-bold">{t.nav.about}</a>
               <a href="/#faq" onClick={() => setIsOpen(false)} className="block text-lg font-bold">{t.nav.faq}</a>
               {user && (
@@ -1846,6 +1849,7 @@ export default function App() {
               preselectedBookingId={preselectedBookingId}
             />
           } />
+          <Route path="/library" element={<Library />} />
           <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
 

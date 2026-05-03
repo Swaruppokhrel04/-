@@ -3,24 +3,23 @@ import { motion, AnimatePresence } from 'motion/react';
 import { ChevronDown, HelpCircle } from 'lucide-react';
 import { useLanguage } from '../LanguageContext';
 
-const FAQItem = ({ question, answer, isOpen, onClick }: { question: string, answer: string, isOpen: boolean, onClick: () => void, key?: any }) => {
+const FAQItem = ({ question, answer, isOpen, onClick }: { question: string, answer: string, isOpen: boolean, onClick: () => void, key?: React.Key }) => {
   return (
-    <motion.div 
-      layout
-      className="border-b border-gold/10 last:border-0"
+    <div 
+      className={`border-b border-gold/10 last:border-0 transition-colors duration-300 ${isOpen ? 'bg-paper/30' : ''}`}
     >
       <button
         onClick={onClick}
-        className="w-full py-6 flex items-center justify-between text-left group transition-all"
+        className="w-full py-6 px-2 flex items-center justify-between text-left group transition-all"
         aria-expanded={isOpen}
       >
-        <span className={`text-lg font-bold transition-colors pr-8 ${isOpen ? 'text-saffron' : 'text-maroon group-hover:text-saffron'}`}>
+        <span className={`text-lg md:text-xl font-bold transition-all duration-300 pr-8 ${isOpen ? 'text-saffron translate-x-1' : 'text-maroon group-hover:text-saffron'}`}>
           {question}
         </span>
         <motion.div
-          animate={{ rotate: isOpen ? 180 : 0 }}
-          transition={{ duration: 0.3 }}
-          className={`p-1.5 rounded-full flex-shrink-0 ${isOpen ? 'bg-saffron text-cream shadow-md shadow-saffron/20' : 'bg-paper text-maroon'}`}
+          animate={{ rotate: isOpen ? 180 : 0, scale: isOpen ? 1.1 : 1 }}
+          transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          className={`p-2 rounded-xl flex-shrink-0 transition-colors duration-300 ${isOpen ? 'bg-saffron text-cream shadow-lg shadow-saffron/20' : 'bg-paper-dark text-maroon/40 group-hover:text-maroon'}`}
         >
           <ChevronDown className="w-5 h-5" />
         </motion.div>
@@ -33,19 +32,19 @@ const FAQItem = ({ question, answer, isOpen, onClick }: { question: string, answ
             animate="open"
             exit="collapsed"
             variants={{
-              open: { opacity: 1, height: "auto", marginBottom: 24 },
-              collapsed: { opacity: 0, height: 0, marginBottom: 0 }
+              open: { opacity: 1, height: "auto", marginTop: -8, paddingBottom: 24 },
+              collapsed: { opacity: 0, height: 0, marginTop: 0, paddingBottom: 0 }
             }}
-            transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
-            className="overflow-hidden"
+            transition={{ duration: 0.3, ease: [0.04, 0.62, 0.23, 0.98] }}
+            className="overflow-hidden px-2"
           >
-            <p className="text-gray-500 leading-relaxed text-sm md:text-base pr-4">
+            <div className="text-gray-600 leading-relaxed text-sm md:text-base pr-4 max-w-3xl">
               {answer}
-            </p>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.div>
+    </div>
   );
 };
 

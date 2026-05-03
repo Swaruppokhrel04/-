@@ -8,6 +8,7 @@ export const i18n = {
       about: 'हाम्रो बारेमा',
       contact: 'सम्पर्क',
       faq: 'FAQ',
+      library: 'पुस्तकालय',
       login: 'लगिन',
       logout: 'लगआउट',
       dashboard: 'ड्यासबोर्ड',
@@ -242,7 +243,10 @@ export const i18n = {
         { q: 'पण्डित जीको उपलब्धता कसरी थाहा पाउने?', a: 'हाम्रो अनलाइन पात्रोमा खाली रहेका समयहरू देख्न सक्नुहुन्छ। थप निश्चित गर्नको लागि हामीलाई सिधै फोन वा WhatsApp पनि गर्न सक्नुहुन्छ।' },
         { q: 'ज्योतिषीय परामर्शको लागि के के विवरण चाहिन्छ?', a: 'सटीक फलादेशको लागि जन्म मिति, जन्म समय र जन्म स्थान अनिवार्य हुन्छ।' },
         { q: 'यदि जन्म समय थाहा छैन भने के गर्ने?', a: 'यदि समय थाहा छैन भने हस्तरेखा वा प्रश्न कुण्डली मार्फत पनि परामर्श लिन सकिन्छ।' },
-        { q: 'वास्तु परामर्श पनि उपलब्ध छ?', a: 'हो, हामी नयाँ घर, अफिस वा व्यावसायिक भवनहरूको लागि पूर्ण वास्तु निरीक्षण र परामर्श प्रदान गर्दछौँ।' }
+        { q: 'वास्तु परामर्श पनि उपलब्ध छ?', a: 'हो, हामी नयाँ घर, अफिस वा व्यावसायिक भवनहरूको लागि पूर्ण वास्तु निरीक्षण र परामर्श प्रदान गर्दछौँ।' },
+        { q: 'पूजाको लागि कति समय अगाडि बुक गर्नुपर्छ?', a: 'गृह प्रवेश वा पुराण पाठ जस्ता ठूला अनुष्ठानका लागि उत्तम शुभ मुहूर्त सुनिश्चित गर्न कम्तिमा १-२ हप्ता अगाडि बुक गर्न सल्लाह दिइन्छ।' },
+        { q: 'दैनिक सेवाहरूको सामान्य समय के हो?', a: 'बिहानको अनुष्ठान सामान्यतया ६:०० देखि १०:०० बजेसम्म हुन्छ भने साँझको आरती र भजन सम्ध्या ५:३० देखि ७:३० बजेसम्म गरिन्छ।' },
+        { q: 'के ज्योतिषीय रिपोर्टको प्रतिलिपि पाइन्छ?', a: 'हो, हाम्रा सबै विस्तृत ज्योतिषीय विश्लेषण रिपोर्टहरू (चिना) आधिकारिक छाप र पण्डितज्यूको मार्गनिर्देशन सहित उपलब्ध गराइन्छ।' }
       ]
     },
     chat: {
@@ -277,6 +281,14 @@ export const i18n = {
       errPhoneRequired: 'कृपया आफ्नो सम्पर्क नम्बर लेख्नुहोस्',
       errPhoneInvalid: 'कृपया सही सम्पर्क नम्बर लेख्नुहोस्',
       errMessageRequired: 'कृपया आफ्नो सन्देश लेख्नुहोस्'
+    },
+    library: {
+      title: 'धर्मग्रन्थ पुस्तकालय',
+      subtitle: 'पवित्र पुस्तकहरू र स्तोत्रहरू',
+      readNow: 'अहिले पढ्नुहोस्',
+      back: 'पुस्तकालयमा फर्कनुहोस्',
+      search: 'पुस्तक खोज्नुहोस्...',
+      noBooks: 'नतिजा फेला परेन'
     }
   },
   hi: {
@@ -286,6 +298,7 @@ export const i18n = {
       about: 'हमारे बारे में',
       contact: 'संपर्क',
       faq: 'FAQ',
+      library: 'पुस्तकालय',
       login: 'लॉगिन',
       logout: 'लॉगआउट',
       dashboard: 'डैशबोर्ड',
@@ -520,7 +533,10 @@ export const i18n = {
         { q: 'पंडित जी की उपलब्धता कैसे पता करें?', a: 'हमारे ऑनलाइन कैलेंडर में रिक्त समय देखा जा सकता है। अधिक पुष्टि के लिए आप हमें सीधे कॉल या WhatsApp भी कर सकते हैं।' },
         { q: 'ज्योतिषीय परामर्श के लिए क्या विवरण चाहिए?', a: 'सटीक भविष्यवाणियों के लिए जन्म तिथि, जन्म समय और जन्म स्थान अनिवार्य है।' },
         { q: 'यदि जन्म का समय पता न हो तो क्या करें?', a: 'यदि समय पता नहीं है, तो हस्तरेखा या प्रश्न कुंडली के माध्यम से भी परामर्श लिया जा सकता है।' },
-        { q: 'क्या वास्तु परामर्श भी उपलब्ध है?', a: 'हाँ, हम नए घरों, कार्यालयों या व्यावसायिक भवनों के लिए पूर्ण वास्तु निरीक्षण और परामर्श प्रदान करते हैं।' }
+        { q: 'क्या वास्तु परामर्श भी उपलब्ध है?', a: 'हाँ, हम नए घरों, कार्यालयों या व्यावसायिक भवनों के लिए पूर्ण वास्तु निरीक्षण और परामर्श प्रदान करते हैं।' },
+        { q: 'पूजा के लिए कितने समय पहले बुक करना चाहिए?', a: 'गृह प्रवेश या पुराण पाठ जैसे बड़े अनुष्ठानों के लिए सर्वोत्तम शुभ मुहूर्त सुनिश्चित करने के लिए कम से कम 1-2 सप्ताह पहले बुकिंग करने की सलाह दी जाती है।' },
+        { q: 'दैनिक सेवाओं का सामान्य समय क्या है?', a: 'सुबह के अनुष्ठान आमतौर पर 6:00 से 10:00 बजे के बीच होते हैं, जबकि शाम की आरती और भजन शाम 5:30 से 7:30 बजे के बीच किए जाते हैं।' },
+        { q: 'क्या ज्योतिषीय रिपोर्ट की हार्ड कॉपी मिलती है?', a: 'हाँ, हमारी सभी विस्तृत ज्योतिषीय विश्लेषण रिपोर्ट (जन्मपत्री) आधिकारिक मुहर और वरिष्ठ पंडितों के मार्गदर्शन के साथ प्रदान की जाती हैं।' }
       ]
     },
     chat: {
@@ -555,6 +571,14 @@ export const i18n = {
       errPhoneRequired: 'कृपया अपना फोन नंबर लिखें',
       errPhoneInvalid: 'कृपया सही फोन नंबर लिखें',
       errMessageRequired: 'कृपया अपना संदेश लिखें'
+    },
+    library: {
+      title: 'धर्मग्रंथ पुस्तकालय',
+      subtitle: 'पवित्र पुस्तकें और स्तोत्र',
+      readNow: 'अभी पढ़ें',
+      back: 'पुस्तकालय पर वापस जाएं',
+      search: 'पुस्तक खोजें...',
+      noBooks: 'कोई परिणाम नहीं मिला'
     }
   },
   en: {
@@ -564,6 +588,7 @@ export const i18n = {
       about: 'About',
       contact: 'Contact',
       faq: 'FAQ',
+      library: 'Library',
       login: 'Login',
       logout: 'Logout',
       dashboard: 'Dashboard',
@@ -798,7 +823,10 @@ export const i18n = {
         { q: 'How to check Pandit Ji\'s availability?', a: 'You can see available slots in our online calendar. For further confirmation, you can also call or WhatsApp us directly.' },
         { q: 'What details are needed for astrological consultation?', a: 'Accurate Date of Birth, Time of Birth, and Place of Birth are mandatory for precise predictions.' },
         { q: 'What if I don\'t know my exact time of birth?', a: 'If you don\'t know the time, we can still provide guidance through palmistry or Prashna Kundali (Horary Astrology).' },
-        { q: 'Do you provide Vastu consultations?', a: 'Yes, we provide full Vastu inspections and consultations for homes, offices, and commercial spaces.' }
+        { q: 'Do you provide Vastu consultations?', a: 'Yes, we provide full Vastu inspections and consultations for homes, offices, and commercial spaces.' },
+        { q: 'How far in advance should I book a service?', a: 'For major rituals like Griha Pravesh or Puran Path, we recommend booking at least 1-2 weeks in advance to ensure the best auspicious timing (Muhurta).' },
+        { q: 'What are the typical timings for daily services?', a: 'Morning rituals usually take place between 6:00 AM and 10:00 AM, while evening Arati and Chanting are typically performed between 5:30 PM and 7:30 PM.' },
+        { q: 'Do you offer a certificate or proof for astrological reports?', a: 'Yes, all our detailed astrological analysis reports (Janampatri) come with our official seal and guidance notes from our senior priests.' }
       ]
     },
     chat: {
@@ -833,6 +861,14 @@ export const i18n = {
       errPhoneRequired: 'Please enter your phone number',
       errPhoneInvalid: 'Please enter a valid phone number',
       errMessageRequired: 'Please enter your message'
+    },
+    library: {
+      title: 'Religious Library',
+      subtitle: 'Sacred Books & Hymns',
+      readNow: 'Read Now',
+      back: 'Back to Library',
+      search: 'Search books...',
+      noBooks: 'No books found'
     }
   }
 };

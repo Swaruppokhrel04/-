@@ -5,7 +5,6 @@ import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
 import { useLanguage } from '../LanguageContext';
-import { getChatResponse } from '../lib/aiAssistant';
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -54,8 +53,30 @@ export const ChatWidget: React.FC = () => {
       content: msg.text
     }));
 
-    // Get AI Response
-    const aiResponseText = await getChatResponse(currentMessage, chatHistory);
+    // Get AI Response from server
+    let aiResponseText = '';
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: currentMessage,
+          history: chatHistory
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to get response from server');
+      }
+
+      const data = await response.json();
+      aiResponseText = data.response;
+    } catch (err) {
+      console.error('Chat error:', err);
+      aiResponseText = 'Pranam. I am having some trouble connecting to my service. Please try again later.';
+    }
     
     const assistantMessage: Message = {
       id: (Date.now() + 1).toString(),

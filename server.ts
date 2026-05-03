@@ -8,11 +8,49 @@ import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 import admin from "firebase-admin";
 import fs from "node:fs";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import { SERVICES, PUJA_SCHEDULE, AUSPICIOUS_DATES, CONTACT_INFO } from "./src/constants";
 
 dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// Initialize Gemini AI
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
+
+const systemInstruction = `
+You are the AI Spiritual Assistant for "Shri Nar Narayan Religious Services" (श्री नर नारायण धार्मिक सेवा).
+Your goal is to help users with questions about Hindu rituals, pujas, astrology (Jyotish), and our specific services.
+
+Available Services at Shri Nar Narayan:
+${SERVICES.map(s => `- ${s.name}: ${s.description} (Deity: ${s.deity || 'Various'}, Duration: ${s.duration || 'Flexible'}, Category: ${s.category})`).join('\n')}
+
+Daily & Weekly Holy Schedule:
+${PUJA_SCHEDULE.map(p => `- ${p.day} at ${p.time}: ${p.title} - ${p.description}`).join('\n')}
+
+Upcoming Auspicious Dates (2026):
+${Object.entries(AUSPICIOUS_DATES).map(([date, info]) => `- ${date}: ${info.label} (${info.type})`).join('\n')}
+
+Contact & Location Information:
+- Address: ${CONTACT_INFO.address}
+- Phone: ${CONTACT_INFO.displayPhone}
+- WhatsApp: ${CONTACT_INFO.whatsapp}
+
+Guidelines:
+1. Tone: Respectful, humble, professional, and spiritually grounded. Use traditional greetings like "Pranam" or "Namaste".
+2. Knowledge: Provide accurate information about the significance of various pujas. Explain WHY someone might need a specific ritual.
+3. Languages: You should respond in the language the user speaks (English, Nepali, or Hindi).
+4. Booking: If a user wants to book a service, encourage them to use the "Book Now" section. Mention push notification updates.
+5. Location: We are based in Rupandehi, Nepal.
+6. Boundaries: If you don't know a detail, suggest consulting a senior priest (Pandit ji).
+7. Brevity: Keep responses concise.
+
+Avoid:
+- Giving medical/legal advice.
+- Politics.
+- Absolute predictions.
+`;
 
 // Initialize Firebase Admin lazily
 let firebaseAdminApp: admin.app.App | null = null;
@@ -212,6 +250,37 @@ async function startServer() {
     }
     console.log("Newsletter subscription:", email);
     res.json({ success: true, message: "तपाईंको ईमेल सफलतापूर्वक दर्ता भयो!" });
+  });
+
+  app.post("/api/chat", async (req, res) => {
+    const { message, history } = req.body;
+
+    if (!process.env.GEMINI_API_KEY) {
+      return res.status(500).json({ error: "Gemini API key not configured on server" });
+    }
+
+    try {
+      const model = genAI.getGenerativeModel({ 
+        model: "gemini-1.5-flash",
+        systemInstruction: systemInstruction
+      });
+
+      const result = await model.generateContent({
+        contents: [
+          ...history.map((h: any) => ({ role: h.role, parts: [{ text: h.content }] })),
+          { role: 'user', parts: [{ text: message }] }
+        ],
+        generationConfig: {
+          temperature: 0.7,
+        }
+      });
+
+      const responseText = result.response.text();
+      res.json({ response: responseText });
+    } catch (error) {
+      console.error("Gemini AI Error:", error);
+      res.status(500).json({ error: "I apologize, but I am having trouble connecting to my spiritual knowledge base right now." });
+    }
   });
 
   io.on("connection", (socket) => {
