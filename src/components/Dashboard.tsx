@@ -13,7 +13,8 @@ import {
   Bell,
   Download,
   Camera,
-  Trash2
+  Trash2,
+  Video
 } from 'lucide-react';
 import { useAuth } from '../AuthContext';
 import { useLanguage } from '../LanguageContext';
@@ -22,6 +23,7 @@ import { collection, query, where, getDocs, orderBy, updateDoc, doc } from 'fire
 import { format } from 'date-fns';
 import { DashboardBooking } from '../types';
 import { generateGoogleCalendarLink, downloadICal } from '../lib/calendarUtils';
+import { VideoPromoGenerator } from './VideoPromoGenerator.tsx';
 
 enum OperationType {
   CREATE = 'create',
@@ -37,7 +39,7 @@ export const Dashboard = () => {
   const { t } = useLanguage();
   const [bookings, setBookings] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'upcoming' | 'history' | 'profile'>('upcoming');
+  const [activeTab, setActiveTab] = useState<'upcoming' | 'history' | 'profile' | 'promotions'>('upcoming');
   const [displayName, setDisplayName] = useState(user?.displayName || '');
   const [photoURL, setPhotoURL] = useState(user?.photoURL || '');
   const [isUpdating, setIsUpdating] = useState(false);
@@ -197,6 +199,13 @@ export const Dashboard = () => {
                 >
                   <User className="w-5 h-5" />
                   {t.dashboard.profile}
+                </button>
+                <button 
+                  onClick={() => setActiveTab('promotions')}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-bold transition-all ${activeTab === 'promotions' ? 'bg-maroon text-cream shadow-lg shadow-maroon/20' : 'text-gray-500 hover:bg-maroon/5'}`}
+                >
+                  <Video className="w-5 h-5" />
+                  {t.videoGenerator.title}
                 </button>
                 <div className="pt-4 border-t border-gold/5 mt-4">
                   <button 
@@ -443,6 +452,10 @@ export const Dashboard = () => {
                     </div>
                   </div>
                 </div>
+              )}
+
+              {activeTab === 'promotions' && (
+                <VideoPromoGenerator />
               )}
 
             </div>

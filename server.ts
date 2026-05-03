@@ -6,11 +6,29 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
+import admin from "firebase-admin";
+import fs from "node:fs";
 
 dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// Initialize Firebase Admin
+const firebaseConfigPath = path.join(process.cwd(), "firebase-applet-config.json");
+let firebaseAdminApp: admin.app.App | null = null;
+
+if (fs.existsSync(firebaseConfigPath)) {
+  try {
+    const firebaseConfig = JSON.parse(fs.readFileSync(firebaseConfigPath, "utf-8"));
+    firebaseAdminApp = admin.initializeApp({
+      projectId: firebaseConfig.projectId,
+    });
+    console.log("Firebase Admin initialized");
+  } catch (error) {
+    console.error("Error initializing Firebase Admin:", error);
+  }
+}
 
 async function startServer() {
   const app = express();
@@ -27,6 +45,34 @@ async function startServer() {
   const messages: any[] = [];
 
   app.use(express.json());
+
+  // Function to send push notification
+  const sendPushNotification = async (userId: string, title: string, body: string) => {
+    if (!firebaseAdminApp) return;
+
+    try {
+      const userRef = admin.firestore().collection("users").doc(userId);
+      const userDoc = await userRef.get();
+      
+      if (!userDoc.exists) return;
+      
+      const tokens = userDoc.data()?.fcmTokens || [];
+      if (tokens.length === 0) return;
+
+      const message = {
+        notification: {
+          title,
+          body,
+        },
+        tokens,
+      };
+
+      const response = await admin.messaging().sendEachForMulticast(message);
+      console.log("Push notifications status:", response.successCount, "success,", response.failureCount, "failure");
+    } catch (error) {
+      console.error("Error sending push notification:", error);
+    }
+  };
 
   // Nodemailer transporter (lazy initialization)
   let transporter: nodemailer.Transporter | null = null;
@@ -63,7 +109,7 @@ async function startServer() {
   };
 
   app.post("/api/book", async (req, res) => {
-    const { fullName, email, phone, pujaType, date, location, message } = req.body;
+    const { fullName, email, phone, pujaType, date, location, message, userId } = req.body;
     
     console.log("New Booking Received:", req.body);
 
@@ -95,6 +141,15 @@ async function startServer() {
       if (process.env.NODE_ENV !== "production") {
         console.log("Message sent: %s", info.messageId);
         console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+      }
+
+      // Send Push Notification if userId is provided
+      if (userId) {
+        await sendPushNotification(
+          userId,
+          "Booking Confirmed!",
+          `Pranam ${fullName}, your booking for ${pujaType} on ${date} is received.`
+        );
       }
 
       res.json({ success: true, booking: req.body });

@@ -219,6 +219,20 @@ export const i18n = {
       rights: '© २०२६ श्री नर नारायण धार्मिक सेवा। सर्वाधिकार सुरक्षित।',
       mantra: 'सर्वे भवन्तु सुखिनः'
     },
+    videoGenerator: {
+      title: 'एआई प्रोमो भिडियो',
+      subtitle: 'हाम्रा धार्मिक सेवाहरूको लागि छोटो प्रचार भिडियो बनाउनुहोस्।',
+      selectService: 'सेवा छान्नुहोस्',
+      promptLabel: 'थप विवरण (वैकल्पिक)',
+      promptPlaceholder: 'भिडियोमा के देखाउने? (उदा: फूल, धुप, दीप)',
+      generateBtn: 'भिडियो बनाउनुहोस्',
+      generating: 'भिडियो बन्दैछ...',
+      pollStatus: 'हाम्रो दिव्य एआई भिडियो बनाउँदैछ... कृपया केही समय कुर्नुहोला।',
+      success: 'भिडियो सफलतापूर्वक तयार भयो!',
+      error: 'भिडियो बनाउन बाँकी भयो। कृपया फेरि प्रयास गर्नुहोस्।',
+      needApiKey: 'भिडियो बनाउन एआई कुञ्जी (API Key) आवश्यक छ।',
+      selectKeyBtn: 'एआई कुञ्जी छान्नुहोस्'
+    },
     faq: {
       title: 'धेरै सोधिने प्रश्नहरू',
       questions: [
@@ -483,6 +497,20 @@ export const i18n = {
       rights: '© २०२६ श्री नर नारायण धार्मिक सेवा। सर्वाधिकार सुरक्षित।',
       mantra: 'सर्वे भवन्तु सुखिनः'
     },
+    videoGenerator: {
+      title: 'एआई प्रोमो वीडियो',
+      subtitle: 'हमारी धार्मिक सेवाओं के लिए छोटा प्रचार वीडियो बनाएं।',
+      selectService: 'सेवा चुनें',
+      promptLabel: 'अतिरिक्त विवरण (वैकल्पिक)',
+      promptPlaceholder: 'वीडियो में क्या दिखाएं? (उदा: फूल, धूप, दीप)',
+      generateBtn: 'वीडियो बनाएं',
+      generating: 'वीडियो बन रहा है...',
+      pollStatus: 'हमारी दिव्य एआई वीडियो बना रही है... कृपया कुछ समय प्रतीक्षा करें।',
+      success: 'वीडियो सफलतापूर्वक तैयार हो गया!',
+      error: 'वीडियो बनाने में समस्या हुई। कृपया पुनः प्रयास करें।',
+      needApiKey: 'वीडियो बनाने के लिए एआई कुंजी (API Key) आवश्यक है।',
+      selectKeyBtn: 'एआई कुंजी चुनें'
+    },
     faq: {
       title: ' अक्सर पूछे जाने वाले प्रश्न',
       questions: [
@@ -746,6 +774,20 @@ export const i18n = {
       btnJoin: 'Join Us',
       rights: '© 2026 Shree Nar Narayan Religious Service. All rights reserved.',
       mantra: 'Sarve Bhavantu Sukhinah'
+    },
+    videoGenerator: {
+      title: 'AI Promo Video',
+      subtitle: 'Create short promotional videos for our religious services.',
+      selectService: 'Select Service',
+      promptLabel: 'Extra Details (Optional)',
+      promptPlaceholder: 'What to show in the video? (e.g., flowers, incense, lamps)',
+      generateBtn: 'Generate AI Video',
+      generating: 'Generating Vid...',
+      pollStatus: 'Our divine AI is crafting your video... please wait a moment.',
+      success: 'Video generated successfully!',
+      error: 'Failed to generate video. Please try again.',
+      needApiKey: 'AI Key (API Key) is required to generate videos.',
+      selectKeyBtn: 'Select AI Key'
     },
     faq: {
       title: 'Frequently Asked Questions',

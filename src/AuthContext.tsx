@@ -3,6 +3,7 @@ import { User, onAuthStateChanged } from 'firebase/auth';
 import { auth, loginWithGoogle, logout } from './lib/firebase';
 import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from './lib/firebase';
+import { requestNotificationPermission, onMessageListener } from './lib/notifications';
 
 interface AuthContextType {
   user: User | null;
@@ -39,6 +40,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           }, { merge: true });
         }
         setUser(firebaseUser);
+        
+        // Request notification permission and store token
+        requestNotificationPermission(firebaseUser.uid);
       } else {
         setUser(null);
       }
@@ -47,6 +51,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     return () => unsubscribe();
   }, []);
+
+  useEffect(() => {
+    // Listen for foreground messages
+    const listenForMessages = async () => {
+      try {
+        const payload = await onMessageListener();
+        console.log('Message arrived in foreground:', payload);
+        // You could show a toast here if you had a toast system
+      } catch (err) {
+        console.error('Failed to listen for messages:', err);
+      }
+    };
+    
+    if (user) {
+      listenForMessages();
+    }
+  }, [user]);
 
   const signIn = async () => {
     try {

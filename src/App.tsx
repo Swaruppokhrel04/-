@@ -1007,7 +1007,7 @@ const BookingForm = ({ preselectedServiceId }: { preselectedServiceId?: string |
       const response = await fetch('/api/book', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({ ...formData, userId: user?.uid })
       });
       
       const result = await response.json();
