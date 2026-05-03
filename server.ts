@@ -252,6 +252,59 @@ async function startServer() {
     res.json({ success: true, message: "तपाईंको ईमेल सफलतापूर्वक दर्ता भयो!" });
   });
 
+  app.post("/api/panchang", async (req, res) => {
+    const { date, location } = req.body;
+
+    if (!process.env.GEMINI_API_KEY) {
+      return res.status(500).json({ error: "Gemini API key not configured" });
+    }
+
+    try {
+      const model = genAI.getGenerativeModel({ 
+        model: "gemini-1.5-flash",
+      });
+
+      const prompt = `Provide the Hindu Panchang details for the date ${date}${location ? ` at ${location}` : ''}. 
+      Include the following fields for that day:
+      - Tithi: (e.g., Ekadashi, Purnima)
+      - Nakshatra: (e.g., Rohini, Ashwini)
+      - Yoga: (e.g., Vishkumbha, Preeti)
+      - Karana: (e.g., Bava, Balava)
+      - Paksha: (Shukla or Krishna)
+      - Masam: (Hindu Month name)
+      - Sunrise: (Approximate time)
+      - Sunset: (Approximate time)
+      
+      Return the data strictly in JSON format like this:
+      {
+        "tithi": "string",
+        "nakshatra": "string",
+        "yoga": "string",
+        "karana": "string",
+        "paksha": "string",
+        "masam": "string",
+        "sunrise": "string",
+        "sunset": "string",
+        "meaning": "short spiritual meaning of the tithi in 20 words"
+      }`;
+
+      const result = await model.generateContent(prompt);
+      const output = result.response.text();
+      
+      // Extract JSON from output (in case Gemini wraps it in markdown)
+      const jsonMatch = output.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        const panchangData = JSON.parse(jsonMatch[0]);
+        res.json(panchangData);
+      } else {
+        throw new Error("Failed to parse JSON from AI response");
+      }
+    } catch (error) {
+      console.error("Panchang AI Error:", error);
+      res.status(500).json({ error: "Unable to retrieve divine panchang details." });
+    }
+  });
+
   app.post("/api/chat", async (req, res) => {
     const { message, history } = req.body;
 

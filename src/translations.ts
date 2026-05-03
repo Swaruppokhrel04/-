@@ -363,6 +363,19 @@ export const i18n = {
         'morning-2': 'प्रातः (८ AM - ११ AM)',
         afternoon: 'मध्याह्न (१ PM - ३ PM)',
         evening: 'सन्ध्या (५ PM - ७ PM)'
+      },
+      panchang: {
+        title: 'दिव्य पञ्चाङ्ग',
+        tithi: 'तिथि',
+        nakshatra: 'नक्षत्र',
+        yoga: 'योग',
+        karana: 'करण',
+        paksha: 'पक्ष',
+        masam: 'मास',
+        sunrise: 'सूर्योदय',
+        sunset: 'सूर्यास्त',
+        loading: 'दिव्य संरेखणहरू खोज्दै...',
+        meaning: 'आध्यात्मिक महत्व'
       }
     },
     auspicious_dates: {
@@ -738,6 +751,19 @@ export const i18n = {
         'morning-2': 'प्रातः (८ AM - ११ AM)',
         afternoon: 'मध्याह्न (१ PM - ३ PM)',
         evening: 'सन्ध्या (५ PM - ७ PM)'
+      },
+      panchang: {
+        title: 'दिव्य पंचांग',
+        tithi: 'तिथि',
+        nakshatra: 'नक्षत्र',
+        yoga: 'योग',
+        karana: 'करण',
+        paksha: 'पक्ष',
+        masam: 'मास',
+        sunrise: 'सूर्योदय',
+        sunset: 'सूर्यास्त',
+        loading: 'दिव्य संरेखण प्राप्त कर रहे हैं...',
+        meaning: 'आध्यात्मिक महत्व'
       }
     },
     auspicious_dates: {
@@ -1113,6 +1139,19 @@ export const i18n = {
         'morning-2': 'Pratah (8 AM - 11 AM)',
         afternoon: 'Madhyahna (1 PM - 3 PM)',
         evening: 'Sandhya (5 PM - 7 PM)'
+      },
+      panchang: {
+        title: 'Divine Panchang',
+        tithi: 'Tithi',
+        nakshatra: 'Nakshatra',
+        yoga: 'Yoga',
+        karana: 'Karana',
+        paksha: 'Paksha',
+        masam: 'Masam',
+        sunrise: 'Sunrise',
+        sunset: 'Sunset',
+        loading: 'Fetching divine alignments...',
+        meaning: 'Spiritual Significance'
       }
     },
     auspicious_dates: {

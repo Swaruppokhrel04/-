@@ -15,11 +15,23 @@ import {
   startOfDay
 } from 'date-fns';
 import { hi, enUS } from 'date-fns/locale';
-import { ChevronLeft, ChevronRight, Info, Sparkles, ExternalLink } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Info, Sparkles, ExternalLink, Sunrise, Sunset, Moon, MapPin } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { AUSPICIOUS_DATES } from '../constants';
 import { cn } from '../lib/utils';
 import { useLanguage } from '../LanguageContext';
+
+interface PanchangData {
+  tithi: string;
+  nakshatra: string;
+  yoga: string;
+  karana: string;
+  paksha: string;
+  masam: string;
+  sunrise: string;
+  sunset: string;
+  meaning: string;
+}
 
 const AUSPICIOUS_COLORS: Record<string, string> = {
   'Highly Auspicious': 'bg-saffron text-white',
@@ -45,15 +57,41 @@ export const CalendarView = ({ selectedDate, selectedTime, onDateSelect, onTimeS
   const { language, t } = useLanguage();
   const locale = language === 'hi' ? hi : enUS;
 
-  const AUSPICIOUS_COLORS: Record<string, string> = {
-    'Highly Auspicious': 'bg-saffron text-white',
-    'Auspicious': 'bg-gold/20 text-maroon border border-gold/50',
-    'Tithi': 'bg-maroon/10 text-maroon border border-maroon/20',
-  };
-
   const [currentMonth, setCurrentMonth] = useState(new Date(2026, 4)); // Default to May 2026
   const [hoveredDate, setHoveredDate] = useState<string | null>(null);
+  const [panchangData, setPanchangData] = useState<PanchangData | null>(null);
+  const [isLoadingPanchang, setIsLoadingPanchang] = useState(false);
   const timeSlotsRef = useRef<HTMLDivElement>(null);
+
+  // Fetch Panchang details
+  useEffect(() => {
+    const fetchPanchang = async () => {
+      if (!selectedDate) return;
+      
+      setIsLoadingPanchang(true);
+      try {
+        const response = await fetch('/api/panchang', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            date: selectedDate,
+            location: 'Rupandehi, Nepal' // Default location for the business
+          })
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          setPanchangData(data);
+        }
+      } catch (error) {
+        console.error("Error fetching panchang:", error);
+      } finally {
+        setIsLoadingPanchang(false);
+      }
+    };
+
+    fetchPanchang();
+  }, [selectedDate]);
 
   // Sync current month with selected date if it changes from outside
   useEffect(() => {
@@ -163,7 +201,7 @@ export const CalendarView = ({ selectedDate, selectedTime, onDateSelect, onTimeS
                 rel="noopener noreferrer"
                 className="hidden md:flex items-center gap-2 px-4 py-2 bg-maroon/5 hover:bg-maroon/10 text-maroon rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all border border-gold/10"
               >
-                <span>{t.library.viewPanchang}</span>
+                <span>{t.calendar.viewPanchang}</span>
                 <ExternalLink className="w-3 h-3" />
               </a>
             )}
@@ -263,91 +301,195 @@ export const CalendarView = ({ selectedDate, selectedTime, onDateSelect, onTimeS
         </div>
       </div>
 
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {selectedDate && (
           <motion.div
             ref={timeSlotsRef}
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="mt-8 pt-8 border-t border-gold/10 overflow-hidden"
+            className="w-full p-6 md:p-8 bg-paper border-t border-gold/10"
           >
-            <h4 className="font-serif text-xl font-bold text-maroon mb-4 flex items-center gap-2">
-              <span className="w-8 h-8 bg-gold/10 rounded-full flex items-center justify-center text-gold text-sm">
-                🕉️
-              </span>
-              {t.calendar.selectSlot}
-            </h4>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {TIME_SLOTS.map((slot) => {
-                const translatedLabel = (t.calendar.slots as any)[slot.id] || slot.label;
-                return (
-                  <button
-                    key={slot.id}
-                    type="button"
-                    onClick={() => onTimeSelect(translatedLabel)}
-                    className={`
-                      flex items-center gap-3 p-4 rounded-2xl border-2 transition-all duration-300 text-left
-                      ${selectedTime === translatedLabel 
-                        ? 'border-maroon bg-maroon/5 shadow-md shadow-maroon/5 ring-1 ring-maroon' 
-                        : 'border-gold/10 hover:border-maroon/30 hover:bg-maroon/5'
-                      }
-                    `}
-                  >
-                    <span className="text-2xl">{slot.icon}</span>
-                    <div>
-                      <div className={`text-sm font-bold ${selectedTime === translatedLabel ? 'text-maroon' : 'text-gray-700'}`}>
-                        {translatedLabel.split(' (')[0]}
+            {/* Panchang Details Section */}
+            <div className="mb-10">
+              <div className="flex items-center justify-between mb-6">
+                <h4 className="font-serif text-2xl font-bold text-maroon flex items-center gap-3">
+                  <span className="w-10 h-10 bg-maroon/10 rounded-full flex items-center justify-center text-maroon">
+                    ☸️
+                  </span>
+                  {t.calendar.panchang.title}
+                </h4>
+                <div className="flex items-center gap-2 text-[10px] font-bold text-gold uppercase tracking-widest bg-gold/5 px-3 py-1.5 rounded-full border border-gold/10">
+                  <MapPin className="w-3 h-3" />
+                  Rupandehi, Nepal
+                </div>
+              </div>
+
+              {isLoadingPanchang ? (
+                <div className="py-8 flex flex-col items-center justify-center gap-4 bg-white/50 rounded-[2rem] border border-gold/5 animate-pulse">
+                  <Sparkles className="w-8 h-8 text-gold animate-spin" />
+                  <p className="text-xs font-bold text-gold uppercase tracking-widest">{t.calendar.panchang.loading}</p>
+                </div>
+              ) : panchangData ? (
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="grid grid-cols-2 lg:grid-cols-4 gap-4"
+                >
+                  {/* Tithi & Nakshatra Highlight Cards */}
+                  <div className="col-span-2 lg:col-span-2 grid grid-cols-2 gap-4">
+                    <div className="p-5 bg-gradient-to-br from-maroon to-maroon/90 rounded-3xl text-cream shadow-xl shadow-maroon/10">
+                      <p className="text-[10px] font-bold uppercase tracking-widest opacity-70 mb-1">{t.calendar.panchang.tithi}</p>
+                      <h5 className="text-xl font-bold mb-2">{panchangData.tithi}</h5>
+                      <span className="text-[9px] font-medium px-2 py-1 bg-white/10 rounded-lg backdrop-blur-sm uppercase tracking-tighter">
+                        {panchangData.paksha} Paksha
+                      </span>
+                    </div>
+                    <div className="p-5 bg-white rounded-3xl border border-gold/20 shadow-sm">
+                      <p className="text-[10px] font-bold uppercase tracking-widest text-gold mb-1">{t.calendar.panchang.nakshatra}</p>
+                      <h5 className="text-xl font-bold text-maroon mb-2">{panchangData.nakshatra}</h5>
+                      <span className="text-[9px] font-bold text-gray-400 uppercase">{panchangData.masam}</span>
+                    </div>
+                  </div>
+
+                  {/* Sun Times */}
+                  <div className="bg-white p-5 rounded-3xl border border-gold/10 flex flex-col justify-center gap-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 bg-saffron/10 rounded-xl flex items-center justify-center text-saffron">
+                        <Sunrise className="w-4 h-4" />
                       </div>
-                      <div className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">
-                        ({translatedLabel.split(' (')[1]}
+                      <div>
+                        <p className="text-[9px] font-bold text-gray-400 uppercase">{t.calendar.panchang.sunrise}</p>
+                        <p className="text-sm font-bold text-maroon">{panchangData.sunrise}</p>
                       </div>
                     </div>
-                    {selectedTime === translatedLabel && (
-                      <motion.div 
-                        layoutId="slot-check"
-                        className="ml-auto w-5 h-5 bg-maroon rounded-full flex items-center justify-center text-cream"
-                      >
-                        <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                        </svg>
-                      </motion.div>
-                    )}
-                  </button>
-                );
-              })}
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 bg-orange-100 rounded-xl flex items-center justify-center text-orange-500">
+                        <Sunset className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <p className="text-[9px] font-bold text-gray-400 uppercase">{t.calendar.panchang.sunset}</p>
+                        <p className="text-sm font-bold text-maroon">{panchangData.sunset}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Yoga & Karana */}
+                  <div className="bg-maroon/5 p-5 rounded-3xl border border-maroon/10 flex flex-col justify-center gap-4">
+                    <div>
+                      <p className="text-[9px] font-bold text-maroon/40 uppercase mb-0.5">{t.calendar.panchang.yoga}</p>
+                      <p className="text-sm font-bold text-maroon">{panchangData.yoga}</p>
+                    </div>
+                    <div className="pt-3 border-t border-maroon/5">
+                      <p className="text-[9px] font-bold text-maroon/40 uppercase mb-0.5">{t.calendar.panchang.karana}</p>
+                      <p className="text-sm font-bold text-maroon">{panchangData.karana}</p>
+                    </div>
+                  </div>
+
+                  {/* Spiritual Meaning Card */}
+                  <div className="col-span-2 lg:col-span-4 mt-2 p-4 bg-maroon/5 rounded-2xl border-l-4 border-gold">
+                    <div className="flex gap-4">
+                      <div className="shrink-0 w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm">
+                        <Sparkles className="w-5 h-5 text-gold" />
+                      </div>
+                      <div>
+                        <h6 className="text-[10px] font-bold text-gold uppercase tracking-widest mb-1">{t.calendar.panchang.meaning}</h6>
+                        <p className="text-xs text-maroon leading-relaxed">{panchangData.meaning}</p>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              ) : (
+                <div className="py-8 text-center bg-gray-50 rounded-[2rem] border border-dashed border-gray-200">
+                  <p className="text-sm text-gray-400 italic">Select a date to unlock divine alignments</p>
+                </div>
+              )}
             </div>
 
-            {/* Mobile-only link */}
-            <div className="mt-6 md:hidden">
+            <div className="pt-8 border-t border-gold/10">
+              <h4 className="font-serif text-2xl font-bold text-maroon mb-6 flex items-center gap-3">
+                <span className="w-10 h-10 bg-gold/10 rounded-full flex items-center justify-center text-gold">
+                  🕒
+                </span>
+                {t.calendar.selectSlot}
+              </h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {TIME_SLOTS.map((slot) => {
+                  const translatedLabel = (t.calendar.slots as any)[slot.id] || slot.label;
+                  return (
+                    <button
+                      key={slot.id}
+                      type="button"
+                      onClick={() => onTimeSelect(translatedLabel)}
+                      className={`
+                        group relative flex flex-col items-start gap-3 p-6 rounded-[2rem] border-2 transition-all duration-500 text-left overflow-hidden
+                        ${selectedTime === translatedLabel 
+                          ? 'border-maroon bg-white shadow-2xl shadow-maroon/10 scale-[1.02] z-10' 
+                          : 'border-gold/5 bg-white/50 hover:border-maroon/20 hover:bg-white'
+                        }
+                      `}
+                    >
+                      {selectedTime === translatedLabel && (
+                        <div className="absolute top-0 right-0 p-4">
+                          <div className="w-6 h-6 bg-maroon rounded-full flex items-center justify-center text-cream shadow-lg">
+                            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                            </svg>
+                          </div>
+                        </div>
+                      )}
+                      
+                      <span className="text-4xl filter drop-shadow-sm group-hover:scale-110 transition-transform duration-500">{slot.icon}</span>
+                      
+                      <div>
+                        <div className={`text-base font-bold mb-1 transition-colors ${selectedTime === translatedLabel ? 'text-maroon' : 'text-gray-700'}`}>
+                          {translatedLabel.split(' (')[0]}
+                        </div>
+                        <div className="text-[10px] text-gold font-bold uppercase tracking-widest opacity-60">
+                          {translatedLabel.split(' (')[1].replace(')', '')}
+                        </div>
+                      </div>
+
+                      <div className={cn(
+                        "absolute bottom-0 left-0 h-1 transition-all duration-500",
+                        selectedTime === translatedLabel ? "w-full bg-maroon" : "w-0 bg-gold/30"
+                      )} />
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Mobile-only full link */}
+            <div className="mt-8 md:hidden">
               <a 
                 href={`https://www.drikpanchang.com/panchang/day-panchang.html?date=${format(new Date(selectedDate), 'dd/MM/yyyy')}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-3 p-4 bg-maroon text-white rounded-2xl font-bold text-xs uppercase tracking-widest shadow-lg shadow-maroon/20 active:scale-95 transition-all"
+                className="flex items-center justify-center gap-3 p-5 bg-maroon text-white rounded-[2rem] font-bold text-xs uppercase tracking-widest shadow-xl shadow-maroon/30 active:scale-95 transition-all"
               >
-                <div className="w-6 h-6 bg-white/20 rounded-lg flex items-center justify-center">
-                  <ExternalLink className="w-3 h-3 text-white" />
+                <div className="w-8 h-8 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-md">
+                  <ExternalLink className="w-4 h-4 text-white" />
                 </div>
-                <span>{t.library.viewPanchang}</span>
+                <span>{t.calendar.viewPanchang}</span>
               </a>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      <div className="mt-8 pt-6 border-t border-gold/10 grid grid-cols-2 lg:grid-cols-3 gap-4">
-        <div className="flex items-center gap-2">
-          <div className="w-3 h-3 rounded-full bg-saffron" />
-          <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400">{t.calendar.highlyAuspicious}</span>
+      <div className="p-8 bg-paper/50 border-t border-gold/10 grid grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="flex items-center gap-3">
+          <div className="w-4 h-4 rounded-full bg-saffron shadow-lg shadow-saffron/20" />
+          <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500">{t.calendar.highlyAuspicious}</span>
         </div>
-        <div className="flex items-center gap-2">
-          <div className="w-3 h-3 rounded-full border border-gold bg-gold/20" />
-          <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400">{t.calendar.auspicious}</span>
+        <div className="flex items-center gap-3">
+          <div className="w-4 h-4 rounded-full border-2 border-gold bg-gold/10" />
+          <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500">{t.calendar.auspicious}</span>
         </div>
-        <div className="flex items-center gap-2">
-          <div className="w-3 h-3 rounded-full border border-maroon/20 bg-maroon/10" />
-          <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400">{t.calendar.tithi}</span>
+        <div className="flex items-center gap-3">
+          <div className="w-4 h-4 rounded-full border-2 border-maroon/10 bg-maroon/5" />
+          <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500">{t.calendar.tithi}</span>
         </div>
       </div>
     </div>
