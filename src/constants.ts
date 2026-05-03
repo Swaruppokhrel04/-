@@ -194,9 +194,8 @@ export const PUJA_SCHEDULE = [
 ];
 
 export const CONTACT_INFO = {
-  phone: '+977-9851000000',
-  displayPhone: '+977 98510 00000',
-  email: 'panditji@nepalpandit.com',
-  address: 'Pashupatinath Area, Kathmandu, Nepal',
-  whatsapp: '9851000000'
+  phone: '+9779847016421',
+  displayPhone: '+977 98470 16421',
+  address: 'RUPANDEHI NEPAL 32900',
+  whatsapp: '9779847016421'
 };

@@ -165,14 +165,14 @@ export const Dashboard = () => {
                     <img src={user.photoURL} alt="" className="w-full h-full rounded-full object-cover" />
                   ) : (
                     <div className="w-full h-full rounded-full bg-maroon flex items-center justify-center text-cream text-3xl font-bold">
-                      {user.email?.[0].toUpperCase()}
+                      {user.displayName?.[0].toUpperCase() || 'Y'}
                     </div>
                   )}
                   <div className="absolute -bottom-1 -right-1 bg-gold text-maroon p-1.5 rounded-full border-2 border-white">
                     <Sparkles className="w-3 h-3" />
                   </div>
                 </div>
-                <h3 className="text-xl font-bold text-maroon">{user.displayName || user.email}</h3>
+                <h3 className="text-xl font-bold text-maroon">{user.displayName || 'Yajman'}</h3>
                 <p className="text-xs text-gray-400 font-bold uppercase tracking-widest mt-1">{t.dashboard.welcome}</p>
               </div>
 
@@ -388,11 +388,11 @@ export const Dashboard = () => {
                           </div>
                         </div>
                         <div className="space-y-2">
-                          <label className="text-xs font-bold uppercase tracking-widest text-gray-400">{t.booking.form.labelEmail}</label>
+                          <label className="text-xs font-bold uppercase tracking-widest text-gray-400">{t.booking.form.labelPhone}</label>
                           <div className="relative">
                             <input 
-                              type="email"
-                              value={user.email || ''}
+                              type="tel"
+                              value={user.phoneNumber || ''}
                               readOnly
                               className="w-full bg-gray-50 border border-gold/10 rounded-2xl px-5 py-4 text-gray-400 font-bold cursor-not-allowed"
                             />

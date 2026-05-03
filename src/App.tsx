@@ -178,7 +178,7 @@ const Navbar = () => {
                     <img src={user.photoURL} alt={user.displayName || ''} className="w-8 h-8 rounded-full border border-gold/20" />
                   ) : (
                     <div className="w-8 h-8 bg-maroon/10 rounded-full flex items-center justify-center text-maroon font-bold text-xs uppercase">
-                      {user.email?.[0]}
+                      {user.displayName?.[0] || <Users className="w-4 h-4" />}
                     </div>
                   )}
                   <button 
@@ -318,11 +318,11 @@ const Navbar = () => {
                       <img src={user.photoURL} alt="" className="w-10 h-10 rounded-full" />
                     ) : (
                       <div className="w-10 h-10 bg-maroon/10 rounded-full flex items-center justify-center text-maroon font-bold text-lg uppercase">
-                        {user.email?.[0]}
+                        {user.displayName?.[0] || <Users className="w-5 h-5" />}
                       </div>
                     )}
                     <div>
-                      <p className="text-sm font-bold">{user.displayName || user.email}</p>
+                      <p className="text-sm font-bold">{user.displayName || 'Yajman'}</p>
                       <button onClick={() => signOut()} className="text-xs text-saffron font-bold text-left">{t.nav.logout}</button>
                     </div>
                   </div>
@@ -939,7 +939,6 @@ const BookingForm = ({ preselectedServiceId }: { preselectedServiceId?: string |
   const { user } = useAuth();
   const [formData, setFormData] = useState<BookingFormData>({
     fullName: user?.displayName || '',
-    email: user?.email || '',
     phone: '',
     pujaType: SERVICES[0].id,
     date: '', 
@@ -952,8 +951,7 @@ const BookingForm = ({ preselectedServiceId }: { preselectedServiceId?: string |
     if (user) {
       setFormData(prev => ({
         ...prev,
-        fullName: prev.fullName || user.displayName || '',
-        email: prev.email || user.email || ''
+        fullName: prev.fullName || user.displayName || ''
       }));
     }
   }, [user]);
@@ -976,12 +974,6 @@ const BookingForm = ({ preselectedServiceId }: { preselectedServiceId?: string |
     }
     
     if (!formData.message.trim()) newErrors.message = "Message is required";
-    
-    if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Invalid email format";
-    }
 
     if (!formData.date) newErrors.date = "Please select a date";
     if (!formData.time) newErrors.time = "Please select a time slot";
@@ -1030,7 +1022,6 @@ const BookingForm = ({ preselectedServiceId }: { preselectedServiceId?: string |
         // Reset form
         setFormData({
           fullName: '',
-          email: '',
           phone: '',
           pujaType: SERVICES[0].id,
           date: '', 
@@ -1197,20 +1188,6 @@ const BookingForm = ({ preselectedServiceId }: { preselectedServiceId?: string |
                       }}
                     />
                     {errors.phone && <p className="text-xs text-red-500 font-bold">{errors.phone}</p>}
-                  </div>
-                  <div className="space-y-2 md:col-span-2">
-                    <label className="text-sm font-bold uppercase tracking-widest text-gray-500">{t.booking.form.labelEmail}</label>
-                    <input 
-                      type="email" 
-                      placeholder={(t.booking.form as any).holderEmail}
-                      className={`w-full bg-gray-50 border ${errors.email ? 'border-red-400' : 'border-gray-200'} rounded-xl px-4 py-3 focus:outline-none focus:border-maroon transition-colors`}
-                      value={formData.email}
-                      onChange={(e) => {
-                        setFormData({...formData, email: e.target.value});
-                        if (errors.email) setErrors({...errors, email: undefined});
-                      }}
-                    />
-                    {errors.email && <p className="text-xs text-red-500 font-bold">{errors.email}</p>}
                   </div>
                   <div className="space-y-2 md:col-span-2">
                     <label className="text-sm font-bold uppercase tracking-widest text-gray-500">{t.booking.form.labelService}</label>
@@ -1582,7 +1559,7 @@ const ServiceModal = ({
                   {t.nav.book}
                 </button>
                 <a 
-                  href="tel:+9779847016421"
+                  href={`tel:${CONTACT_INFO.phone}`}
                   className="bg-white border border-maroon text-maroon px-6 py-4 rounded-xl font-bold hover:bg-maroon hover:text-white transition-all"
                 >
                   <Phone className="w-5 h-5" />
@@ -1634,13 +1611,13 @@ const ContactSection = () => {
             
             <div className="flex flex-col gap-4">
               <a 
-                href="tel:+9779847016421"
+                href={`tel:${CONTACT_INFO.phone}`}
                 className="flex items-center gap-4 bg-maroon text-cream px-8 py-4 rounded-xl font-bold shadow-xl hover:bg-saffron transition-all"
               >
                 <Phone className="w-5 h-5" /> {t.footer.contactLinks[0]}
               </a>
               <a 
-                href="https://wa.me/9779847016421"
+                href={`https://wa.me/${CONTACT_INFO.whatsapp}`}
                 target="_blank"
                 className="flex items-center gap-4 bg-[#25D366] text-white px-8 py-4 rounded-xl font-bold shadow-xl hover:scale-105 transition-transform"
               >
@@ -1652,10 +1629,7 @@ const ContactSection = () => {
               <h4 className="font-bold text-maroon mb-4">द्रुत जानकारी</h4>
               <ul className="space-y-4">
                 <li className="flex items-center gap-3 text-gray-600">
-                  <Mail className="w-5 h-5 text-gold" /> info@shreenarnarayan.com
-                </li>
-                <li className="flex items-center gap-3 text-gray-600">
-                  <MapPin className="w-5 h-5 text-gold" /> Kathmandu, Nepal
+                  <MapPin className="w-5 h-5 text-gold" /> {CONTACT_INFO.address}
                 </li>
                 <li className="flex items-center gap-3 text-gray-600">
                   <Clock className="w-5 h-5 text-gold" /> Open Daily: 6:00 AM - 8:00 PM
@@ -1917,58 +1891,13 @@ export default function App() {
                   </li>
                   <li className="flex items-center gap-2">
                     <MapPin className="w-4 h-4 text-saffron" />
-                    <span>KMC-32, Kathmandu, Nepal</span>
+                    <span>{CONTACT_INFO.address}</span>
                   </li>
                 </ul>
               </div>
               <div>
-                <h4 className="font-bold text-maroon mb-6 text-sm uppercase tracking-widest">{t.footer.infoTitle}</h4>
-                <p className="text-xs text-gray-500 mb-4">{t.footer.infoDesc}</p>
-                <form 
-                  onSubmit={async (e) => {
-                    e.preventDefault();
-                    const form = e.currentTarget;
-                    const email = (form.elements.namedItem('email') as HTMLInputElement).value;
-                    const btn = form.querySelector('button');
-                    if (!btn) return;
-                    
-                    btn.disabled = true;
-                    const originalText = btn.innerText;
-                    btn.innerText = '...';
-
-                    try {
-                      const res = await fetch('/api/newsletter', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ email })
-                      });
-                      const data = await res.json();
-                      if (data.success) {
-                        alert(data.message);
-                        (form.elements.namedItem('email') as HTMLInputElement).value = '';
-                      } else {
-                        alert(data.error || "त्रुटि! फेरि प्रयास गर्नुहोस्।");
-                      }
-                    } catch {
-                      alert("नेटवर्क त्रुटि!");
-                    } finally {
-                      btn.disabled = false;
-                      btn.innerText = originalText;
-                    }
-                  }}
-                  className="flex bg-white rounded-lg p-1 border border-gold/20"
-                >
-                  <input 
-                    name="email"
-                    type="email" 
-                    required
-                    placeholder={t.footer.emailHolder} 
-                    className="bg-transparent px-3 py-2 text-xs w-full focus:outline-none" 
-                  />
-                  <button type="submit" className="bg-maroon text-cream px-4 py-2 rounded-md text-xs font-bold hover:bg-saffron transition-colors disabled:opacity-50">
-                    {t.footer.btnJoin}
-                  </button>
-                </form>
+                <h4 className="font-bold text-maroon mb-6 text-sm uppercase tracking-widest">हाम्रोबारे</h4>
+                <p className="text-xs text-gray-500 mb-4">हामी भक्तहरूको सेवामा सदैव समर्पित छौं।</p>
               </div>
             </div>
             <div className="pt-8 border-t border-gold/10 flex flex-col md:flex-row justify-between items-center gap-4">

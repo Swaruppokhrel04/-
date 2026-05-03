@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { Send, User, Mail, MessageSquare, Tag, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
+import { Send, User, Phone, Mail, MessageSquare, Tag, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
 import { useLanguage } from '../LanguageContext';
 
 export const ContactForm = () => {
   const { t } = useLanguage();
   const [formData, setFormData] = useState({
     name: '',
-    email: '',
+    phone: '',
     subject: '',
     message: ''
   });
@@ -22,10 +22,10 @@ export const ContactForm = () => {
       newErrors.name = contactT.errNameRequired;
     }
     
-    if (!formData.email.trim()) {
-      newErrors.email = contactT.errEmailRequired;
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = contactT.errEmailInvalid;
+    if (!formData.phone.trim()) {
+      newErrors.phone = contactT.errPhoneRequired;
+    } else if (!/^\+?[0-9]{7,15}$/.test(formData.phone.trim())) {
+      newErrors.phone = contactT.errPhoneInvalid;
     }
 
     if (!formData.message.trim()) {
@@ -55,7 +55,7 @@ export const ContactForm = () => {
 
       if (response.ok) {
         setStatus('success');
-        setFormData({ name: '', email: '', subject: '', message: '' });
+        setFormData({ name: '', phone: '', subject: '', message: '' });
       } else {
         setStatus('error');
       }
@@ -128,20 +128,20 @@ export const ContactForm = () => {
 
             <div className="space-y-2">
               <label className="text-xs font-bold uppercase tracking-widest text-gray-500 ml-1">
-                {(t as any).contact_form.labelEmail}
+                {(t as any).contact_form.labelPhone}
               </label>
               <div className="relative group">
-                <Mail className={`absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 transition-colors ${errors.email ? 'text-red-400' : 'text-gray-400 group-focus-within:text-saffron'}`} />
+                <Phone className={`absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 transition-colors ${errors.phone ? 'text-red-400' : 'text-gray-400 group-focus-within:text-saffron'}`} />
                 <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
                   onChange={handleChange}
-                  placeholder={(t as any).contact_form.placeholderEmail}
-                  className={`w-full pl-12 pr-4 py-3.5 bg-white border rounded-xl focus:outline-none focus:ring-2 transition-all text-sm ${errors.email ? 'border-red-300 focus:ring-red-100 focus:border-red-400' : 'border-gray-200 focus:ring-saffron/20 focus:border-saffron'}`}
+                  placeholder={(t as any).contact_form.placeholderPhone}
+                  className={`w-full pl-12 pr-4 py-3.5 bg-white border rounded-xl focus:outline-none focus:ring-2 transition-all text-sm ${errors.phone ? 'border-red-300 focus:ring-red-100 focus:border-red-400' : 'border-gray-200 focus:ring-saffron/20 focus:border-saffron'}`}
                 />
               </div>
-              {errors.email && <p className="text-[10px] text-red-500 font-bold ml-1">{errors.email}</p>}
+              {errors.phone && <p className="text-[10px] text-red-500 font-bold ml-1">{errors.phone}</p>}
             </div>
           </div>
 

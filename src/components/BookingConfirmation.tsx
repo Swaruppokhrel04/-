@@ -7,7 +7,6 @@ import { generateGoogleCalendarLink, downloadICal } from '../lib/calendarUtils';
 interface BookingConfirmationProps {
   booking: {
     fullName: string;
-    email: string;
     phone: string;
     pujaType: string;
     date: string;
@@ -56,7 +55,6 @@ export const BookingConfirmation: React.FC<BookingConfirmationProps> = ({ bookin
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
           <DetailItem icon={<User />} label={t.booking.form.labelName} value={booking.fullName} />
           <DetailItem icon={<Calendar />} label={t.booking.form.labelDate} value={`${booking.date} (${booking.time})`} />
-          <DetailItem icon={<Mail />} label={t.booking.form.labelEmail} value={booking.email} />
           <DetailItem icon={<Phone />} label={t.booking.form.labelPhone} value={booking.phone} />
           <DetailItem icon={<Home />} label={t.booking.form.labelService} value={booking.pujaType} />
           {booking.location && (
