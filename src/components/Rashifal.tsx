@@ -152,23 +152,23 @@ export const Rashifal = () => {
   );
 
   return (
-    <section className="bg-paper rounded-[3rem] p-8 md:p-12 shadow-inner border border-maroon/5">
+    <section className="bg-paper rounded-[2rem] md:rounded-[3rem] p-5 md:p-12 shadow-inner border border-maroon/5">
       <div className="max-w-6xl mx-auto">
-        <div className="flex flex-col md:flex-row items-end justify-between gap-8 mb-12">
+        <div className="flex flex-col lg:flex-row items-center lg:items-end justify-between gap-6 md:gap-8 mb-8 md:mb-12 text-center lg:text-left">
           <div className="flex-1">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-maroon/10 rounded-full text-maroon mb-4">
-              <Sparkles className="w-4 h-4" />
-              <span className="text-xs font-bold uppercase tracking-widest">{t.rashifal.title}</span>
+              <Sparkles className="w-3 h-3 md:w-4 md:h-4" />
+              <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest">{t.rashifal.title}</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-serif font-bold text-maroon mb-4">
+            <h2 className="text-3xl md:text-5xl font-serif font-bold text-maroon mb-3 md:mb-4">
               {t.rashifal.title}
             </h2>
-            <p className="text-gray-500 max-w-xl">
+            <p className="text-gray-500 text-sm md:text-base max-w-xl mx-auto lg:mx-0">
               {t.rashifal.subtitle}
             </p>
           </div>
 
-          <div className="w-full md:w-80">
+          <div className="w-full lg:w-80">
             <div className="relative">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input
@@ -182,25 +182,25 @@ export const Rashifal = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-12 gap-3 mb-12">
+        <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-12 gap-2 md:gap-3 mb-8 md:mb-12">
           {filteredSigns.map((sign) => (
             <button
               key={sign}
               onClick={() => setSelectedSign(sign)}
               className={cn(
-                "group flex flex-col items-center gap-2 p-3 rounded-2xl transition-all duration-300",
+                "group flex flex-col items-center gap-1.5 md:gap-2 p-2 md:p-3 rounded-xl md:rounded-2xl transition-all duration-300",
                 selectedSign === sign 
                   ? "bg-maroon text-cream shadow-xl shadow-maroon/20 scale-105" 
                   : "bg-white hover:bg-maroon/5 text-maroon border border-maroon/5"
               )}
             >
               <div className={cn(
-                "w-10 h-10 rounded-xl flex items-center justify-center transition-colors",
+                "w-8 h-8 md:w-10 md:h-10 rounded-lg md:rounded-xl flex items-center justify-center transition-colors",
                 selectedSign === sign ? "bg-white/20" : "bg-paper group-hover:bg-maroon/10"
               )}>
-                <Star className={cn("w-5 h-5", selectedSign === sign ? "text-gold" : "text-maroon/40")} />
+                <Star className={cn("w-4 h-4 md:w-5 md:h-5", selectedSign === sign ? "text-gold" : "text-maroon/40")} />
               </div>
-              <span className="text-[10px] font-bold uppercase tracking-tight truncate w-full text-center">
+              <span className="text-[8px] md:text-[10px] font-bold uppercase tracking-tight truncate w-full text-center">
                 {t.rashifal.signs[sign].name}
               </span>
             </button>
@@ -217,34 +217,34 @@ export const Rashifal = () => {
               className="grid md:grid-cols-3 gap-6"
             >
               <div className="md:col-span-1 space-y-6">
-                <div className="bg-white p-8 rounded-[2rem] shadow-xl border border-gold/10 relative overflow-hidden">
-                  <div className="absolute top-0 right-0 p-4 opacity-5">
+                <div className="bg-white p-6 md:p-8 rounded-[2rem] shadow-xl border border-gold/10 relative overflow-hidden">
+                  <div className="absolute top-0 right-0 p-4 opacity-5 hidden md:block">
                     <Star className="w-32 h-32" />
                   </div>
-                  <div className="relative z-10">
-                    <div className="flex items-center gap-3 mb-6">
-                      <div className="w-12 h-12 bg-maroon rounded-2xl flex items-center justify-center text-white shadow-lg">
+                  <div className="relative z-10 text-center md:text-left">
+                    <div className="flex flex-col md:flex-row items-center gap-3 mb-6">
+                      <div className="w-12 h-12 bg-maroon rounded-2xl flex items-center justify-center text-white shadow-lg shrink-0">
                         <Star className="w-6 h-6" />
                       </div>
                       <div>
-                        <h3 className="text-2xl font-serif font-bold text-maroon">
+                        <h3 className="text-xl md:text-2xl font-serif font-bold text-maroon">
                           {t.rashifal.signs[selectedSign].name}
                         </h3>
-                        <div className="flex items-center gap-1 opacity-60">
+                        <div className="flex items-center justify-center md:justify-start gap-1 opacity-60">
                           <ElementIcon element={t.rashifal.signs[selectedSign].element} />
-                          <span className="text-[10px] font-bold uppercase tracking-widest">{t.rashifal.signs[selectedSign].element}</span>
+                          <span className="text-[9px] md:text-[10px] font-bold uppercase tracking-widest">{t.rashifal.signs[selectedSign].element}</span>
                         </div>
                       </div>
                     </div>
 
-                    <div className="space-y-4">
-                      <div className="p-4 bg-paper rounded-2xl flex items-center justify-between">
-                        <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">{t.rashifal.categories.luckyNumber}</span>
-                        <span className="text-xl font-black text-maroon">{prediction.luckyNumber}</span>
+                    <div className="grid grid-cols-2 lg:grid-cols-1 gap-3 md:gap-4">
+                      <div className="p-3 md:p-4 bg-paper rounded-2xl flex flex-col md:flex-row items-center justify-between">
+                        <span className="text-[9px] md:text-xs font-bold text-gray-400 uppercase tracking-widest mb-1 md:mb-0">{t.rashifal.categories.luckyNumber}</span>
+                        <span className="text-lg md:text-xl font-black text-maroon">{prediction.luckyNumber}</span>
                       </div>
-                      <div className="p-4 bg-paper rounded-2xl flex items-center justify-between">
-                        <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">{t.rashifal.categories.luckyColor}</span>
-                        <span className="font-bold text-maroon">{prediction.luckyColor}</span>
+                      <div className="p-3 md:p-4 bg-paper rounded-2xl flex flex-col md:flex-row items-center justify-between">
+                        <span className="text-[9px] md:text-xs font-bold text-gray-400 uppercase tracking-widest mb-1 md:mb-0">{t.rashifal.categories.luckyColor}</span>
+                        <span className="font-bold text-sm md:text-base text-maroon">{prediction.luckyColor}</span>
                       </div>
                     </div>
                   </div>

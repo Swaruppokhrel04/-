@@ -1847,7 +1847,7 @@ const MainContent = ({ setSelectedService, handleBookNow, preselectedBookingId }
 
       <JyotishSection onSelectService={setSelectedService} />
 
-      <div className="max-w-7xl mx-auto px-4 relative z-10 py-12">
+      <div className="max-w-7xl mx-auto px-2 sm:px-4 relative z-10 py-8 md:py-12">
         <Rashifal />
       </div>
 

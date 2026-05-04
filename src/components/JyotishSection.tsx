@@ -22,7 +22,7 @@ export const JyotishSection: React.FC<JyotishSectionProps> = ({ onSelectService 
   ];
 
   return (
-    <section id="jyotish" className="py-24 bg-maroon relative overflow-hidden">
+    <section id="jyotish" className="py-16 md:py-24 bg-maroon relative overflow-hidden">
       {/* Decorative stars */}
       <div className="absolute inset-0 opacity-20">
         {[...Array(20)].map((_, i) => (
@@ -48,22 +48,22 @@ export const JyotishSection: React.FC<JyotishSectionProps> = ({ onSelectService 
         ))}
       </div>
 
-      <div className="container mx-auto px-6 relative z-10">
-        <div className="flex flex-col lg:flex-row gap-16 items-center mb-20">
+      <div className="container mx-auto px-4 md:px-6 relative z-10">
+        <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-center mb-16 md:mb-20">
           <motion.div 
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            className="lg:w-1/2"
+            className="lg:w-1/2 text-center lg:text-left"
           >
-            <span className="text-saffron font-black uppercase tracking-[0.4em] text-xs mb-4 block">{jt.tag}</span>
-            <h2 className="text-5xl md:text-6xl font-serif font-black text-white mb-8 leading-tight">
+            <span className="text-saffron font-black uppercase tracking-[0.4em] text-[10px] md:text-xs mb-4 block">{jt.tag}</span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-black text-white mb-6 md:mb-8 leading-tight">
               {jt.title} <span className="text-gold">{jt.span}</span>
             </h2>
-            <p className="text-cream font-medium opacity-80 text-lg leading-relaxed mb-10">
+            <p className="text-cream font-medium opacity-80 text-base md:text-lg leading-relaxed mb-8 md:mb-10 max-w-2xl mx-auto lg:mx-0">
               {jt.desc}
             </p>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 text-left">
               {bookingProcess.map((step, idx) => (
                 <div key={idx} className="flex gap-4">
                   <div className="w-10 h-10 rounded-full border border-gold/30 flex items-center justify-center text-gold font-bold shrink-0">
@@ -81,9 +81,9 @@ export const JyotishSection: React.FC<JyotishSectionProps> = ({ onSelectService 
           <motion.div 
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
-            className="lg:w-1/2 relative"
+            className="lg:w-1/2 relative w-full mt-8 lg:mt-0"
           >
-            <div className="w-full aspect-square max-w-md mx-auto relative group">
+            <div className="w-full aspect-square max-w-[280px] sm:max-w-md mx-auto relative group">
               <div className="absolute inset-0 bg-gold/10 rounded-full animate-[spin_20s_linear_infinite]" />
               <div className="absolute inset-4 border-2 border-gold/20 rounded-full border-dashed animate-[spin_30s_linear_infinite_reverse]" />
               
@@ -189,15 +189,15 @@ export const JyotishSection: React.FC<JyotishSectionProps> = ({ onSelectService 
               >
                 <button
                   onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
-                  className="w-full px-8 py-6 flex items-center justify-between text-left group"
+                  className="w-full px-5 md:px-8 py-5 md:py-6 flex items-center justify-between text-left group"
                 >
-                  <span className={`text-lg font-bold transition-colors ${openFaq === idx ? 'text-maroon' : 'text-cream'}`}>
+                  <span className={`text-base md:text-lg font-bold transition-colors pr-4 ${openFaq === idx ? 'text-maroon' : 'text-cream'}`}>
                     {faq.q}
                   </span>
-                  <div className={`shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-all ${
+                  <div className={`shrink-0 w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center transition-all ${
                     openFaq === idx ? 'bg-maroon text-white rotate-180' : 'bg-white/10 text-gold group-hover:bg-gold/20'
                   }`}>
-                    {openFaq === idx ? <Minus className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
+                    {openFaq === idx ? <Minus className="w-4 h-4 md:w-5 md:h-5" /> : <Plus className="w-4 h-4 md:w-5 md:h-5" />}
                   </div>
                 </button>
                 
@@ -209,9 +209,9 @@ export const JyotishSection: React.FC<JyotishSectionProps> = ({ onSelectService 
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.3, ease: 'easeInOut' }}
                     >
-                      <div className="px-8 pb-8">
-                        <div className="h-px bg-maroon/10 mb-6" />
-                        <p className="text-maroon/70 leading-relaxed">
+                      <div className="px-5 md:px-8 pb-6 md:pb-8">
+                        <div className="h-px bg-maroon/10 mb-4 md:mb-6" />
+                        <p className="text-maroon/70 text-sm md:text-base leading-relaxed">
                           {faq.a}
                         </p>
                       </div>
