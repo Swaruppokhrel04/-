@@ -74,8 +74,40 @@ const Navbar = () => {
   const [query, setQuery] = useState('');
   const { t, language } = useLanguage();
   const { user, signIn, signOut } = useAuth();
+  const location = useLocation();
   const searchRef = useRef<HTMLDivElement>(null);
   const whatsappRef = useRef<HTMLDivElement>(null);
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setIsOpen(false);
+    setIsSearchOpen(false);
+    setIsWhatsappOpen(false);
+  }, [location.pathname]);
+
+  // Lock scroll when mobile menu is open
+  useEffect(() => {
+    if (isOpen || isWhatsappOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen, isWhatsappOpen]);
+
+  // Handle window resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setIsOpen(false);
+        setIsSearchOpen(false);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -102,10 +134,17 @@ const Navbar = () => {
   }) : [];
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 bg-paper/60 backdrop-blur-xl border-b border-gold/10 transition-all duration-300">
+    <nav 
+      className="fixed top-0 left-0 w-full z-50 bg-paper/70 backdrop-blur-2xl border-b border-gold/10 transition-all duration-500"
+      role="navigation"
+      aria-label="Main Navigation"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20 md:h-24">
-          <div className="flex items-center gap-3 group cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+          <div 
+            className="flex items-center gap-3 group cursor-pointer" 
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          >
             <div className="w-12 h-12 bg-maroon text-gold flex items-center justify-center rounded-2xl font-bold text-xl shadow-xl shadow-maroon/20 transform group-hover:rotate-6 transition-transform">
               🕉️
             </div>
@@ -116,12 +155,14 @@ const Navbar = () => {
           </div>
 
           {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-6 lg:gap-8">
             <div className="relative" ref={searchRef}>
               <button 
                 onClick={() => setIsSearchOpen(!isSearchOpen)}
-                className="p-2 text-maroon hover:text-saffron transition-colors"
-                aria-label="Search"
+                className="p-2 text-maroon hover:text-saffron transition-all hover:scale-110 active:scale-95"
+                aria-label="Open Search"
+                aria-expanded={isSearchOpen}
+                aria-controls="search-overlay"
               >
                 <Search className="w-5 h-5" />
               </button>
@@ -129,10 +170,11 @@ const Navbar = () => {
               <AnimatePresence>
                 {isSearchOpen && (
                   <motion.div
+                    id="search-overlay"
                     initial={{ opacity: 0, scale: 0.95, y: 10 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95, y: 10 }}
-                    className="absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-2xl border border-maroon/10 p-4 overflow-hidden z-50"
+                    className="absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-[0_20px_50px_rgba(122,12,12,0.15)] border border-maroon/10 p-4 overflow-hidden z-50"
                   >
                     <div className="relative">
                       <input 
@@ -186,8 +228,10 @@ const Navbar = () => {
             <div className="relative" ref={whatsappRef}>
               <button 
                 onClick={() => setIsWhatsappOpen(!isWhatsappOpen)}
-                className="p-2 text-green-600 hover:text-green-700 transition-colors"
-                aria-label="WhatsApp Contact"
+                className="p-2 text-green-600 hover:text-green-700 transition-all hover:scale-110 active:scale-95"
+                aria-label="WhatsApp Contact Information"
+                aria-expanded={isWhatsappOpen}
+                aria-controls="whatsapp-overlay"
               >
                 <MessageCircle className="w-5 h-5" />
               </button>
@@ -195,10 +239,11 @@ const Navbar = () => {
               <AnimatePresence>
                 {isWhatsappOpen && (
                   <motion.div
+                    id="whatsapp-overlay"
                     initial={{ opacity: 0, scale: 0.95, y: 10 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95, y: 10 }}
-                    className="absolute right-0 mt-2 w-48 bg-white rounded-2xl shadow-2xl border border-gold/10 p-4 flex flex-col items-center z-50 text-center"
+                    className="absolute right-0 mt-2 w-48 bg-white rounded-2xl shadow-[0_20px_50px_rgba(122,12,12,0.15)] border border-gold/10 p-4 flex flex-col items-center z-50 text-center"
                   >
                     <p className="text-[10px] font-bold text-green-600 uppercase tracking-wider mb-2">WhatsApp Contact</p>
                     <div className="bg-white p-2 rounded-xl border border-green-500/20 shadow-inner">
@@ -216,58 +261,118 @@ const Navbar = () => {
               </AnimatePresence>
             </div>
 
-            <a href="/#services" className="text-sm font-bold text-maroon hover:text-saffron transition-colors">{t.nav.services}</a>
-            <Link to="/library" className="text-sm font-bold text-maroon hover:text-saffron transition-colors">{(t.nav as any).library}</Link>
-            <a href="/#about" className="text-sm font-bold text-maroon hover:text-saffron transition-colors">{t.nav.about}</a>
-            <a href="/#faq" className="text-sm font-bold text-maroon hover:text-saffron transition-colors">{t.nav.faq}</a>
-            {user && (
-              <Link to="/dashboard" className="text-sm font-bold text-maroon hover:text-saffron transition-colors">
-                {(t.nav as any).dashboard}
-              </Link>
-            )}
-            <LanguageSwitcher />
-            
-            {user ? (
-              <div className="flex items-center gap-4 border-l border-gold/10 pl-6">
-                <div className="flex items-center gap-2 group relative cursor-pointer">
-                  {user.photoURL ? (
-                    <img src={user.photoURL} alt={user.displayName || ''} className="w-8 h-8 rounded-full border border-gold/20" />
-                  ) : (
-                    <div className="w-8 h-8 bg-maroon/10 rounded-full flex items-center justify-center text-maroon font-bold text-xs uppercase">
-                      {user.displayName?.[0] || <Users className="w-4 h-4" />}
-                    </div>
+            <ul className="flex items-center gap-6 lg:gap-8">
+              <li>
+                <a 
+                  href="/#services" 
+                  className={cn(
+                    "text-sm font-bold transition-all hover:text-saffron",
+                    location.hash === '#services' ? "text-saffron" : "text-maroon"
                   )}
-                  <button 
-                    onClick={() => signOut()}
-                    className="text-xs font-bold text-gray-500 hover:text-maroon transition-colors"
+                >
+                  {t.nav.services}
+                </a>
+              </li>
+              <li>
+                <Link 
+                  to="/library" 
+                  className={cn(
+                    "text-sm font-bold transition-all hover:text-saffron",
+                    location.pathname === '/library' ? "text-saffron" : "text-maroon"
+                  )}
+                >
+                  {(t.nav as any).library}
+                </Link>
+              </li>
+              <li>
+                <a 
+                  href="/#about" 
+                  className={cn(
+                    "text-sm font-bold transition-all hover:text-saffron",
+                    location.hash === '#about' ? "text-saffron" : "text-maroon"
+                  )}
+                >
+                  {t.nav.about}
+                </a>
+              </li>
+              <li>
+                <a 
+                  href="/#faq" 
+                  className={cn(
+                    "text-sm font-bold transition-all hover:text-saffron",
+                    location.hash === '#faq' ? "text-saffron" : "text-maroon"
+                  )}
+                >
+                  {t.nav.faq}
+                </a>
+              </li>
+              {user && (
+                <li>
+                  <Link 
+                    to="/dashboard" 
+                    className={cn(
+                      "text-sm font-bold transition-all hover:text-saffron",
+                      location.pathname === '/dashboard' ? "text-saffron" : "text-maroon"
+                    )}
                   >
-                    {t.nav.logout}
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <button 
-                onClick={() => signIn()}
-                className="text-sm font-bold text-maroon hover:text-saffron transition-colors"
-              >
-                {t.nav.login}
-              </button>
-            )}
+                    {(t.nav as any).dashboard}
+                  </Link>
+                </li>
+              )}
+            </ul>
 
-            <a href="#booking" className="bg-maroon text-cream px-6 py-2.5 rounded-full text-sm font-bold hover:bg-saffron transition-all duration-300">
-              {t.nav.book}
-            </a>
+            <div className="flex items-center gap-4">
+              <LanguageSwitcher />
+              
+              {user ? (
+                <div className="flex items-center gap-4 border-l border-gold/10 pl-6">
+                  <div className="flex items-center gap-2 group relative cursor-pointer">
+                    {user.photoURL ? (
+                      <img src={user.photoURL} alt={user.displayName || ''} className="w-8 h-8 rounded-full border border-gold/20" />
+                    ) : (
+                      <div className="w-8 h-8 bg-maroon/10 rounded-full flex items-center justify-center text-maroon font-bold text-xs uppercase">
+                        {user.displayName?.[0] || <Users className="w-4 h-4" />}
+                      </div>
+                    )}
+                    <button 
+                      onClick={() => signOut()}
+                      className="text-xs font-bold text-gray-500 hover:text-maroon transition-colors"
+                      aria-label="Logout"
+                    >
+                      {t.nav.logout}
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <button 
+                  onClick={() => signIn()}
+                  className="text-sm font-bold text-maroon hover:text-saffron transition-colors"
+                  aria-label="Login"
+                >
+                  {t.nav.login}
+                </button>
+              )}
+
+              <a 
+                href="#booking" 
+                className="bg-maroon text-cream px-6 py-2.5 rounded-full text-sm font-bold hover:bg-saffron transition-all duration-300 shadow-lg shadow-maroon/10 hover:shadow-saffron/20 hover:-translate-y-0.5 active:translate-y-0"
+              >
+                {t.nav.book}
+              </a>
+            </div>
           </div>
 
-          {/* Mobile Menu Button */}
-          <div className="flex items-center gap-4 md:hidden">
+          <div className="flex items-center gap-2 md:hidden">
             <button 
               onClick={() => {
                 setIsWhatsappOpen(!isWhatsappOpen);
                 setIsSearchOpen(false);
                 setIsOpen(false);
               }}
-              className="p-2 text-green-600"
+              className="p-2 text-green-600 transition-transform active:scale-90"
+              aria-label="Toggle WhatsApp Contact Info"
+              aria-expanded={isWhatsappOpen}
+              aria-haspopup="true"
             >
               <MessageCircle className="w-6 h-6" />
             </button>
@@ -277,14 +382,23 @@ const Navbar = () => {
                 setIsWhatsappOpen(false);
                 setIsOpen(false);
               }}
-              className="p-2 text-maroon"
+              className="p-2 text-maroon transition-transform active:scale-90"
+              aria-label="Toggle Search"
+              aria-expanded={isSearchOpen}
+              aria-haspopup="true"
             >
               <Search className="w-6 h-6" />
             </button>
-            <button onClick={() => {
-              setIsOpen(!isOpen);
-              setIsSearchOpen(false);
-            }}>
+            <button 
+              onClick={() => {
+                setIsOpen(!isOpen);
+                setIsSearchOpen(false);
+              }}
+              className="p-2 transition-transform active:scale-90 text-maroon"
+              aria-label="Toggle Navigation Menu"
+              aria-expanded={isOpen}
+              aria-controls="mobile-nav"
+            >
               {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
@@ -373,27 +487,29 @@ const Navbar = () => {
             
             {/* Drawer */}
             <motion.div
+              id="mobile-nav"
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
-              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="md:hidden fixed top-0 right-0 h-full w-[80%] max-w-[320px] bg-paper shadow-2xl z-[70] overflow-y-auto"
+              transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+              className="md:hidden fixed top-0 right-0 h-full w-[85%] max-w-[340px] bg-paper shadow-2xl z-[70] overflow-y-auto"
             >
-              <div className="p-8 flex flex-col h-full">
-                <div className="flex justify-between items-center mb-12">
+              <div className="p-8 flex flex-col min-h-full">
+                <div className="flex justify-between items-center mb-10">
                   <div className="flex flex-col">
-                    <span className="font-serif font-black text-maroon text-2xl">श्री नर</span>
-                    <span className="text-xs text-saffron font-bold tracking-[0.2em] uppercase">नारायण</span>
+                    <span className="font-serif font-black text-maroon text-2xl tracking-tight">श्री नर नारायण</span>
+                    <span className="text-[10px] text-saffron font-bold tracking-[0.3em] uppercase">धार्मिक सेवा</span>
                   </div>
                   <button 
                     onClick={() => setIsOpen(false)}
-                    className="p-2 bg-maroon/5 rounded-2xl text-maroon hover:bg-maroon hover:text-white transition-all transform hover:rotate-90"
+                    className="p-2.5 bg-maroon/5 rounded-2xl text-maroon hover:bg-maroon hover:text-white transition-all transform hover:rotate-90 active:scale-90"
+                    aria-label="Close Navigation Menu"
                   >
                     <X className="w-6 h-6" />
                   </button>
                 </div>
 
-                <div className="flex flex-col space-y-6">
+                <ul className="flex flex-col space-y-4 mb-12">
                   {[
                     { to: "/", label: t.nav.home, type: 'link' },
                     { to: "/#services", label: t.nav.services, type: 'anchor' },
@@ -401,12 +517,15 @@ const Navbar = () => {
                     { to: "/#about", label: t.nav.about, type: 'anchor' },
                     { to: "/#faq", label: t.nav.faq, type: 'anchor' }
                   ].map((item, idx) => (
-                    <div key={idx}>
+                    <li key={idx}>
                       {item.type === 'link' ? (
                         <Link 
                           to={item.to} 
                           onClick={() => setIsOpen(false)}
-                          className="text-xl font-bold text-gray-800 hover:text-maroon transition-colors block"
+                          className={cn(
+                            "text-xl font-bold py-3 px-4 rounded-2xl transition-all block",
+                            location.pathname === item.to ? "bg-maroon text-cream" : "text-gray-800 hover:bg-maroon/5 hover:text-maroon"
+                          )}
                         >
                           {item.label}
                         </Link>
@@ -414,24 +533,32 @@ const Navbar = () => {
                         <a 
                           href={item.to} 
                           onClick={() => setIsOpen(false)}
-                          className="text-xl font-bold text-gray-800 hover:text-maroon transition-colors block"
+                          className={cn(
+                            "text-xl font-bold py-3 px-4 rounded-2xl transition-all block",
+                            location.hash === item.to.substring(1) ? "bg-maroon text-cream" : "text-gray-800 hover:bg-maroon/5 hover:text-maroon"
+                          )}
                         >
                           {item.label}
                         </a>
                       )}
-                    </div>
+                    </li>
                   ))}
                   
                   {user && (
-                    <Link 
-                      to="/dashboard" 
-                      onClick={() => setIsOpen(false)}
-                      className="text-xl font-bold text-gray-800 hover:text-maroon transition-colors block"
-                    >
-                      {(t.nav as any).dashboard}
-                    </Link>
+                    <li>
+                      <Link 
+                        to="/dashboard" 
+                        onClick={() => setIsOpen(false)}
+                        className={cn(
+                          "text-xl font-bold py-3 px-4 rounded-2xl transition-all block",
+                          location.pathname === '/dashboard' ? "bg-maroon text-cream" : "text-gray-800 hover:bg-maroon/5 hover:text-maroon"
+                        )}
+                      >
+                        {(t.nav as any).dashboard}
+                      </Link>
+                    </li>
                   )}
-                </div>
+                </ul>
 
                 <div className="mt-auto space-y-8">
                   <div className="pt-8 border-t border-gold/10">
