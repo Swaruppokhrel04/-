@@ -12,15 +12,26 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Initialize Gemini
-const ai = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY,
-  httpOptions: {
-    headers: {
-      'User-Agent': 'aistudio-build',
+// Initialize Gemini lazily to avoid startup crashes
+let aiInstance: GoogleGenAI | null = null;
+const getAi = () => {
+  if (!aiInstance) {
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      console.error("GEMINI_API_KEY is not defined in environment variables");
+      return null;
     }
+    aiInstance = new GoogleGenAI({
+      apiKey,
+      httpOptions: {
+        headers: {
+          'User-Agent': 'aistudio-build',
+        }
+      }
+    });
   }
-});
+  return aiInstance;
+};
 
 // In-memory cache for daily news
 let dailyNewsCache: { date: string; content: any } | null = null;
@@ -113,6 +124,11 @@ async function startServer() {
         "hi": { "title": "string", "summary": "string", "body": "string", "tip": "string", "highlight": "string" }
       }`;
 
+      const ai = getAi();
+      if (!ai) {
+        throw new Error("Gemini API is not configured. Please add GEMINI_API_KEY to your secrets.");
+      }
+
       const response = await ai.models.generateContent({
         model: "gemini-3-flash-preview",
         contents: prompt,
@@ -170,7 +186,10 @@ async function startServer() {
       res.json(newsContent);
     } catch (error: any) {
       console.error("Gemini Error:", error);
-      res.status(500).json({ error: "Failed to generate daily news" });
+      res.status(500).json({ 
+        error: "Failed to generate daily news",
+        details: error.message 
+      });
     }
   });
 

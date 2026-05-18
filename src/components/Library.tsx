@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { useLanguage } from '../LanguageContext';
 import { RELIGIOUS_BOOKS, Book } from '../library_constants';
+import { cn } from '../lib/utils';
 
 const ReadingModal = ({ book, onClose, language, t }: { book: Book, onClose: () => void, language: string, t: any }) => {
   const [isFullScreen, setIsFullScreen] = useState(false);
@@ -213,12 +214,19 @@ export const Library = () => {
   const { t, language } = useLanguage();
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<'All' | 'Stotra' | 'Upanishad' | 'Bal Sahitya' | 'Jyotish'>('All');
+
+  const categories = ['All', 'Stotra', 'Upanishad', 'Bal Sahitya', 'Jyotish'] as const;
 
   const filteredBooks = RELIGIOUS_BOOKS.filter(book => {
     const title = book.title[language] || book.title['en'];
     const desc = book.description[language] || book.description['en'];
     const query = searchQuery.toLowerCase();
-    return title.toLowerCase().includes(query) || desc.toLowerCase().includes(query);
+    
+    const matchesSearch = title.toLowerCase().includes(query) || desc.toLowerCase().includes(query);
+    const matchesCategory = selectedCategory === 'All' || book.category === selectedCategory;
+
+    return matchesSearch && matchesCategory;
   });
 
   return (
@@ -238,8 +246,8 @@ export const Library = () => {
           <p className="text-gray-500 max-w-2xl mx-auto text-lg leading-relaxed">{t.library.subtitle}</p>
         </header>
 
-        <div className="max-w-2xl mx-auto mb-20 px-4">
-          <div className="relative group">
+        <div className="max-w-4xl mx-auto mb-16 space-y-8">
+          <div className="relative group max-w-2xl mx-auto">
             <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-6 h-6 text-maroon/20 group-focus-within:text-saffron transition-colors" />
             <input 
               type="text"
@@ -248,6 +256,23 @@ export const Library = () => {
               placeholder={t.library.search}
               className="w-full bg-white/70 backdrop-blur-2xl border border-gold/10 pl-16 pr-6 py-5 rounded-[2rem] focus:outline-none focus:ring-4 focus:ring-maroon/5 focus:bg-white text-maroon font-bold shadow-2xl shadow-maroon/5 transition-all text-lg"
             />
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setSelectedCategory(cat)}
+                className={cn(
+                  "px-6 py-3 rounded-2xl text-sm font-black uppercase tracking-widest transition-all duration-300 border",
+                  selectedCategory === cat 
+                    ? "bg-maroon text-white border-maroon shadow-lg shadow-maroon/20 scale-105" 
+                    : "bg-white/50 text-maroon/60 border-maroon/5 hover:bg-maroon/5 hover:text-maroon"
+                )}
+              >
+                {cat === 'All' ? (language === 'en' ? 'All Books' : language === 'ne' ? 'सबै पुस्तकहरु' : 'सभी पुस्तकें') : cat}
+              </button>
+            ))}
           </div>
         </div>
 

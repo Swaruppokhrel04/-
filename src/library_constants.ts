@@ -577,7 +577,7 @@ export const RELIGIOUS_BOOKS: Book[] = [
       hi: 'पारंपरिक गुरु',
       en: 'Traditional Guru'
     },
-    category: 'Learning',
+    category: 'Bal Sahitya',
     description: {
       ne: 'संस्कृत भाषा सिक्न चाहनेहरुका लागि आधारभूत परिचय र अभ्यास।',
       hi: 'संस्कृत भाषा सीखने के इच्छुक लोगों के लिए बुनियादी परिचय और अभ्यास।',

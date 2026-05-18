@@ -2,5 +2,5 @@
   "name": "श्री नर नारायण धार्मिक सेवा",
   "description": "श्री नर नारायण धार्मिक सेवा - पवित्रता र निष्ठाका साथ सम्पन्न गरिने वास्तविक वैदिक अनुष्ठान र आध्यात्मिक तथा ज्योतिषीय सेवाहरू।",
   "requestFramePermissions": [],
-  "majorCapabilities": []
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

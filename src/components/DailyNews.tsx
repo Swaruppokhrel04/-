@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { Newspaper, Calendar, Sparkles, Star, ArrowRight, Loader2, RefreshCw } from 'lucide-react';
+import { Newspaper, Calendar, Sparkles, Star, ArrowRight, Loader2, RefreshCw, Quote, BookOpen } from 'lucide-react';
 import { useLanguage } from '../LanguageContext';
 import { i18n } from '../translations';
 import { cn } from '../lib/utils';
+import { FEATURED_WISDOM } from '../constants/wisdomContent';
 
 interface NewsArticle {
   date: string;
@@ -26,18 +27,21 @@ export default function DailyNews() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const t = i18n[language];
+  const wisdom = FEATURED_WISDOM[language] || FEATURED_WISDOM.en;
 
   const fetchNews = async () => {
     setLoading(true);
     setError(null);
     try {
       const response = await fetch('/api/news');
-      if (!response.ok) throw new Error('Failed to fetch news');
       const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.details || 'Failed to fetch news');
+      }
       setNews(data);
     } catch (err: any) {
       console.error('News Fetch Error:', err);
-      setError(t.news.error);
+      setError(err.message || t.news.error);
     } finally {
       setLoading(false);
     }
@@ -82,6 +86,79 @@ export default function DailyNews() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-12">
+      {/* Featured Sanskrit Wisdom Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="mb-24 bg-gradient-to-br from-paper via-white to-saffron/5 rounded-[3rem] p-8 md:p-12 border border-maroon/10 shadow-2xl shadow-maroon/5 relative overflow-hidden"
+      >
+        <div className="absolute top-0 right-0 p-12 opacity-[0.03] rotate-12 pointer-events-none">
+          <Quote className="w-64 h-64 text-maroon" />
+        </div>
+        
+        <div className="relative z-10">
+          <div className="inline-flex items-center gap-3 px-5 py-2 bg-maroon text-cream rounded-full text-xs font-black uppercase tracking-[0.2em] mb-10 shadow-lg shadow-maroon/20">
+            <BookOpen className="w-4 h-4 text-gold" />
+            <span>संस्कृत शुभ विचार • Sanskrit Wisdom</span>
+          </div>
+
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-5xl font-serif font-black text-maroon mb-6 leading-tight whitespace-pre-line italic drop-shadow-sm">
+              “{wisdom.shloka}”
+            </h2>
+            <p className="text-saffron font-bold text-sm md:text-base tracking-widest uppercase opacity-80 max-w-2xl mx-auto">
+              {wisdom.shlokaTransliteration}
+            </p>
+          </div>
+
+          <div className="prose prose-lg prose-maroon max-w-none">
+            <h3 className="text-2xl font-serif font-bold text-maroon mb-4 flex items-center gap-3">
+              <Sparkles className="w-6 h-6 text-saffron" />
+              {wisdom.title}
+            </h3>
+            <p className="text-gray-700 leading-relaxed font-medium mb-8 bg-paper/50 p-6 rounded-3xl border border-maroon/5 italic">
+              {wisdom.intro}
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+              {wisdom.sections.map((section, idx) => (
+                <div key={idx} className="bg-white p-6 md:p-8 rounded-[2.5rem] border border-maroon/5 shadow-sm hover:shadow-md transition-all duration-300 group">
+                  <div className="w-10 h-10 bg-maroon/5 rounded-full flex items-center justify-center mb-4 group-hover:bg-maroon group-hover:text-white transition-colors">
+                    <span className="font-serif font-bold text-xs italic">{idx + 1}</span>
+                  </div>
+                  <h4 className="font-serif font-bold text-maroon text-xl mb-3">{section.title}</h4>
+                  <p className="text-gray-600 text-sm leading-relaxed">{section.content}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="bg-maroon/5 p-8 rounded-[2.5rem] border border-maroon/10 mb-10">
+              <p className="text-gray-800 font-medium leading-relaxed italic text-lg text-center">
+                {wisdom.conclusion}
+              </p>
+            </div>
+
+            <div className="text-center bg-gradient-to-r from-saffron to-maroon p-8 md:p-12 rounded-[3rem] text-white shadow-2xl relative overflow-hidden">
+              <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/paper-fibers.png')] opacity-10"></div>
+              <span className="block text-[10px] font-black uppercase tracking-[0.3em] mb-6 opacity-70">शुभ सन्देश • Auspicious Message</span>
+              <p className="text-2xl md:text-3xl font-serif font-bold italic leading-relaxed relative z-10">
+                “{wisdom.subhSandesh}”
+              </p>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Daily News Header Divider */}
+      <div className="flex items-center gap-4 mb-20">
+        <div className="h-px bg-maroon/10 flex-1"></div>
+        <div className="p-3 bg-paper rounded-full border border-maroon/10">
+          <Newspaper className="w-6 h-6 text-maroon/20" />
+        </div>
+        <div className="h-px bg-maroon/10 flex-1"></div>
+      </div>
+
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
