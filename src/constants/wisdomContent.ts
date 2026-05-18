@@ -13,93 +13,105 @@ export interface WisdomContent {
 
 export const FEATURED_WISDOM: Record<string, WisdomContent> = {
   hi: {
-    shloka: "विद्या ददाति विनयं, विनयाद् याति पात्रताम् ।\nपात्रत्वात् धनमाप्नोति, धनात् धर्मं ततः सुखम् ॥",
-    shlokaTransliteration: "Vidya dadati vinayam, vinayād yāti pātratām | pātratvāt dhanamāpnoti, dhanāt dharmaṃ tataḥ sukham ||",
-    title: "संस्कृत शुभ विचार: विद्या और विनम्रता",
-    intro: "यह संस्कृत का अत्यंत प्रसिद्ध एवं प्रेरणादायक शुभ विचार है। इसका अर्थ केवल शिक्षा प्राप्त करना नहीं, बल्कि जीवन को सही दिशा देना भी है। भारतीय संस्कृति में विद्या को सबसे बड़ा धन माना गया है। यह श्लोक हमें बताता है कि सच्ची शिक्षा मनुष्य के जीवन को कैसे बदलती है और उसे सफलता, सम्मान तथा सुख की ओर ले जाती है।",
+    shloka: "यस्य पुत्रो वशीभूतो भार्या छन्दानुगामिनी ।\nविभवे यश्च सन्तुष्टः तस्य स्वर्ग इहेव हि ॥",
+    shlokaTransliteration: "Yasya putro vaśībhūto bhāryā chandānugāminī |\nVibhave yaśca santuṣṭaḥ tasya svarga iheva hi ||",
+    title: "गृहस्थाश्रम: धरती पर स्वर्ग",
+    intro: "गृहस्थाश्रम को सभी आश्रमों में श्रेष्ठ माना गया है। यह वह आधार है जिस पर शेष समाज टिका हुआ है। इन श्लोकों के माध्यम से जीवन के इस महत्वपूर्ण चरण के गुणों और दोषों पर प्रकाश डाला गया है, जो हमें एक सुखी और आदर्श गृहस्थ जीवन जीने की प्रेरणा देते हैं।",
     sections: [
       {
-        title: "श्लोक का सरल अर्थ",
-        content: "विद्या मनुष्य को विनम्र बनाती है। विनम्रता से मनुष्य योग्य बनता है। योग्य व्यक्ति को धन और सम्मान प्राप्त होता है। धन से वह धर्म के मार्ग पर चलता है और अंततः उसे जीवन में सच्चा सुख प्राप्त होता है। यह केवल शब्दों का संग्रह नहीं, बल्कि सम्पूर्ण जीवन दर्शन है।"
+        title: "सुख के छह साधन",
+        content: "अर्थागमो नित्यमरोगिता च, प्रिया च भार्या प्रियवादिनी च। वशश्च पुत्रोऽर्थकरी च विद्या, षड्जीवलोकस्य सुखानि राजन्॥ अर्थात्: निरंतर आय, शरीर का निरोग होना, प्रिय और मीठा बोलने वाली पत्नी, आज्ञाकारी पुत्र और धनोपार्जन कराने वाली विद्या - ये इस संसार के छह प्रमुख सुख हैं।"
       },
       {
-        title: "विद्या का महत्व",
-        content: "भारतीय सनातन परंपरा में ज्ञान को ईश्वर का स्वरूप माना गया है। विद्या केवल पुस्तक पढ़ने तक सीमित नहीं होती, बल्कि यह मनुष्य के विचार, व्यवहार और चरित्र को भी श्रेष्ठ बनाती है। जिस व्यक्ति के पास ज्ञान होता है, वह सही और गलत का निर्णय करने में सक्षम होता है। विद्या मनुष्य के भीतर आत्मविश्वास उत्पन्न करती है और जीवन की कठिन परिस्थितियों का सामना करने की शक्ति देती है। आधुनिक युग में तकनीकी शिक्षा के साथ संस्कार और विनम्रता भी उतनी ही आवश्यक है।"
+        title: "घर ही तपोवन है",
+        content: "वनेऽपि दोषा प्रभवन्ति रागिणां, गृहेऽपि पञ्चेन्द्रिय निग्रह स्तपः। अकुत्सिते कर्मणि यः प्रवर्तते, निवृत्तरागस्य गृहं तपोवनम्॥ अर्थात्: आसक्त व्यक्ति के लिए वन भी दोषपूर्ण है। घर में रहकर इंद्रियों पर नियंत्रण करना ही असली तप है। जो सात्विक कर्म करता है, और आसक्ति रहित है, उसके लिए घर ही तपोवन है।"
       },
       {
-        title: "विनम्रता ही सच्ची महानता",
-        content: "कहा गया है कि विद्या से विनय उत्पन्न होता है। वास्तव में जो व्यक्ति जितना अधिक ज्ञानी होता है, वह उतना ही शांत और विनम्र होता है। फल से लदा हुआ वृक्ष सदैव झुक जाता है। उसी प्रकार महान व्यक्ति कभी अहंकार नहीं करता। विनम्रता मनुष्य के व्यक्तित्व को आकर्षक बनाती है और समाज में सम्मान दिलाती है। सच्चा ज्ञान वही है जो मनुष्य को नम्र बनाए।"
+        title: "तपस्वी का आधार",
+        content: "तप्त्वा तपस्वी विपिने क्षुधार्तो, गृहं समायाति सदान्न दातुः। भुक्त्वा स चान्नं प्रददाति तस्मै, तपो विभागं भजते हि तस्य॥ अर्थात्: तपस्वी वन में तप करके जब भूख से पीड़ित होता है, तो वह अन्नदाता के घर आता है। अन्न ग्रहण कर वह (एक तरीके से) अपने तप का हिस्सा उसे बाँटता है।"
       },
       {
-        title: "पात्रता और सफलता का संबंध",
-        content: "विनम्र व्यक्ति सभी का प्रिय बनता है। ऐसे व्यक्ति को समाज में अवसर, सम्मान और सहयोग प्राप्त होता है। यही पात्रता है। जब व्यक्ति योग्य बनता है, तब उसे धन, सम्मान और सफलता प्राप्त होने लगती है। यदि धन धर्म के मार्ग में उपयोग हो, तो वही जीवन को सुखी बनाता है। धर्म का अर्थ केवल पूजा-पाठ नहीं, बल्कि सत्य, दया, सेवा और सदाचार का पालन करना है।"
+        title: "गृहस्थ: सबका आश्रय",
+        content: "यथा वायुं समाश्रित्य वर्तन्ते सर्वजन्तवः। तथा गृहस्थमाश्रित्य वर्तन्ते सर्व आश्रमाः॥ अर्थात्: जिस प्रकार सभी प्राणी वायु के आश्रय पर जीवित रहते हैं, उसी प्रकार अन्य सभी आश्रम (ब्रह्मचर्य, वानप्रस्थ, संन्यास) गृहस्थाश्रम के ही आश्रय पर रहते हैं।"
       },
       {
-        title: "आधुनिक जीवन में आवश्यकता",
-        content: "आज के समय में लोग मानसिक तनाव, प्रतिस्पर्धा और अहंकार से घिरे हुए हैं। ऐसे समय में यह विचार हमें संतुलित जीवन जीने की प्रेरणा देता है। शिक्षा के साथ संस्कार, सफलता के साथ विनम्रता, और धन के साथ धर्म आवश्यक है। यदि प्रत्येक व्यक्ति इस संदेश को अपनाए, तो समाज अधिक सुखी और समृद्ध बन सकता है।"
+        title: "धिक्कार है ऐसे गृहस्थाश्रम को",
+        content: "जिस घर में अशांति, क्लेश, निष्ठुर वाणी, कलह, अस्वच्छता और अभाव हो, जहाँ बच्चों का रोना और बड़ों का क्रोध व्याप्त हो, और जहाँ अतिथि सत्कार न हो - शास्त्र ऐसे गृहस्थाश्रम को धिक्कारते हैं।"
+      },
+      {
+        title: "धन्य है ऐसा गृहस्थाश्रम",
+        content: "जहाँ आनंद, बुद्धिमान संतान, प्रियवक्ता पत्नी, अच्छे मित्र, प्रेम, आज्ञापालक सेवक, ईश-भक्ति, अतिथि सत्कार और सत्संग हो, वह गृहस्थाश्रम वास्तव में धन्य और स्वर्ग समान है।"
       }
     ],
-    conclusion: "“विद्या ददाति विनयम्” भारतीय जीवन दर्शन का सार है। यह हमें सिखाता है कि सच्ची सफलता बाहरी दिखावे में नहीं, बल्कि ज्ञान, विनम्रता, धर्म और सदाचार में निहित है। इसलिए हमें सदैव ज्ञान प्राप्त करने का प्रयास करना चाहिए।",
-    subhSandesh: "ज्ञान वह दीपक है जो जीवन के अंधकार को दूर कर देता है, और विनम्रता वह सुगंध है जो मनुष्य को महान बनाती है।"
+    conclusion: "गृहस्थाश्रम केवल उत्तरदायित्वों का बोझ नहीं, बल्कि आध्यात्मिक और सामाजिक उन्नति का मार्ग है। यदि इसे मर्यादा और प्रेम के साथ जिया जाए, तो यह वास्तव में धन्य है।",
+    subhSandesh: "सच्चा स्वर्ग ईंट-पत्थर के मकान में नहीं, बल्कि परिवार के प्रेम, संतोष और शुभ कर्मों में निवास करता है।"
   },
   ne: {
-    shloka: "विद्या ददाति विनयं, विनयाद् याति पात्रताम् ।\nपात्रत्वात् धनमाप्नोति, धनात् धर्मं ततः सुखम् ॥",
-    shlokaTransliteration: "Vidya dadati vinayam, vinayād yāti pātratām | pātratvāt dhanamāpnoti, dhanāt dharmaṃ tataḥ sukham ||",
-    title: "संस्कृत शुभ विचार: विद्या र विनम्रता",
-    intro: "यो संस्कृतको अत्यन्त प्रसिद्ध एवं प्रेरणादायक शुभ विचार हो। यसको अर्थ केवल शिक्षा प्राप्त गर्नु मात्र होइन, बरु जीवनलाई सही दिशा दिनु पनि हो। भारतीय संस्कृतिमा विद्यालाई सबैभन्दा ठूलो धन मानिएको छ। यो श्लोकले हामीलाई बताउँछ कि साँचो शिक्षाले मानिसको जीवनलाई कसरी बदल्छ र उसलाई सफलता, सम्मान र सुखतर्फ लैजान्छ।",
+    shloka: "यस्य पुत्रो वशीभूतो भार्या छन्दानुगामिनी ।\nविभवे यश्च सन्तुष्टः तस्य स्वर्ग इहेव हि ॥",
+    shlokaTransliteration: "Yasya putro vaśībhūto bhāryā chandānugāminī |\nVibhave yaśca santuṣṭaḥ tasya svarga iheva hi ||",
+    title: "गृहस्थाश्रम: धर्तीकै स्वर्ग",
+    intro: "गृहस्थाश्रमलाई सबै आश्रमहरूमध्ये श्रेष्ठ मानिन्छ। यो समाजको त्यो आधार हो जसमा बाँकी सबै आश्रित छन्। यी श्लोकहरू मार्फत पारिवारिक जीवनका गुण र दोषहरूलाई उजागर गरिएको छ, जसले हामीलाई एक सुखी र आदर्श गृहस्थ जीवन बिताउन प्रेरणा दिन्छन्।",
     sections: [
       {
-        title: "श्लोकको सरल अर्थ",
-        content: "विद्याले मानिसलाई विनम्र बनाउँछ। विनम्रताले मानिस योग्य बन्छ। योग्य व्यक्तिले धन र सम्मान प्राप्त गर्दछ। धनबाट ऊ धर्मको मार्गमा चल्छ र अन्तमा उसले जीवनमा साँचो सुख प्राप्त गर्दछ। यो केवल शब्दहरूको संग्रह मात्र होइन, बरु सम्पूर्ण जीवन दर्शन हो।"
+        title: "सुखका छ साधन",
+        content: "निरन्तर आम्दानी, निरोगी शरीर, प्रिय बोल्ने र मिठो बोली भएकी पत्नी, आज्ञाकारी छोराछोरी र धनोपार्जन गराउने विद्या - यी यस संसारका छ प्रमुख सुख हुन्।"
       },
       {
-        title: "विद्याको महत्व",
-        content: "सनातन परम्परामा ज्ञानलाई ईश्वरको स्वरूप मानिएको छ। विद्या पुस्तक पढ्ने कुरामा मात्र सीमित हुँदैन, बरु यसले मानिसको विचार, व्यवहार र चरित्रलाई पनि श्रेष्ठ बनाउँछ। जससँग ज्ञान हुन्छ, उसले सही र गलतको निर्णय गर्न सक्छ। विद्याले मानिसको भित्र आत्मविश्वास उत्पन्न गराउँछ र जीवनका कठिन परिस्थितिहरूको सामना गर्ने शक्ति दिन्छ। आधुनिक युगमा प्राविधिक शिक्षाका साथै संस्कार र विनम्रता पनि उत्तिकै आवश्यक छ।"
+        title: "घर नै तपोवन",
+        content: "आसक्त व्यक्तिको लागि वनमा बस्नु पनि दोषपूर्ण हुन सक्छ। घरमै बसेर इन्द्रियहरूमाथि नियन्त्रण गर्नु नै असली तपस्या हो। जो पवित्र कर्ममा लाग्छ, उसको लागि घर नै तपोवन हो।"
       },
       {
-        title: "विनम्रता नै साँचो महानता",
-        content: "विद्याबाट विनय उत्पन्न हुन्छ। वास्तवमा जो व्यक्ति जति धेरै ज्ञानी हुन्छ, उति नै शान्त र विनम्र हुन्छ। फलले भरिएको रुख सधैं झुक्छ। त्यसैगरी महान व्यक्तिले कहिल्यै अहंकार गर्दैन। विनम्रताले मानिसको व्यक्तित्वलाई आकर्षक बनाउँछ र समाजमा सम्मान दिलाउँछ। साँचो ज्ञान त्यही हो जसले मानिसलाई नम्र बनाउँछ।"
+        title: "योगीहरूको आधार",
+        content: "वनमा तपस्या गरेर जब योगी भोकाउँछन्, उनी अन्नदाता गृहस्थको घरमा आउँछन्। अन्न ग्रहण गरेपछि उनले आफ्नो तपस्याको पुण्य भाग त्यस अन्नदातालाई बाँड्छन्।"
       },
       {
-        title: "पात्रता र सफलताको सम्बन्ध",
-        content: "विनम्र व्यक्ति सबैको प्रिय बन्छ। यस्तो व्यक्तिलाई समाजमा अवसर, सम्मान र सहयोग प्राप्त हुन्छ। यही पात्रता हो। जब व्यक्ति योग्य बन्छ, तब उसले धन, सम्मान र सफलता प्राप्त गर्न थाल्छ। यदि धन धर्मको मार्गमा प्रयोग हुन्छ भने मात्र त्यसले जीवनलाई सुखी बनाउँछ। धर्मको अर्थ सत्य, दया, सेवा र सदाचारको पालना गर्नु हो।"
+        title: "गृहस्थ: सबैको सहारा",
+        content: "जसरी सबै प्राणीहरू हावाको सहारामा जीवित रहन्छन्, त्यसैगरी अन्य सबै आश्रमहरू (ब्रह्मचर्य, वानप्रस्थ, सन्यास) गृहस्थाश्रमकै सहारामा टिकेका हुन्छन्।"
       },
       {
-        title: "आधुनिक जीवनमा आवश्यकता",
-        content: "आजको समयमा मानिसहरू मानसिक तनाव, प्रतिस्पर्धा र अहंकारबाट घेरिएका छन्। यस्तो समयमा यो विचारले हामीलाई सन्तुलित जीवन जिउने प्रेरणा दिन्छ। शिक्षासँगै संस्कार, सफलतासँगै विनम्रता, र धनसँगै धर्म आवश्यक छ। यदि प्रत्येक व्यक्तिले यो सन्देश अपनाउने हो भने समाज थप सुखी र समृद्ध बन्न सक्छ।"
+        title: "धिक्कार छ यस्तो गृहस्थाश्रमलाई",
+        content: "जुन घरमा अशान्ति, निष्ठुर बोली, क्रोध, फोहोर र अभाव छ, जहाँ बालबालिका रोइरहन्छन् र दम्पतीबीच कलह हुन्छ, त्यस्तो गृहस्थाश्रमलाई शास्त्रले निन्दा गरेका छन्।"
+      },
+      {
+        title: "धन्य छ यस्तो गृहस्थाश्रम",
+        content: "जहाँ आनन्द, बुद्धिमान सन्तान, प्रिय बोल्ने जीवनसाथी, असल मित्र, ईश्वर भक्ति र सत्संग हुन्छ, त्यो गृहस्थाश्रम वास्तवमै धन्य र स्वर्ग समान हुन्छ।"
       }
     ],
-    conclusion: "“विद्या ददाति विनयम्” जीवन दर्शनको सार हो। यसले हामीलाई सिकाउँछ कि साँचो सफलता बाहिरी देखावटमा होइन, बरु ज्ञान, विनम्रता, धर्म र सदाचारमा निहित छ। त्यसैले हामीले सधैं ज्ञान प्राप्त गर्ने प्रयास गर्नुपर्छ।",
-    subhSandesh: "ज्ञान त्यो दीपक हो जसले जीवनको अन्धकारलाई हटाउँछ, र विनम्रता त्यो सुगन्ध हो जसले मानिसलाई महान बनाउँछ।"
+    conclusion: "गृहस्थाश्रम केवल जिम्मेवारीको बोझ मात्र होइन, बरु आध्यात्मिक र सामाजिक उन्नतिको मार्ग हो। यसलाई प्रेम र मर्यादाका साथ जिउनु नै यसको विशेषता हो।",
+    subhSandesh: "साँचो स्वर्ग तपाईंको आफ्नै घरको प्रेम, सन्तोष र शुभ कर्ममा रहन्छ।"
   },
   en: {
-    shloka: "विद्या ददाति विनयं, विनयाद् याति पात्रताम् ।\nपात्रत्वात् धनमाप्नोति, धनात् धर्मं ततः सुखम् ॥",
-    shlokaTransliteration: "Vidya dadati vinayam, vinayād yāti pātratām | pātratvāt dhanamāpnoti, dhanāt dharmaṃ tataḥ sukham ||",
-    title: "Vedic Wisdom: Education and Humility",
-    intro: "This is one of the most famous and inspiring verses in Sanskrit. Its meaning is not just about attaining education, but about giving direction to life. In Vedic culture, Knowledge (Vidya) is considered the greatest wealth. This shloka tells us how true education transforms human life and leads it towards success, respect, and bliss.",
+    shloka: "यस्य पुत्रो वशीभूतो भार्या छन्दानुगामिनी ।\nविभवे यश्च सन्तुष्टः तस्य स्वर्ग इहेव हि ॥",
+    shlokaTransliteration: "Yasya putro vaśībhūto bhāryā chandānugāminī |\nVibhave yaśca santuṣṭaḥ tasya svarga iheva hi ||",
+    title: "Grihastha Ashram: Heaven on Earth",
+    intro: "The householder stage (Grihastha Ashram) is considered the foundation of human society. Through these sacred verses, we explore the virtues and challenges of family life, guiding us towards creating a harmonious and blessed home environment.",
     sections: [
       {
-        title: "Simple Meaning",
-        content: "Knowledge (Vidya) gives humility (Vinayam). Humility leads to worthiness or competence (Patratam). From worthiness, one attains wealth (Dhanam). From wealth comes the ability to follow Dharma (Righteousness), and from Dharma comes ultimate Happiness (Sukham). This is not just a collection of words, but a complete philosophy of life."
+        title: "Six Pillars of Happiness",
+        content: "Steady income, good health, a loving spouse with gentle speech, an obedient child, and practical knowledge - these are the six pillars that bring true joy in this mortal world."
       },
       {
-        title: "Importance of Vidya",
-        content: "In Sanatana tradition, knowledge is considered a manifestation of God. Vidya is not limited to academic learning; it refines human thoughts, behavior, and character. A person with knowledge is capable of discerning right from wrong. It builds self-confidence and provides the strength to face life's challenges. In the modern era, values and humility are as essential as technical education."
+        title: "Home as a Sanctuary",
+        content: "For one with attachments, even a forest holds faults. Controlling the senses while being part of a family is true penance. For the detached and righteous, home itself becomes a sacred grove."
       },
       {
-        title: "Humility as True Greatness",
-        content: "It is said that knowledge produces humility. Indeed, the more knowledgeable a person is, the more calm and humble they become. A tree laden with fruit always bows down. Similarly, a truly great person never harbors ego. Humility makes a personality attractive and earns social respect. True knowledge makes one humble."
+        title: "The Support of Ascetics",
+        content: "When an ascetic returns from the forest hungry, he seeks the door of a householder. By providing sustenance, the householder receives a portion of the ascetic's spiritual merit."
       },
       {
-        title: "Worthiness and Success",
-        content: "A humble person becomes dear to everyone. Such a person finds opportunities, respect, and cooperation in society. This is what it means to be 'worthy'. When a person is competent, wealth and success follow naturally. But wealth is only a means, not the end. When used for Dharma (truth, kindness, and service), it leads to real happiness."
+        title: "The Universal Foundation",
+        content: "Just as all living beings survive by depending on air, all other stages of life (students, forest-dwellers, and monks) find their sustenance and support in the householder."
       },
       {
-        title: "Necessity in Modern Life",
-        content: "Today, people are surrounded by stress, competition, and ego. This wisdom inspires us to live a balanced life. Values with education, humility with success, and righteousness with wealth are necessary. If individuals adopt this message, society can become more peaceful and prosperous."
+        title: "A Household to Avoid",
+        content: "A house filled with harsh words, anger, filth, constant distress, and lack of devotion is criticized as a dwelling that lacks the divine essence of a home."
+      },
+      {
+        title: "A Blessed Household",
+        content: "A home brimming with joy, wise children, kind words, true friends, daily worship, and the company of the wise is truly blessed and equivalent to heaven."
       }
     ],
-    conclusion: "“Vidya Dadati Vinayam” is the essence of Vedic philosophy. It teaches us that true success lies not in external display, but in wisdom, humility, and character. Therefore, we must always strive for true knowledge.",
-    subhSandesh: "Knowledge is the lamp that dispels the darkness of life, and humility is the fragrance that makes a person great."
+    conclusion: "Grihastha life is not merely a cycle of duties; it is a path to spiritual and social evolution. When lived with love and discipline, it truly becomes 'Dhanya' or Blessed.",
+    subhSandesh: "True heaven is not a place afar; it is the peace, contentment, and love cultivated within your own home today."
   }
 };
