@@ -5,11 +5,25 @@ import { createServer as createViteServer } from "vite";
 import Stripe from "stripe";
 import cors from "cors";
 import dotenv from "dotenv";
+import { GoogleGenAI, Type } from "@google/genai";
 
 dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// Initialize Gemini
+const ai = new GoogleGenAI({
+  apiKey: process.env.GEMINI_API_KEY,
+  httpOptions: {
+    headers: {
+      'User-Agent': 'aistudio-build',
+    }
+  }
+});
+
+// In-memory cache for daily news
+let dailyNewsCache: { date: string; content: any } | null = null;
 
 async function startServer() {
   const app = express();
@@ -69,6 +83,94 @@ async function startServer() {
     } catch (error: any) {
       console.error("Stripe Error:", error);
       res.status(500).json({ error: error.message });
+    }
+  });
+
+  app.get("/api/news", async (req, res) => {
+    try {
+      const today = new Date().toISOString().split('T')[0];
+      
+      // Return cached news if it's from the same day
+      if (dailyNewsCache && dailyNewsCache.date === today) {
+        return res.json(dailyNewsCache.content);
+      }
+
+      const prompt = `Generate a realistic, high-quality, and spiritually uplifting "Daily News" article for a Vedic Astrology and Religious Services platform named "Shree Nara Narayana". 
+      The article should be relevant to Sanatana Dharma, Vedic wisdom, astrology, or planetary alignments for today (${today}).
+      Include:
+      1. A catchy headline.
+      2. A brief summary.
+      3. The main article body (3-4 paragraphs).
+      4. A "Spiritual Tip of the Day".
+      5. A "Planetary Highlight" (e.g., something about Jupiter, Saturn, or Rahu/Ketu).
+      
+      Language: English, but provide translations for Nepali and Hindi as well in the same JSON response.
+      Respond ONLY with a JSON object following this schema:
+      {
+        "date": "string",
+        "en": { "title": "string", "summary": "string", "body": "string", "tip": "string", "highlight": "string" },
+        "ne": { "title": "string", "summary": "string", "body": "string", "tip": "string", "highlight": "string" },
+        "hi": { "title": "string", "summary": "string", "body": "string", "tip": "string", "highlight": "string" }
+      }`;
+
+      const response = await ai.models.generateContent({
+        model: "gemini-3-flash-preview",
+        contents: prompt,
+        config: {
+          responseMimeType: "application/json",
+          responseSchema: {
+            type: Type.OBJECT,
+            properties: {
+              date: { type: Type.STRING },
+              en: {
+                type: Type.OBJECT,
+                properties: {
+                  title: { type: Type.STRING },
+                  summary: { type: Type.STRING },
+                  body: { type: Type.STRING },
+                  tip: { type: Type.STRING },
+                  highlight: { type: Type.STRING }
+                },
+                required: ["title", "summary", "body", "tip", "highlight"]
+              },
+              ne: {
+                type: Type.OBJECT,
+                properties: {
+                  title: { type: Type.STRING },
+                  summary: { type: Type.STRING },
+                  body: { type: Type.STRING },
+                  tip: { type: Type.STRING },
+                  highlight: { type: Type.STRING }
+                },
+                required: ["title", "summary", "body", "tip", "highlight"]
+              },
+              hi: {
+                type: Type.OBJECT,
+                properties: {
+                  title: { type: Type.STRING },
+                  summary: { type: Type.STRING },
+                  body: { type: Type.STRING },
+                  tip: { type: Type.STRING },
+                  highlight: { type: Type.STRING }
+                },
+                required: ["title", "summary", "body", "tip", "highlight"]
+              }
+            },
+            required: ["date", "en", "ne", "hi"]
+          }
+        }
+      });
+
+      const newsContent = JSON.parse(response.text);
+      dailyNewsCache = {
+        date: today,
+        content: newsContent
+      };
+
+      res.json(newsContent);
+    } catch (error: any) {
+      console.error("Gemini Error:", error);
+      res.status(500).json({ error: "Failed to generate daily news" });
     }
   });
 

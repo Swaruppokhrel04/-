@@ -1,27 +1,32 @@
 import { useLanguage } from '../LanguageContext';
-import { Home, Grid, Phone, Info } from 'lucide-react';
+import { Home, Grid, Phone, Info, Newspaper, BookOpen } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export const BottomNav = () => {
   const { t } = useLanguage();
 
   return (
-    <div className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] z-[40]">
-      <div className="bg-paper shadow-2xl shadow-maroon/20 border border-gold/10 px-6 py-4 rounded-3xl flex items-center justify-between">
-        <a href="#home" className="flex flex-col items-center gap-1 text-maroon hover:text-saffron transition-colors">
+    <div className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 w-[95%] max-w-lg z-[40]">
+      <div className="bg-paper/95 backdrop-blur-xl shadow-[0_20px_50px_rgba(122,12,12,0.15)] border border-gold/20 px-4 py-4 rounded-[2rem] flex items-center justify-between">
+        <a href="#home" className="flex flex-col items-center gap-1.5 text-maroon hover:text-saffron transition-all active:scale-90">
           <Home className="w-5 h-5" />
-          <span className="text-[10px] font-bold uppercase">{t.nav.home}</span>
+          <span className="text-[9px] font-bold uppercase tracking-tighter">{t.nav.home}</span>
         </a>
-        <a href="#services" className="flex flex-col items-center gap-1 text-maroon hover:text-saffron transition-colors">
+        <a href="#services" className="flex flex-col items-center gap-1.5 text-maroon hover:text-saffron transition-all active:scale-90">
           <Grid className="w-5 h-5" />
-          <span className="text-[10px] font-bold uppercase">{t.nav.services}</span>
+          <span className="text-[9px] font-bold uppercase tracking-tighter">{t.nav.services}</span>
         </a>
-        <a href="#about" className="flex flex-col items-center gap-1 text-maroon hover:text-saffron transition-colors">
-          <Info className="w-5 h-5" />
-          <span className="text-[10px] font-bold uppercase">{t.nav.about}</span>
-        </a>
-        <a href="#booking" className="flex flex-col items-center gap-1 text-maroon hover:text-saffron transition-colors">
+        <Link to="/library" className="flex flex-col items-center gap-1.5 text-maroon hover:text-saffron transition-all active:scale-90">
+          <BookOpen className="w-5 h-5" />
+          <span className="text-[9px] font-bold uppercase tracking-tighter">{(t.nav as any).library}</span>
+        </Link>
+        <Link to="/news" className="flex flex-col items-center gap-1.5 text-maroon hover:text-saffron transition-all active:scale-90 relative">
+          <Newspaper className="w-5 h-5" />
+          <span className="text-[9px] font-bold uppercase tracking-tighter">{(t.nav as any).news}</span>
+        </Link>
+        <a href="#booking" className="flex flex-col items-center gap-1.5 text-maroon hover:text-saffron transition-all active:scale-90">
           <Phone className="w-5 h-5" />
-          <span className="text-[10px] font-bold uppercase">{t.nav.contact}</span>
+          <span className="text-[9px] font-bold uppercase tracking-tighter">{t.nav.book}</span>
         </a>
       </div>
     </div>

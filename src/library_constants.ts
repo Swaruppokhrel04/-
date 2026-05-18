@@ -203,6 +203,7 @@ export const RELIGIOUS_BOOKS: Book[] = [
       en: 'The thousand names of Lord Vishnu, a sacred hymn from the Mahabharata.'
     },
     image: 'https://images.unsplash.com/photo-1590766948510-108259e9c4f3?auto=format&fit=crop&q=80&w=800',
+    audioUrl: 'https://archive.org/download/VishnuSahasranamam_201608/Vishnu-Sahasranamam.mp3',
     content: [
       {
         sectionTitle: { ne: 'ध्यानम्', hi: 'ध्यानम्', en: 'Dhyanam' },
@@ -264,6 +265,96 @@ export const RELIGIOUS_BOOKS: Book[] = [
               hi: 'स्वयंभू, शंभु, आदित्य, कमल-नेत्र, महान ध्वनि वाले, आदि-अंत रहित...',
               en: 'The Self-born, The Source of happiness, The Sun, The Lotus-eyed, The One with a Great Voice, One without beginning or end...'
             }
+          },
+          {
+            number: '6',
+            original: 'अप्रमेयः हृषीकेशः पद्मनाभः अमरप्रभुः।\nविश्वकर्मा मनुः त्वष्टा स्थविष्ठः स्थविरो ध्रुवः॥',
+            translation: {
+              ne: 'अप्रमेय (बुद्धिभन्दा पर), हृषीकेश (इन्द्रियका स्वामी), पद्मनाभ (नाभिमा कमल भएका), अमरप्रभु (देवताका स्वामी)...',
+              hi: 'अप्रमेय (बुद्धि से परे), हृषीकेश (इन्द्रियों के स्वामी), पद्मनाभ (नाभि में कमल वाले), अमरप्रभु (देवताओं के स्वामी)...',
+              en: 'The Immeasurable, Master of the senses, The Lotus-navelled, The Lord of the immortals...'
+            }
+          },
+          {
+            number: '7',
+            original: 'अग्राह्यः शाश्वतः कृष्णो लोहिताक्षः प्रतर्दनः।\nप्रभूतः त्रिककुब्धाम पवित्रं मङ्गलं परम्॥',
+            translation: {
+              ne: 'अग्राह्य (पकडमा नआउने), शाश्वत, कृष्ण, राता आँखा भएका, प्रतर्दन (विनाशक)...',
+              hi: 'अग्राह्य (पकड़ में न आने वाले), शाश्वत, कृष्ण, लाल आँखो वाले, प्रतर्दन (विनाशक)...',
+              en: 'The Unseizable, The Eternal, Krishna, The Red-eyed, The Destroyer...'
+            }
+          },
+          {
+            number: '8',
+            original: 'ईशानः प्राणदः प्राणो ज्येष्ठः श्रेष्ठः प्रजापतिः।\nहिरण्यगर्भो भूगर्भो माधवो मधुसूदनः॥',
+            translation: {
+              ne: 'ईशान (शासन गर्ने), प्राणद (प्राण दिने), प्राण, ज्येष्ठ, श्रेष्ठ, प्रजापति...',
+              hi: 'ईशान (शासन करने वाले), प्राणद (प्राण देने वाले), प्राण, ज्येष्ठ, श्रेष्ठ, प्रजापति...',
+              en: 'The Ruler, The Giver of life, The Life itself, The Eldest, The Best, The Lord of beings...'
+            }
+          },
+          {
+            number: '9',
+            original: 'ईश्वरो विक्रमी धन्वी मेधावी विक्रमः क्रमः।\nअनुत्तमो दुराधर्षः कृतज्ञः कृतिरात्मवान्॥',
+            translation: {
+              ne: 'ईश्वर, पराक्रमी, धनुर्धारी, मेधावी, पराक्रम, गति...',
+              hi: 'ईश्वर, पराक्रमी, धनुर्धारी, मेधावी, पराक्रम, गति...',
+              en: 'The Almighty, The Valiant, The Archer, The Intelligent, The Valour, The Order...'
+            }
+          },
+          {
+            number: '10',
+            original: 'सुरेशः शरणं शर्म विश्वरेताः प्रजाभवः।\nअहः संवत्सरो व्यालः प्रत्ययः सर्वदर्शनः॥',
+            translation: {
+              ne: 'देवताका राजा, शरण दिने, सुखको रूप, विश्वका बीज, प्रजाका उत्पत्ति स्थान...',
+              hi: 'देवताओं के राजा, शरण देने वाले, सुख स्वरूप, विश्व के बीज, प्रजा के उत्पत्ति स्थान...',
+              en: 'The Lord of gods, The Refuge, The Bliss, The Seed of the Universe, The Origin of beings...'
+            }
+          },
+          {
+            number: '11',
+            original: 'सर्वगः सर्वविद्भानुर्विष्वक्सेनो जनार्दनः।\nवेदो वेदविदव्यङ्गो वेदाङ्गो वेदवित्कविः॥',
+            translation: {
+              ne: 'सर्वव्यापी, सर्वज्ञ, प्रकाशमान, जसको अगाडि शत्रु टिक्दैनन्, जनार्दन...',
+              hi: 'सर्वव्यापी, सर्वज्ञ, प्रकाशमान, जिसके आगे शत्रु टिक नहीं पाते, जनार्दन...',
+              en: 'The All-pervading, The All-knowing, The Luminous, The One before whom enemies flee, The Protector of people...'
+            }
+          },
+          {
+            number: '12',
+            original: 'लोकाध्यक्षः सुराध्यक्षो धर्माध्यक्षः कृताकृतः।\nचतुरात्मा चतुर्व्यूहश्चतुर्दंष्ट्रश्चतुर्भुजः॥',
+            translation: {
+              ne: 'लोकका अध्यक्ष, देवताका अध्यक्ष, धर्मका अध्यक्ष, कृत र अकृतका स्वामी...',
+              hi: 'लोक के अध्यक्ष, देवताओं के अध्यक्ष, धर्म के अध्यक्ष, कार्य और कारण के स्वामी...',
+              en: 'The Lord of the worlds, The Lord of gods, The Lord of Dharma, The Master of cause and effect...'
+            }
+          },
+          {
+            number: '13',
+            original: 'भ्राजिष्णुर्भोजनं भोक्ता सहिष्णुर्जगदादिजः।\nअनघो विजयो जेता विश्वयोनिः पुनर्वसुः॥',
+            translation: {
+              ne: 'प्रकाशवान, भोग्य वस्तु, भोक्ता, सहनशील, जगत्को आदिमा प्रकट हुने...',
+              hi: 'प्रकाशवान, भोग्य वस्तु, भोक्ता, सहनशील, जगत के आदि में प्रकट होने वाले...',
+              en: 'The Effulgent, The Object of enjoyment, The Enjoyer, The Patient, The First-born of the Universe...'
+            }
+          },
+          {
+            number: '14',
+            original: 'उपेन्द्रो वामनः प्रांशु रमोघः शुचिरूर्जितः।\nअतीन्द्रः सङ्ग्रहः सर्गो धृतात्मा नियमो यमः॥',
+            translation: {
+              ne: 'इन्द्रका भाइ, वामन अवतार, विशाल, अमोघ (सफल), पवित्र, शक्तिशाली...',
+              hi: 'इन्द्र के अनुज, वामन अवतार, विशाल, अमोघ (सफल), पवित्र, शक्तिशाली...',
+              en: 'The Younger brother of Indra, The Dwarf incarnation, The Tall, The Unfailing, The Pure, The Powerful...'
+            }
+          },
+          {
+            number: '15',
+            original: 'वेद्यो वैद्यः सदायोगी वीरहा माधवो मधुः।\nअतिन्द्रियो महामायो महोत्साहो महाबलः॥',
+            translation: {
+              ne: 'जान्न योग्य, वैद्य, सधैं योगमा रहने, वीरहरूको विनाशक, लक्ष्मीका पति...',
+              hi: 'जानने योग्य, वैद्य, सदैव योग में रहने वाले, वीरों का विनाश करने वाले, लक्ष्मी के पति...',
+              en: 'The One to be known, The Physician, The Eternal Yogi, The Destroyer of heroes, The Spouse of Lakshmi...'
+            }
           }
         ]
       }
@@ -288,6 +379,7 @@ export const RELIGIOUS_BOOKS: Book[] = [
       en: 'The Yoga of Arjuna\'s Dejection on the battlefield of Kurukshetra.'
     },
     image: 'https://images.unsplash.com/photo-1582234372722-50d7ccc30eba?auto=format&fit=crop&q=80&w=800',
+    audioUrl: 'https://archive.org/download/BhagavadGitaBySwamiChinmayananda/Bhagavad%20Gita%20-%20Chapter%2001.mp3',
     content: [
       {
         verses: [
@@ -334,6 +426,96 @@ export const RELIGIOUS_BOOKS: Book[] = [
               ne: 'धृष्टकेतु, चेकितान, बलवान काशिराज, पुरुजित, कुन्तिभोज र मानिसहरूमा श्रेष्ठ शैब्य पनि यहाँ छन्।',
               hi: 'धृष्टकेतु, चेकितान, बलवान काशिराज, पुरुजित, कुन्तिभोज और मनुष्यों में श्रेष्ठ शैब्य भी यहाँ हैं।',
               en: 'There are also Dhrishtaketu, Chekitana, the valiant King of Kashi, Purujit, Kuntibhoja and Shaibya, the best of men.'
+            }
+          },
+          {
+            number: '6',
+            original: 'युधामन्युश्च विक्रान्त उत्तमौजाश्च वीर्यवान् |\nसौभद्रो द्रौपदेयाश्च सर्व एव महारथाः || ६ ||',
+            translation: {
+              ne: 'पराक्रमी युधामन्यु र बलवान उत्तमौजा, सुभद्रा पुत्र (अभिमन्यु) र द्रौपदीका छोराहरू; ती सबै महारथी हुन्।',
+              hi: 'पराक्रमी युधामन्यु और बलवान उत्तमौजा, सुभद्रा पुत्र (अभिमन्यु) और द्रौपदी के पुत्र; वे सभी महारथी हैं।',
+              en: 'There are the mighty Yudhamanyu and the valiant Uttamauja, the son of Subhadra (Abhimanyu), and the sons of Draupadi; all of them are great warriors.'
+            }
+          },
+          {
+            number: '7',
+            original: 'अस्माकं तु विशिष्टा ये तान्निबोध द्विजोत्तम |\nनायका मम सैन्यस्य संज्ञार्थं तान्ब्रवीमि ते || ७ ||',
+            translation: {
+              ne: 'तर हे द्विजश्रेष्ठ (द्रोणाचार्य)! हाम्रा पक्षका जो विशिष्ट नायकहरू छन्, उनीहरूलाई पनि जान्नुहोस्। तपाईँको जानकारीको लागि म उनीहरूको नाम भन्छु।',
+              hi: 'लेकिन हे द्विजश्रेष्ठ (द्रोणाचार्य)! हमारे पक्ष के जो विशिष्ट नायक हैं, उन्हें भी जान लीजिए। आपकी जानकारी के लिए मैं उनके नाम बताता हूँ।',
+              en: 'But know also, O best of the twice-born, those who are the most distinguished among us, the leaders of my army; I name them for your information.'
+            }
+          },
+          {
+            number: '8',
+            original: 'भवान्भीष्मश्च कर्णश्च कृपश्च समितिञ्जयः |\nअश्वत्थामा विकर्णश्च सौमदत्तिस्तथैव च || ८ ||',
+            translation: {
+              ne: 'तपाईँ (द्रोणाचार्य), भीष्म, कर्ण र युद्ध विजयी कृपाचार्य; त्यसैगरी अश्वत्थामा, विकर्ण र सोमदत्तका पुत्र (भूरिश्रवा) पनि छन्।',
+              hi: 'आप (द्रोणाचार्य), भीष्म, कर्ण और युद्ध विजयी कृपाचार्य; उसी प्रकार अश्वत्थामा, विकर्ण और सोमदत्त के पुत्र (भूरिश्रवा) भी हैं।',
+              en: 'Yourself, Bhishma, Karna, and Kripa, the victorious in battle; Ashwatthama, Vikarna, and the son of Somadatta (Bhurishrava).'
+            }
+          },
+          {
+            number: '9',
+            original: 'अन्ये च बहवः शूरा मदर्थे त्यक्तजीविताः |\nनानाशस्त्रप्रहरणाः सर्वे युद्धविशारदाः || ९ ||',
+            translation: {
+              ne: 'अरु पनि धेरै शूरवीरहरू छन् जसले मेरो लागि आफ्नो प्राण त्याग गर्न ठिक्क छन्। उनीहरू विभिन्न अस्त्र-शस्त्रले सुसज्जित र युद्धकलामा निपुण छन्।',
+              hi: 'और भी बहुत से शूरवीर हैं जो मेरे लिए अपने प्राण त्यागने को तैयार हैं। वे विभिन्न शस्त्रों से सुसज्जित और युद्धकला में निपुण हैं।',
+              en: 'And many other heroes who are prepared to lay down their lives for my sake, armed with various weapons, and all skilled in warfare.'
+            }
+          },
+          {
+            number: '10',
+            original: 'अपर्याप्तं तदस्माकं बलं भीष्माभिरक्षितम् |\nपर्याप्तं त्विदमेतेषां बलं भीमाभिरक्षितम् || १० ||',
+            translation: {
+              ne: 'भीष्म पितामहद्वारा रक्षित हाम्रो यो सेना अपर्याप्त (अजेय) छ र भीमद्वारा रक्षित यिनीहरूको यो सेना पर्याप्त (जित्न सकिने) छ।',
+              hi: 'भीष्म पितामह द्वारा रक्षित हमारी यह सेना अपर्याप्त (अजेय) है और भीम द्वारा रक्षित इनकी यह सेना पर्याप्त (जीतने योग्य) है।',
+              en: 'This army of ours, marshalled by Bhishma, seems insufficient, whereas their army, marshalled by Bhima, seems sufficient.'
+            }
+          },
+          {
+            number: '11',
+            original: 'अयनेषु च सर्वेषु यथाभागमवस्थिताः |\nभीष्ममेवाभिरक्षन्तु भवन्तः सर्व एव हि || ११ ||',
+            translation: {
+              ne: 'त्यसैले तपाईँहरू सबै आ-आफ्नो स्थानमा दृढताका साथ उभिएर भीष्म पितामहको रक्षा गर्नुहोस्।',
+              hi: 'इसलिए आप सभी अपने-अपने स्थानों पर दृढता से खड़े होकर भीष्म पितामह की ही सब ओर से रक्षा करें।',
+              en: 'Now all of you, standing firmly at your respective strategic points on every side of the army, must guard Bhishma alone.'
+            }
+          },
+          {
+            number: '12',
+            original: 'तस्य सञ्जनयन् हर्षं कुरुवृद्धः पितामहः |\nसिंहनादं विनद्योच्चैः शङ्खं दध्मौ प्रतापवान् || १२ ||',
+            translation: {
+              ne: 'तब कुरु वंशका सबैभन्दा वृद्ध र प्रतापशाली भीष्म पितामहले दुर्योधनलाई हर्षित बनाउन सिंह गर्जे जस्तै गरी शङ्ख बजाउनुभयो।',
+              hi: 'तब कुरु वंश के सबसे वृद्ध और प्रतापशाली भीष्म पितामह ने दुर्योधन को हर्षित करने के लिए सिंह के समान गरज कर शंख बजाया।',
+              en: 'Then, the valiant grandsire, the oldest of the Kurus, blew his conch shell, sounding like a lion’s roar, to cheer Duryodhana.'
+            }
+          },
+          {
+            number: '13',
+            original: 'ततः शङ्खाश्च भेर्यश्च पणवानकगोमुखाः |\nसहसैवाभ्यहन्यन्त स शब्दस्तुमुलोऽभवत् || १३ ||',
+            translation: {
+              ne: 'त्यसपछि शङ्ख, नगरा, ढोल र नरसिङ्घाहरू अचानक एकसाथ बजे। त्यो आवाज अत्यन्त भयानक थियो।',
+              hi: 'उसके बाद शंख, नगाड़े, ढोल और नरसिंघे अचानक एक साथ बज उठे। वह शब्द बड़ा भयानक हुआ।',
+              en: 'Immediately after that, conchs, kettledrums, bugles, trumpets, and horns were blown simultaneously, and the sound was tumultuous.'
+            }
+          },
+          {
+            number: '14',
+            original: 'ततः श्वेतैर्हयैर्युक्ते महति स्यन्दने स्थितौ |\nमाधवः पाण्डवश्चैव दिव्यौ शङ्खौ प्रदध्मतुः || १४ ||',
+            translation: {
+              ne: 'त्यसपछि सेता घोडाहरू जोडिएको ठूलो रथमा बसेका श्रीकृष्ण र अर्जुनले पनि आ-आफ्ना दिव्य शङ्ख बजाउनुभयो।',
+              hi: 'इसके बाद सफेद घोड़ों से युक्त बड़े रथ में बैठे हुए श्रीकृष्ण और अर्जुन ने भी अपने-अपने दिव्य शंख बजाए।',
+              en: 'Then, seated in a magnificent chariot yoked with white horses, Krishna and Arjuna blew their divine conch shells.'
+            }
+          },
+          {
+            number: '15',
+            original: 'पाञ्चजन्यं हृषीकेशो देवदत्तं धनञ्जयः |\nपौण्ड्रं दध्मौ महाशङ्खं भीमकर्मा वृकोदरः || १५ ||',
+            translation: {
+              ne: 'श्रीकृष्णले पाञ्चजन्य, अर्जुनले देवदत्त र भयानक कर्म गर्ने भीमसेनले पौण्ड्र नामक महाशङ्ख बजाउनुभयो।',
+              hi: 'श्रीकृष्ण ने पाञ्चजन्य, अर्जुन ने देवदत्त और भयानक कर्म करने वाले भीमसेन ने पौण्ड्र नामक महाशंख बजाया।',
+              en: 'Hrishikesha blew His conch shell, Panchajanya; Dhananjaya blew his, Devadatta; and Bhima, the doer of voracious deeds, blew his mighty conch shell, Paundra.'
             }
           }
         ]

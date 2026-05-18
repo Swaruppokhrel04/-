@@ -35,7 +35,8 @@ import {
   Search,
   Loader2,
   HelpCircle,
-  Sun
+  Sun,
+  Newspaper
 } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 import { format } from 'date-fns';
@@ -48,6 +49,7 @@ import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 import { useLanguage } from './LanguageContext';
 import { useAuth } from './AuthContext';
+import DailyNews from './components/DailyNews';
 import { i18n } from './translations.ts';
 import { LanguageSwitcher } from './components/LanguageSwitcher.tsx';
 import { FAQ } from './components/FAQ.tsx';
@@ -285,6 +287,17 @@ const Navbar = () => {
                 </Link>
               </li>
               <li>
+                <Link 
+                  to="/news" 
+                  className={cn(
+                    "text-sm font-bold transition-all hover:text-saffron",
+                    location.pathname === '/news' ? "text-saffron" : "text-maroon"
+                  )}
+                >
+                  {(t.nav as any).news}
+                </Link>
+              </li>
+              <li>
                 <a 
                   href="/#about" 
                   className={cn(
@@ -369,12 +382,12 @@ const Navbar = () => {
                 setIsSearchOpen(false);
                 setIsOpen(false);
               }}
-              className="p-2 text-green-600 transition-transform active:scale-90"
+              className="p-2.5 text-green-600 bg-green-50 rounded-xl transition-all active:scale-90 border border-green-100"
               aria-label="Toggle WhatsApp Contact Info"
               aria-expanded={isWhatsappOpen}
               aria-haspopup="true"
             >
-              <MessageCircle className="w-6 h-6" />
+              <MessageCircle className="w-5 h-5" />
             </button>
             <button 
               onClick={() => {
@@ -382,24 +395,37 @@ const Navbar = () => {
                 setIsWhatsappOpen(false);
                 setIsOpen(false);
               }}
-              className="p-2 text-maroon transition-transform active:scale-90"
+              className="p-2.5 text-maroon bg-maroon/5 rounded-xl transition-all active:scale-90 border border-maroon/10"
               aria-label="Toggle Search"
               aria-expanded={isSearchOpen}
               aria-haspopup="true"
             >
-              <Search className="w-6 h-6" />
+              <Search className="w-5 h-5" />
             </button>
             <button 
               onClick={() => {
                 setIsOpen(!isOpen);
                 setIsSearchOpen(false);
               }}
-              className="p-2 transition-transform active:scale-90 text-maroon"
+              className="p-2.5 transition-all active:scale-90 text-maroon bg-maroon/5 rounded-xl border border-maroon/10 shadow-sm"
               aria-label="Toggle Navigation Menu"
               aria-expanded={isOpen}
               aria-controls="mobile-nav"
             >
-              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              <div className="relative w-6 h-6 flex flex-col justify-center items-center">
+                <span className={cn(
+                  "w-5 h-0.5 bg-current rounded-full transition-all duration-300 absolute",
+                  isOpen ? "rotate-45 translate-y-0" : "-translate-y-1.5"
+                )} />
+                <span className={cn(
+                  "w-5 h-0.5 bg-current rounded-full transition-all duration-300 absolute",
+                  isOpen ? "opacity-0" : "opacity-100"
+                )} />
+                <span className={cn(
+                  "w-5 h-0.5 bg-current rounded-full transition-all duration-300 absolute",
+                  isOpen ? "-rotate-45 translate-y-0" : "translate-y-1.5"
+                )} />
+              </div>
             </button>
           </div>
         </div>
@@ -492,81 +518,103 @@ const Navbar = () => {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-              className="md:hidden fixed top-0 right-0 h-full w-[85%] max-w-[340px] bg-paper shadow-2xl z-[70] overflow-y-auto"
+              className="md:hidden fixed top-0 right-0 h-full w-[85%] max-w-[360px] bg-paper shadow-[-20px_0_50px_rgba(0,0,0,0.1)] z-[70] flex flex-col"
             >
-              <div className="p-8 flex flex-col min-h-full">
-                <div className="flex justify-between items-center mb-10">
+              <div className="p-6 sm:p-8 overflow-y-auto flex-1 flex flex-col">
+                <div className="flex justify-between items-center mb-8 sticky top-0 bg-paper z-10 pb-4">
                   <div className="flex flex-col">
-                    <span className="font-serif font-black text-maroon text-2xl tracking-tight">श्री नर नारायण</span>
-                    <span className="text-[10px] text-saffron font-bold tracking-[0.3em] uppercase">धार्मिक सेवा</span>
+                    <span className="font-serif font-black text-maroon text-2xl tracking-tight leading-none mb-1">श्री नर नारायण</span>
+                    <span className="text-[10px] text-saffron font-bold tracking-[0.3em] uppercase">धार्मिक सेवा संस्थान</span>
                   </div>
                   <button 
                     onClick={() => setIsOpen(false)}
-                    className="p-2.5 bg-maroon/5 rounded-2xl text-maroon hover:bg-maroon hover:text-white transition-all transform hover:rotate-90 active:scale-90"
+                    className="p-3 bg-maroon/5 rounded-2xl text-maroon hover:bg-maroon hover:text-white transition-all transform hover:rotate-90 active:scale-90 border border-maroon/10"
                     aria-label="Close Navigation Menu"
                   >
-                    <X className="w-6 h-6" />
+                    <X className="w-5 h-5" />
                   </button>
                 </div>
 
-                <ul className="flex flex-col space-y-4 mb-12">
-                  {[
-                    { to: "/", label: t.nav.home, type: 'link' },
-                    { to: "/#services", label: t.nav.services, type: 'anchor' },
-                    { to: "/library", label: (t.nav as any).library, type: 'link' },
-                    { to: "/#about", label: t.nav.about, type: 'anchor' },
-                    { to: "/#faq", label: t.nav.faq, type: 'anchor' }
-                  ].map((item, idx) => (
-                    <li key={idx}>
-                      {item.type === 'link' ? (
-                        <Link 
-                          to={item.to} 
-                          onClick={() => setIsOpen(false)}
-                          className={cn(
-                            "text-xl font-bold py-3 px-4 rounded-2xl transition-all block",
-                            location.pathname === item.to ? "bg-maroon text-cream" : "text-gray-800 hover:bg-maroon/5 hover:text-maroon"
-                          )}
-                        >
-                          {item.label}
-                        </Link>
-                      ) : (
-                        <a 
-                          href={item.to} 
-                          onClick={() => setIsOpen(false)}
-                          className={cn(
-                            "text-xl font-bold py-3 px-4 rounded-2xl transition-all block",
-                            location.hash === item.to.substring(1) ? "bg-maroon text-cream" : "text-gray-800 hover:bg-maroon/5 hover:text-maroon"
-                          )}
-                        >
-                          {item.label}
-                        </a>
-                      )}
-                    </li>
-                  ))}
-                  
-                  {user && (
-                    <li>
-                      <Link 
-                        to="/dashboard" 
-                        onClick={() => setIsOpen(false)}
-                        className={cn(
-                          "text-xl font-bold py-3 px-4 rounded-2xl transition-all block",
-                          location.pathname === '/dashboard' ? "bg-maroon text-cream" : "text-gray-800 hover:bg-maroon/5 hover:text-maroon"
-                        )}
-                      >
-                        {(t.nav as any).dashboard}
-                      </Link>
-                    </li>
-                  )}
-                </ul>
+                <nav className="flex-1">
+                  <ul className="flex flex-col space-y-2 mb-8">
+                    {[
+                      { to: "/", label: t.nav.home, type: 'link', icon: Home },
+                      { to: "/#services", label: t.nav.services, type: 'anchor', icon: Grid },
+                      { to: "/library", label: (t.nav as any).library, type: 'link', icon: BookOpen },
+                      { to: "/news", label: (t.nav as any).news, type: 'link', icon: Newspaper },
+                      { to: "/#about", label: t.nav.about, type: 'anchor', icon: Info },
+                      { to: "/#faq", label: t.nav.faq, type: 'anchor', icon: HelpCircle }
+                    ].map((item, idx) => {
+                      const Icon = item.icon;
+                      const isActive = item.type === 'link' 
+                        ? location.pathname === item.to 
+                        : location.hash === item.to.substring(1);
 
-                <div className="mt-auto space-y-8">
-                  <div className="pt-8 border-t border-gold/10">
-                    <LanguageSwitcher />
+                      return (
+                        <li key={idx}>
+                          {item.type === 'link' ? (
+                            <Link 
+                              to={item.to} 
+                              onClick={() => setIsOpen(false)}
+                              className={cn(
+                                "flex items-center gap-4 text-lg font-bold py-4 px-5 rounded-2xl transition-all duration-300",
+                                isActive 
+                                  ? "bg-maroon text-white shadow-lg shadow-maroon/20" 
+                                  : "text-gray-800 hover:bg-maroon/5 hover:text-maroon"
+                              )}
+                            >
+                              <Icon className={cn("w-5 h-5", isActive ? "text-gold" : "text-maroon/40")} />
+                              {item.label}
+                            </Link>
+                          ) : (
+                            <a 
+                              href={item.to} 
+                              onClick={() => setIsOpen(false)}
+                              className={cn(
+                                "flex items-center gap-4 text-lg font-bold py-4 px-5 rounded-2xl transition-all duration-300",
+                                isActive 
+                                  ? "bg-maroon text-white shadow-lg shadow-maroon/20" 
+                                  : "text-gray-800 hover:bg-maroon/5 hover:text-maroon"
+                              )}
+                            >
+                              <Icon className={cn("w-5 h-5", isActive ? "text-gold" : "text-maroon/40")} />
+                              {item.label}
+                            </a>
+                          )}
+                        </li>
+                      );
+                    })}
+                    
+                    {user && (
+                      <li>
+                        <Link 
+                          to="/dashboard" 
+                          onClick={() => setIsOpen(false)}
+                          className={cn(
+                            "flex items-center gap-4 text-lg font-bold py-4 px-5 rounded-2xl transition-all duration-300",
+                            location.pathname === '/dashboard' 
+                              ? "bg-maroon text-white shadow-lg shadow-maroon/20" 
+                              : "text-gray-800 hover:bg-maroon/5 hover:text-maroon"
+                          )}
+                        >
+                          <Users className={cn("w-5 h-5", location.pathname === '/dashboard' ? "text-gold" : "text-maroon/40")} />
+                          {(t.nav as any).dashboard}
+                        </Link>
+                      </li>
+                    )}
+                  </ul>
+                </nav>
+
+                <div className="mt-8 space-y-6">
+                  <div className="pt-6 border-t border-maroon/10">
+                    <div className="flex items-center justify-between p-2 bg-maroon/5 rounded-2xl">
+                      <span className="text-xs font-bold text-maroon/60 pl-4 uppercase tracking-widest">Select Language</span>
+                      <LanguageSwitcher />
+                    </div>
                   </div>
 
                   {user ? (
-                    <div className="bg-maroon/5 rounded-3xl p-6">
+                    <div className="bg-gradient-to-br from-maroon/5 to-saffron/5 rounded-3xl p-5 border border-maroon/10">
                       <div className="flex items-center gap-4 mb-4">
                         {user.photoURL ? (
                           <img src={user.photoURL} alt="" className="w-12 h-12 rounded-full ring-2 ring-gold/20" />
@@ -575,14 +623,14 @@ const Navbar = () => {
                             {user.displayName?.[0] || 'Y'}
                           </div>
                         )}
-                        <div>
-                          <p className="text-sm font-black text-maroon line-clamp-1">{user.displayName || 'Yajman'}</p>
+                        <div className="min-w-0">
+                          <p className="text-sm font-black text-maroon truncate leading-tight">{user.displayName || 'Yajman'}</p>
                           <p className="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Devotee Profile</p>
                         </div>
                       </div>
                       <button 
                         onClick={() => { signOut(); setIsOpen(false); }}
-                        className="w-full text-xs font-black text-saffron uppercase tracking-widest text-center py-2 hover:bg-white rounded-xl transition-all"
+                        className="w-full text-xs font-black text-maroon uppercase tracking-widest text-center py-2.5 bg-white rounded-xl transition-all hover:bg-maroon hover:text-white border border-maroon/10"
                       >
                         {t.nav.logout}
                       </button>
@@ -590,27 +638,29 @@ const Navbar = () => {
                   ) : (
                     <button 
                       onClick={() => { signIn(); setIsOpen(false); }} 
-                      className="w-full py-4 rounded-2xl bg-paper border-2 border-maroon/10 text-maroon font-bold hover:bg-maroon hover:text-white transition-all flex items-center justify-center gap-3"
+                      className="w-full py-4 rounded-2xl bg-white border-2 border-maroon/10 text-maroon font-bold hover:bg-maroon hover:text-white transition-all flex items-center justify-center gap-3 shadow-sm active:scale-95"
                     >
                       <Users className="w-5 h-5" /> {t.nav.login}
                     </button>
                   )}
 
-                  <a 
-                    href={`tel:${CONTACT_INFO.phone}`}
-                    className="flex items-center justify-center gap-3 text-maroon font-bold py-3 bg-paper border border-maroon/10 rounded-2xl"
-                  >
-                    <Phone className="w-4 h-4" />
-                    {CONTACT_INFO.displayPhone}
-                  </a>
+                  <div className="grid grid-cols-1 gap-3 pb-12">
+                    <a 
+                      href={`tel:${CONTACT_INFO.phone}`}
+                      className="flex items-center justify-center gap-3 text-maroon font-bold py-4 bg-white border border-maroon/10 rounded-2xl transition-all hover:bg-maroon/5 active:scale-95"
+                    >
+                      <Phone className="w-4 h-4 text-saffron" />
+                      {CONTACT_INFO.displayPhone}
+                    </a>
 
-                  <a 
-                    href="#booking" 
-                    onClick={() => setIsOpen(false)}
-                    className="block w-full py-5 bg-maroon text-cream rounded-2xl text-center font-bold shadow-xl shadow-maroon/20 hover:scale-[1.02] active:scale-95 transition-all"
-                  >
-                    {t.nav.book}
-                  </a>
+                    <a 
+                      href="#booking" 
+                      onClick={() => setIsOpen(false)}
+                      className="block w-full py-5 bg-maroon text-cream rounded-2xl text-center font-bold shadow-xl shadow-maroon/20 hover:scale-[1.02] active:scale-95 transition-all text-lg"
+                    >
+                      {t.nav.book}
+                    </a>
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -2119,7 +2169,7 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <div className="min-h-screen bg-paper pb-20 md:pb-0 font-sans text-gray-900 selection:bg-maroon selection:text-white relative overflow-hidden">
+      <div className="min-h-screen bg-paper pb-32 md:pb-0 font-sans text-gray-900 selection:bg-maroon selection:text-white relative overflow-hidden">
         <DecorativeBackground />
         <Navbar />
         
@@ -2132,6 +2182,7 @@ export default function App() {
             />
           } />
           <Route path="/library" element={<Library />} />
+          <Route path="/news" element={<DailyNews />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/privacy" element={<div className="pt-32 pb-20 container mx-auto px-6 min-h-screen"><h1 className="text-4xl font-serif font-black text-maroon mb-8">Privacy Policy</h1><p className="text-gray-600">Your privacy is important to us. We only collect information necessary to provide our Vedic services.</p></div>} />
           <Route path="/terms" element={<div className="pt-32 pb-20 container mx-auto px-6 min-h-screen"><h1 className="text-4xl font-serif font-black text-maroon mb-8">Terms of Service</h1><p className="text-gray-600">By using our services, you agree to follow the traditional Vedic protocols as guided by Pandit Ji.</p></div>} />

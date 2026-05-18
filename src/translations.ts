@@ -12,7 +12,8 @@ export const i18n = {
       login: 'लगिन',
       logout: 'लगआउट',
       dashboard: 'ड्यासबोर्ड',
-      book: 'बुक गर्नुहोस्'
+      book: 'बुक गर्नुहोस्',
+      news: 'दैनिक समाचार'
     },
     dashboard: {
       title: 'मेरो ड्यासबोर्ड',
@@ -415,6 +416,16 @@ export const i18n = {
       'Purnima': 'पूर्णिमा',
       'Ganga Dashahara': 'गंगा दशहारा',
       'Nirjala Ekadashi': 'निर्जला एकादशी'
+    },
+    news: {
+      title: 'दैनिक दिव्य समाचार',
+      subtitle: 'तपाईँको आध्यात्मिक यात्राका लागि ज्ञान र अपडेटहरू',
+      loading: 'आजको दिव्य प्रेरणा खोज्दै...',
+      error: 'आज समाचार प्राप्त गर्न सकिएन। कृपया पछि फेरि प्रयास गर्नुहोस्।',
+      spiritualTip: 'आजको आध्यात्मिक सुझाव',
+      planetaryHighlight: 'ग्रह नक्षत्र विशेष',
+      readMore: 'पूर्ण लेख पढ्नुहोस्',
+      summary: 'संक्षिप्त सारांश'
     }
   },
   hi: {
@@ -428,7 +439,8 @@ export const i18n = {
       login: 'लॉगिन',
       logout: 'लॉगआउट',
       dashboard: 'डैशबोर्ड',
-      book: 'बुक करें'
+      book: 'बुक करें',
+      news: 'दैनिक समाचार'
     },
     dashboard: {
       title: 'मेरा डैशबोर्ड',
@@ -831,6 +843,16 @@ export const i18n = {
       'Purnima': 'पूर्णिमा',
       'Ganga Dashahara': 'गंगा दशहारा',
       'Nirjala Ekadashi': 'निर्जला एकादशी'
+    },
+    news: {
+      title: 'दैनिक दिव्य समाचार',
+      subtitle: 'आपकी आध्यात्मिक यात्रा के लिए ज्ञान और अपडेट',
+      loading: 'आज की दिव्य प्रेरणा प्राप्त की जा रही है...',
+      error: 'आज समाचार प्राप्त नहीं हो सका। कृपया बाद में पुनः प्रयास करें।',
+      spiritualTip: 'आज का आध्यात्मिक सुझाव',
+      planetaryHighlight: 'ग्रह नक्षत्र विशेष',
+      readMore: 'पूरा लेख पढ़ें',
+      summary: 'संक्षिप्त सारांश'
     }
   },
   en: {
@@ -1247,6 +1269,16 @@ export const i18n = {
       'Purnima': 'Purnima',
       'Ganga Dashahara': 'Ganga Dashahara',
       'Nirjala Ekadashi': 'Nirjala Ekadashi'
+    },
+    news: {
+      title: 'Daily Divine News',
+      subtitle: 'Wisdom and updates for your spiritual journey',
+      loading: 'Fetching today\'s divine inspirations...',
+      error: 'Unable to fetch news today. Please try again later.',
+      spiritualTip: 'Spiritual Tip of the Day',
+      planetaryHighlight: 'Planetary Highlight',
+      readMore: 'Read Full Article',
+      summary: 'Brief Summary'
     }
   }
 };
