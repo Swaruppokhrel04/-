@@ -106,6 +106,38 @@ async function startServer() {
         return res.json(dailyNewsCache.content);
       }
 
+      const fallbackNews = {
+        date: today,
+        en: {
+          title: "Auspicious Solar Alignment and Vedic Wisdom Celebration",
+          summary: "Today brings an uplifting alignment of celestial bodies, encouraging deep contemplation, spiritual reflection, and harmonious connections.",
+          body: "As the celestial bodies move in their sacred alignment today, a peaceful and inspiring spiritual frequency is felt throughout our community. The astrologers and acharyas at Shree Nara Narayana have observed a highly beneficial cosmic state, perfect for starting new learning, participating in puja rituals, and strengthening family bonds. This special configuration reminds us of the profound truth in ancient Vedic manuscripts—that a balanced life filled with gratitude and service leads to ultimate fulfillment.\n\nNow is a prime time to dedicate yourself to self-reflection and the study of traditional texts. Acts of selfless help, of offering food and fresh water, and of practicing meditative mindfulness will bring deep mental clarity and heart-warming cosmic satisfaction. Let today be a steady step forward in your personal and spiritual journey.",
+          tip: "Begin your morning with simple sun salutations (Surya Namaskar) or deep breathing exercises (Pranayama) to center yourself and welcome the positive day.",
+          highlight: "The harmonious placement of Jupiter inspires wisdom and gentle speech, allowing for positive family interactions and clearance of internal hurdles."
+        },
+        ne: {
+          title: "शुभ सौर्य संरेखण र वैदिक ज्ञानको उत्सव",
+          summary: "आजको दिनले ग्रहहरूको अत्यन्तै लाभदायक संरेखण ल्याएको छ, जसले आध्यात्मिक चिन्तन, आत्म-अनुशासन र शान्त ध्यानलाई प्रोत्साहन गर्दछ।",
+          body: "आज जब खगोलीय पिण्डहरू आफ्नो पवित्र संरेखणमा छन्, पृथ्वीभरि एक शान्त आध्यात्मिक ऊर्जा प्रवाहित भइरहेको छ। श्री नर नारायणका पुजारीहरूले विश्वव्यापी शान्ति र कल्याणको लागि विशेष प्रार्थना र वैदिक मन्त्रोच्चारण सुरु गरेका छन्। ज्योतिषीहरूका अनुसार आजको चन्द्रमा र वृहस्पतिको शुभ दृष्टिले मानसिक स्पष्टता, बुद्धि र प्रिय बोलीको विकास गर्न मद्दत गर्नेछ।\n\nयो दिन आत्म-चिन्तन र शास्त्रीय ज्ञानको अध्ययनका लागि उत्तम छ। दान कार्यमा संलग्न हुनु वा सरल मन्त्रहरूको जप गर्नाले गहिरो मानसिक शान्ति प्राप्त हुन्छ। आजको वातावरणमा सकारात्मक तरंगहरू व्याप्त छन् जसले भावनात्मक र शारीरिक स्वास्थ्यलाई सबल बनाउँछ।",
+          tip: "आजको सुरुवात सूर्य नमस्कार वा केही मिनेटको मौन ध्यानबाट गर्नुहोस, जसले तपाईंको दिनलाई ऊर्जावान र उद्देश्यपूर्ण बनाउनेछ।",
+          highlight: "बृहस्पतिको शुभ प्रभावले मानसिक स्पष्टता र आध्यात्मिक विकास ल्याउनेछ, जसले बाधाहरू हटाउन र सम्बन्धहरूलाई सुमधुर बनाउन मद्दत गर्दछ।"
+        },
+        hi: {
+          title: "शुभ सूर्य संरेखण और वैदिक ज्ञान का उत्सव",
+          summary: "आज का दिन ग्रहों का अत्यंत लाभकारी संरेखण लेकर आया है, जो आध्यात्मिक चिंतन, आत्म-अनुशासन और शांत ध्यान को प्रोत्साहित करता है।",
+          body: "आज जब खगोलीय पिंड अपने पवित्र संरेखण में हैं, पृथ्वी भर में एक शांत आध्यात्मिक ऊर्जा प्रवाहित हो रही है। श्री नर नारायण के पुजारियों ने वैश्विक शांति और कल्याण के लिए विशेष प्रार्थनाओं और वैदिक मंत्रोच्चारण की शुरुआत की है। ज्योतिषियों के अनुसार, आज वृहस्पति और चंद्रमा की युति से उत्पन्न शुभ प्रभाव मानसिक स्पष्टता, बुद्धि और प्रिय वाणी का विकास करने में सहायक होगा।\n\nयह दिन आत्म-चिंतन और शास्त्रीय ज्ञान के अध्ययन के लिए सर्वोत्तम है। परोपकार के कार्यों में संलग्न होना या सरल मंत्रों का जप करना गहरी मानसिक शांति प्रदान करता है। आज के वातावरण में सकारात्मक तरंगें व्याप्त हैं जो भावनात्मक और शारीरिक स्वास्थ्य को सबल बनाती हैं।",
+          tip: "आज की शुरुआत सूर्य नमस्कार या कुछ मिनटों के मौन ध्यान से करें, जिससे आपका दिन ऊर्जावान और उद्देश्यपूर्ण बनेगा।",
+          highlight: "बृहस्पति का शुभ प्रभाव मानसिक स्पष्टता और आध्यात्मिक विकास लाएगा, जो बाधाओं को दूर करने और रिश्तों को अधिक सार्थक बनाने में मदद करेगा।"
+        }
+      };
+
+      const ai = getAi();
+      if (!ai) {
+        console.warn("Gemini API is not configured. Using high-quality offline fallback news response.");
+        dailyNewsCache = { date: today, content: fallbackNews };
+        return res.json(fallbackNews);
+      }
+
       const prompt = `Generate a realistic, high-quality, and spiritually uplifting "Daily News" article for a Vedic Astrology and Religious Services platform named "Shree Nara Narayana". 
       The article should be relevant to Sanatana Dharma, Vedic wisdom, astrology, or planetary alignments for today (${today}).
       Include:
@@ -124,70 +156,71 @@ async function startServer() {
         "hi": { "title": "string", "summary": "string", "body": "string", "tip": "string", "highlight": "string" }
       }`;
 
-      const ai = getAi();
-      if (!ai) {
-        throw new Error("Gemini API is not configured. Please add GEMINI_API_KEY to your secrets.");
-      }
-
-      const response = await ai.models.generateContent({
-        model: "gemini-3-flash-preview",
-        contents: prompt,
-        config: {
-          responseMimeType: "application/json",
-          responseSchema: {
-            type: Type.OBJECT,
-            properties: {
-              date: { type: Type.STRING },
-              en: {
-                type: Type.OBJECT,
-                properties: {
-                  title: { type: Type.STRING },
-                  summary: { type: Type.STRING },
-                  body: { type: Type.STRING },
-                  tip: { type: Type.STRING },
-                  highlight: { type: Type.STRING }
+      try {
+        const response = await ai.models.generateContent({
+          model: "gemini-3-flash-preview",
+          contents: prompt,
+          config: {
+            responseMimeType: "application/json",
+            responseSchema: {
+              type: Type.OBJECT,
+              properties: {
+                date: { type: Type.STRING },
+                en: {
+                  type: Type.OBJECT,
+                  properties: {
+                    title: { type: Type.STRING },
+                    summary: { type: Type.STRING },
+                    body: { type: Type.STRING },
+                    tip: { type: Type.STRING },
+                    highlight: { type: Type.STRING }
+                  },
+                  required: ["title", "summary", "body", "tip", "highlight"]
                 },
-                required: ["title", "summary", "body", "tip", "highlight"]
+                ne: {
+                  type: Type.OBJECT,
+                  properties: {
+                    title: { type: Type.STRING },
+                    summary: { type: Type.STRING },
+                    body: { type: Type.STRING },
+                    tip: { type: Type.STRING },
+                    highlight: { type: Type.STRING }
+                  },
+                  required: ["title", "summary", "body", "tip", "highlight"]
+                },
+                hi: {
+                  type: Type.OBJECT,
+                  properties: {
+                    title: { type: Type.STRING },
+                    summary: { type: Type.STRING },
+                    body: { type: Type.STRING },
+                    tip: { type: Type.STRING },
+                    highlight: { type: Type.STRING }
+                  },
+                  required: ["title", "summary", "body", "tip", "highlight"]
+                }
               },
-              ne: {
-                type: Type.OBJECT,
-                properties: {
-                  title: { type: Type.STRING },
-                  summary: { type: Type.STRING },
-                  body: { type: Type.STRING },
-                  tip: { type: Type.STRING },
-                  highlight: { type: Type.STRING }
-                },
-                required: ["title", "summary", "body", "tip", "highlight"]
-              },
-              hi: {
-                type: Type.OBJECT,
-                properties: {
-                  title: { type: Type.STRING },
-                  summary: { type: Type.STRING },
-                  body: { type: Type.STRING },
-                  tip: { type: Type.STRING },
-                  highlight: { type: Type.STRING }
-                },
-                required: ["title", "summary", "body", "tip", "highlight"]
-              }
-            },
-            required: ["date", "en", "ne", "hi"]
+              required: ["date", "en", "ne", "hi"]
+            }
           }
-        }
-      });
+        });
 
-      const newsContent = JSON.parse(response.text);
-      dailyNewsCache = {
-        date: today,
-        content: newsContent
-      };
+        const newsContent = JSON.parse(response.text);
+        dailyNewsCache = {
+          date: today,
+          content: newsContent
+        };
 
-      res.json(newsContent);
+        return res.json(newsContent);
+      } catch (genError) {
+        console.error("Gemini Generation Error, falling back to offline content:", genError);
+        dailyNewsCache = { date: today, content: fallbackNews };
+        return res.json(fallbackNews);
+      }
     } catch (error: any) {
-      console.error("Gemini Error:", error);
+      console.error("General News Route Error:", error);
       res.status(500).json({ 
-        error: "Failed to generate daily news",
+        error: "Failed to load daily news",
         details: error.message 
       });
     }

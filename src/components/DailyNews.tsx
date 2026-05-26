@@ -29,6 +29,23 @@ export default function DailyNews() {
   const t = i18n[language];
   const wisdom = FEATURED_WISDOM[language] || FEATURED_WISDOM.en;
 
+  const formatDateSafely = (dateStr: string) => {
+    try {
+      if (!dateStr) return '';
+      // Safari compatibility: parse YYYY-MM-DD safely by replacing "-" with "/"
+      const normalizedDate = dateStr.includes('-') ? dateStr.replace(/-/g, '/') : dateStr;
+      const parsedDate = new Date(normalizedDate);
+      if (!isNaN(parsedDate.getTime())) {
+        return parsedDate.toLocaleDateString(language === 'en' ? 'en-US' : language === 'ne' ? 'ne-NP' : 'hi-IN', {
+          weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+        });
+      }
+    } catch (e) {
+      console.error('Error formatting date:', e);
+    }
+    return dateStr; // fallback to raw string if parsing fails
+  };
+
   const fetchNews = async () => {
     setLoading(true);
     setError(null);
@@ -174,9 +191,7 @@ export default function DailyNews() {
         <div className="flex items-center justify-center gap-4 text-gray-500 font-bold text-sm">
           <div className="flex items-center gap-2">
             <Calendar className="w-4 h-4 text-saffron" />
-            <span>{new Date(news.date).toLocaleDateString(language === 'en' ? 'en-US' : language === 'ne' ? 'ne-NP' : 'hi-IN', {
-              weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-            })}</span>
+            <span>{formatDateSafely(news.date)}</span>
           </div>
         </div>
       </motion.div>
