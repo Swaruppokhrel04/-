@@ -8,7 +8,9 @@ import {
   AlertCircle, 
   Key,
   CheckCircle2,
-  ChevronDown
+  ChevronDown,
+  ChevronUp,
+  Check
 } from 'lucide-react';
 import { useLanguage } from '../LanguageContext';
 import { GoogleGenerativeAI } from '@google/generative-ai';
@@ -26,6 +28,7 @@ declare global {
 export const VideoPromoGenerator = () => {
   const { t } = useLanguage();
   const [selectedService, setSelectedService] = useState('Rudrabhishek');
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [extraDetails, setExtraDetails] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [status, setStatus] = useState('');
@@ -164,19 +167,67 @@ export const VideoPromoGenerator = () => {
       <div className="grid lg:grid-cols-2 gap-10">
         <div className="space-y-6">
           <div className="bg-paper-dark p-8 rounded-3xl border border-gold/10 space-y-6">
-            <div className="space-y-2">
+            <div className="space-y-2 relative">
               <label className="text-xs font-bold uppercase tracking-widest text-gray-400">{t.videoGenerator.selectService}</label>
               <div className="relative">
-                <select 
-                  value={selectedService}
-                  onChange={(e) => setSelectedService(e.target.value)}
-                  className="w-full bg-white border border-gold/10 rounded-2xl px-5 py-4 appearance-none focus:outline-none focus:ring-1 focus:ring-maroon/20 text-maroon font-bold"
+                {/* Trigger Button - Big Size and beautiful design */}
+                <button
+                  type="button"
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  className="w-full bg-white border border-gold/20 hover:border-gold/40 rounded-2xl px-5 py-4 flex items-center justify-between text-maroon font-bold text-base md:text-lg shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-maroon/20 text-left cursor-pointer"
                 >
-                  {services.map(s => (
-                    <option key={s} value={s}>{s}</option>
-                  ))}
-                </select>
-                <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gold/40 pointer-events-none" />
+                  <span>{selectedService}</span>
+                  {isDropdownOpen ? (
+                    <ChevronUp className="w-5 h-5 text-gold shrink-0" />
+                  ) : (
+                    <ChevronDown className="w-5 h-5 text-gold shrink-0" />
+                  )}
+                </button>
+
+                {/* Dropdown Options Backdrop to close on click outside */}
+                {isDropdownOpen && (
+                  <div 
+                    className="fixed inset-0 z-40 bg-transparent" 
+                    onClick={() => setIsDropdownOpen(false)} 
+                  />
+                )}
+
+                {/* Dropdown Options List opening strictly UPSIDE (upward direction) */}
+                <AnimatePresence>
+                  {isDropdownOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 15, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 15, scale: 0.95 }}
+                      transition={{ duration: 0.15 }}
+                      className="absolute bottom-full left-0 right-0 mb-3 bg-white border border-gold/20 rounded-2xl shadow-2xl shadow-maroon/10 z-50 overflow-hidden"
+                    >
+                      <div className="p-2 max-h-72 overflow-y-auto font-sans">
+                        {services.map((s) => {
+                          const isSelected = selectedService === s;
+                          return (
+                            <button
+                              key={s}
+                              type="button"
+                              onClick={() => {
+                                setSelectedService(s);
+                                setIsDropdownOpen(false);
+                              }}
+                              className={`w-full flex items-center justify-between px-5 py-4 rounded-xl text-left text-sm md:text-base font-bold transition-all cursor-pointer ${
+                                isSelected 
+                                  ? 'bg-maroon text-cream' 
+                                  : 'text-gray-700 hover:bg-maroon/5 hover:text-maroon'
+                              }`}
+                            >
+                              <span>{s}</span>
+                              {isSelected && <Check className="w-4 h-4 text-gold shrink-0" />}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             </div>
 

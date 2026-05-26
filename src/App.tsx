@@ -26,6 +26,7 @@ import {
   Zap,
   Grid,
   Scroll,
+  Check,
   UserCheck,
   Compass,
   Heart,
@@ -1400,6 +1401,7 @@ const BookingForm = ({ preselectedServiceId }: { preselectedServiceId?: string |
   };
 
   const [showBookingConfirm, setShowBookingConfirm] = useState(false);
+  const [isServiceDropdownOpen, setIsServiceDropdownOpen] = useState(false);
   const [lastBooking, setLastBooking] = useState<any>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -1606,19 +1608,77 @@ const BookingForm = ({ preselectedServiceId }: { preselectedServiceId?: string |
                     />
                     {errors.phone && <p className="text-xs text-red-500 font-bold">{errors.phone}</p>}
                   </div>
-                  <div className="space-y-2 md:col-span-2">
+                  <div className="space-y-2 md:col-span-2 relative">
                     <label className="text-sm font-bold uppercase tracking-widest text-gray-500">{t.booking.form.labelService}</label>
-                    <select 
-                      className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-maroon transition-colors"
-                      value={formData.pujaType}
-                      onChange={(e) => setFormData({...formData, pujaType: e.target.value})}
-                    >
-                      {SERVICES.map(s => (
-                        <option key={s.id} value={s.id}>
-                          {t.services_list[s.id as keyof typeof t.services_list]?.name || s.name}
-                        </option>
-                      ))}
-                    </select>
+                    {(() => {
+                      const selectedServiceObj = SERVICES.find(s => s.id === formData.pujaType);
+                      const selectedLabel = selectedServiceObj 
+                        ? (t.services_list[selectedServiceObj.id as keyof typeof t.services_list]?.name || selectedServiceObj.name) 
+                        : '';
+                      return (
+                        <div className="relative">
+                          {/* Trigger Button */}
+                          <button
+                            type="button"
+                            onClick={() => setIsServiceDropdownOpen(!isServiceDropdownOpen)}
+                            className="w-full bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-maroon/20 transition-all font-bold text-base md:text-lg text-maroon flex items-center justify-between text-left cursor-pointer"
+                          >
+                            <span>{selectedLabel}</span>
+                            {isServiceDropdownOpen ? (
+                              <ChevronUp className="w-5 h-5 text-gold shrink-0" />
+                            ) : (
+                              <ChevronDown className="w-5 h-5 text-gold shrink-0" />
+                            )}
+                          </button>
+
+                          {/* Backdrop to dismiss on clicking outside */}
+                          {isServiceDropdownOpen && (
+                            <div 
+                              className="fixed inset-0 z-40 bg-transparent" 
+                              onClick={() => setIsServiceDropdownOpen(false)} 
+                            />
+                          )}
+
+                          {/* Dropdown Options List - Opening strictly UPSIDE (upward direction) */}
+                          <AnimatePresence>
+                            {isServiceDropdownOpen && (
+                              <motion.div
+                                initial={{ opacity: 0, y: 15, scale: 0.95 }}
+                                animate={{ opacity: 1, y: 0, scale: 1 }}
+                                exit={{ opacity: 0, y: 15, scale: 0.95 }}
+                                transition={{ duration: 0.15 }}
+                                className="absolute bottom-full left-0 right-0 mb-3 bg-white border border-gold/20 rounded-2xl shadow-2xl shadow-maroon/10 z-50 overflow-hidden"
+                              >
+                                <div className="p-2 max-h-70 overflow-y-auto font-sans">
+                                  {SERVICES.map((s) => {
+                                    const isSelected = formData.pujaType === s.id;
+                                    const label = t.services_list[s.id as keyof typeof t.services_list]?.name || s.name;
+                                    return (
+                                      <button
+                                        key={s.id}
+                                        type="button"
+                                        onClick={() => {
+                                          setFormData({ ...formData, pujaType: s.id });
+                                          setIsServiceDropdownOpen(false);
+                                        }}
+                                        className={`w-full flex items-center justify-between px-5 py-4 rounded-xl text-left text-sm md:text-base font-bold transition-all cursor-pointer ${
+                                          isSelected 
+                                            ? 'bg-maroon text-cream' 
+                                            : 'text-gray-700 hover:bg-maroon/5 hover:text-maroon'
+                                        }`}
+                                      >
+                                        <span>{label}</span>
+                                        {isSelected && <Check className="w-4 h-4 text-gold shrink-0" />}
+                                      </button>
+                                    );
+                                  })}
+                                </div>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                      );
+                    })()}
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-bold uppercase tracking-widest text-gray-500">{t.booking.form.labelDate}</label>
