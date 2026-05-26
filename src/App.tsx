@@ -102,7 +102,7 @@ const Navbar = () => {
   // Handle window resize
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 768) {
+      if (window.innerWidth >= 1024) {
         setIsOpen(false);
         setIsSearchOpen(false);
       }
@@ -142,7 +142,7 @@ const Navbar = () => {
       aria-label="Main Navigation"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20 md:h-24">
+        <div className="flex justify-between items-center h-20 lg:h-24">
           <div 
             className="flex items-center gap-3 group cursor-pointer" 
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
@@ -157,7 +157,7 @@ const Navbar = () => {
           </div>
 
           {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-6 lg:gap-8">
+          <div className="hidden lg:flex items-center gap-6 lg:gap-8">
             <div className="relative" ref={searchRef}>
               <button 
                 onClick={() => setIsSearchOpen(!isSearchOpen)}
@@ -375,7 +375,7 @@ const Navbar = () => {
             </div>
           </div>
 
-          <div className="flex items-center gap-2 md:hidden">
+          <div className="flex items-center gap-2 lg:hidden">
             <button 
               onClick={() => {
                 setIsWhatsappOpen(!isWhatsappOpen);
@@ -508,7 +508,7 @@ const Navbar = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsOpen(false)}
-              className="md:hidden fixed inset-0 bg-maroon/60 backdrop-blur-sm z-[60]"
+              className="lg:hidden fixed inset-0 bg-maroon/60 backdrop-blur-sm z-[60]"
             />
             
             {/* Drawer */}
@@ -518,7 +518,7 @@ const Navbar = () => {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-              className="md:hidden fixed top-0 right-0 h-full w-[85%] max-w-[360px] bg-paper shadow-[-20px_0_50px_rgba(0,0,0,0.1)] z-[70] flex flex-col"
+              className="lg:hidden fixed top-0 right-0 h-full w-[85%] max-w-[360px] bg-paper shadow-[-20px_0_50px_rgba(0,0,0,0.1)] z-[70] flex flex-col"
             >
               <div className="p-6 sm:p-8 overflow-y-auto flex-1 flex flex-col">
                 <div className="flex justify-between items-center mb-8 sticky top-0 bg-paper z-10 pb-4">

@@ -169,9 +169,9 @@ export const Dashboard = () => {
           <motion.div 
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="lg:w-80"
+            className="w-full lg:w-80"
           >
-            <div className="bg-white rounded-3xl p-8 border border-gold/10 shadow-xl shadow-maroon/5 sticky top-32">
+            <div className="bg-white rounded-3xl p-8 border border-gold/10 shadow-xl shadow-maroon/5 lg:sticky lg:top-32">
               <div className="flex flex-col items-center mb-10 text-center">
                 <div className="w-24 h-24 bg-paper-dark rounded-full p-1 border-2 border-gold/20 mb-5 relative group">
                   {photoURL ? (
