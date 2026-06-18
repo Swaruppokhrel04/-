@@ -1560,12 +1560,12 @@ const BookingForm = ({ preselectedServiceId }: { preselectedServiceId?: string |
         </div>
 
         {/* Visual Progress Bar */}
-        <div className="max-w-xl mx-auto mb-12 relative z-20" id="booking-progress-bar">
+        <div className="max-w-xl mx-auto mb-10 relative z-20" id="booking-progress-bar">
           <div className="relative flex items-center justify-between">
             {/* Background connection lines */}
-            <div className="absolute left-6 right-6 top-5 -translate-y-1/2 h-1 bg-white/10 rounded-full z-0" />
+            <div className="absolute left-4 right-4 xs:left-6 xs:right-6 top-4 xs:top-5 -translate-y-1/2 h-1 bg-white/10 rounded-full z-0" />
             <div 
-              className="absolute left-6 top-5 -translate-y-1/2 h-1 bg-gradient-to-r from-gold to-saffron rounded-full transition-all duration-500 ease-out z-0" 
+              className="absolute left-4 xs:left-6 top-4 xs:top-5 -translate-y-1/2 h-1 bg-gradient-to-r from-gold to-saffron rounded-full transition-all duration-500 ease-out z-0" 
               style={{ 
                 width: `${((isAcknowledging || showBookingConfirm ? 3 : currentStep) - 1) / 2 * 93}%` 
               }}
@@ -1597,7 +1597,7 @@ const BookingForm = ({ preselectedServiceId }: { preselectedServiceId?: string |
                     }}
                     whileHover={{ scale: st.id <= 2 ? 1.1 : 1 }}
                     whileTap={{ scale: st.id <= 2 ? 0.95 : 1 }}
-                    className={`w-10 h-10 md:w-11 md:h-11 rounded-full flex items-center justify-center font-black border-2 transition-all duration-300 shadow-md ${
+                    className={`w-8 h-8 xs:w-10 xs:h-10 md:w-11 md:h-11 rounded-full flex items-center justify-center font-black border-2 transition-all duration-300 shadow-md ${
                       isCurrent 
                         ? 'bg-gold border-gold text-maroon shadow-lg shadow-gold/30' 
                         : isActive 
@@ -1606,12 +1606,12 @@ const BookingForm = ({ preselectedServiceId }: { preselectedServiceId?: string |
                     }`}
                   >
                     {activeStep > st.id ? (
-                      <Check className="w-5 h-5 text-maroon stroke-[3px]" />
+                      <Check className="w-4 h-4 xs:w-5 xs:h-5 text-maroon stroke-[3px]" />
                     ) : (
-                      <span className="text-xs font-bold">{st.id}</span>
+                      <span className="text-[10px] xs:text-xs font-bold">{st.id}</span>
                     )}
                   </motion.button>
-                  <span className={`text-[9px] md:text-[11px] font-black uppercase tracking-wider mt-2.5 transition-colors duration-300 ${
+                  <span className={`text-[8px] xs:text-[9.5px] md:text-[11px] font-black uppercase tracking-wider mt-2 transition-colors duration-300 text-center ${
                     isActive ? 'text-gold' : 'text-cream/40'
                   }`}>
                     {st.label}
@@ -1633,40 +1633,40 @@ const BookingForm = ({ preselectedServiceId }: { preselectedServiceId?: string |
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
-                  className="bg-white/5 backdrop-blur-md p-8 md:p-10 rounded-[3rem] border border-gold/10 text-cream space-y-6 flex flex-col justify-between min-h-[460px]"
+                  className="order-2 lg:order-1 bg-white/5 backdrop-blur-md p-5 sm:p-8 md:p-10 rounded-[2rem] sm:rounded-[3rem] border border-gold/10 text-cream space-y-4 sm:space-y-6 flex flex-col justify-between min-h-0 lg:min-h-[460px] mt-6 lg:mt-0"
                 >
                   <div className="space-y-4">
                     <div className="inline-flex items-center gap-2 px-3 py-1 bg-gold/10 text-gold text-[10px] font-bold uppercase tracking-widest rounded-full border border-gold/20">
                       <Sparkles className="w-3.5 h-3.5 text-gold animate-pulse" />
                       <span>{language === 'ne' ? 'वैदिक प्रक्रिया' : language === 'hi' ? 'वैदिक विधि' : 'Vedic Procedure'}</span>
                     </div>
-                    <h3 className="text-2xl md:text-3xl font-serif font-black text-white leading-tight">
+                    <h3 className="text-xl sm:text-2xl md:text-3xl font-serif font-black text-white leading-tight">
                       {language === 'ne' ? 'आफ्नो संकल्प तयार गर्नुहोस्' : language === 'hi' ? 'अपना संकल्प तैयार करें' : 'Prepare Your Sacred Sankalpa'}
                     </h3>
-                    <p className="text-sm text-cream/80 leading-relaxed font-normal">
+                    <p className="text-xs sm:text-sm text-cream/80 leading-relaxed font-normal">
                       {language === 'ne' 
                         ? 'हाम्रा आदरणीय पण्डितजीहरूले पूजा सुरु गर्नुअघि तपाईँको नाम र सङ्कल्प उच्चारण गर्नुहुनेछ। कृपया आफ्नो पूरा विवरण र पूजासँग सम्बन्धित विशेष मनसाय (सङ्कल्प) को उल्लेख गर्नुहोस्।' 
                         : language === 'hi' 
                           ? 'हमारे सम्मानित पंडित जी पूजा शुरू करने से पहले आपके नाम और संकल्प का उच्चारण करेंगे। कृपया अपना पूरा विवरण और पूजा से संबंधित विशेष उद्देश्य (संकल्प) का उल्लेख करें।' 
                           : 'Our respected Pandit Jis will recite your name and custom Sankalpa before starting the ritual. Please share your family details and specific intentions.'}
                     </p>
-                    <div className="space-y-3 pt-6 border-t border-gold/10">
-                      <div className="flex items-center gap-3 text-xs text-gold/90 font-bold uppercase tracking-wider">
-                        <Check className="w-4 h-4 text-gold shrink-0 bg-gold/10 rounded p-0.5" />
+                    <div className="space-y-3 pt-4 sm:pt-6 border-t border-gold/10">
+                      <div className="flex items-center gap-2.5 sm:gap-3 text-[11px] sm:text-xs text-gold/90 font-bold uppercase tracking-wider">
+                        <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gold shrink-0 bg-gold/10 rounded p-0.5" />
                         <span>{language === 'ne' ? 'पूजा सामग्रीको व्यवस्था' : language === 'hi' ? 'पूजा सामग्री की व्यवस्था' : 'All Pooja Samagri Arranged'}</span>
                       </div>
-                      <div className="flex items-center gap-3 text-xs text-gold/90 font-bold uppercase tracking-wider">
-                        <Check className="w-4 h-4 text-gold shrink-0 bg-gold/10 rounded p-0.5" />
+                      <div className="flex items-center gap-2.5 sm:gap-3 text-[11px] sm:text-xs text-gold/90 font-bold uppercase tracking-wider">
+                        <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gold shrink-0 bg-gold/10 rounded p-0.5" />
                         <span>{language === 'ne' ? 'प्रत्यक्ष भिडियो प्रसारण' : language === 'hi' ? 'लाइव वीडियो प्रसारण' : 'Live High-Quality Broadcast'}</span>
                       </div>
-                      <div className="flex items-center gap-3 text-xs text-gold/90 font-bold uppercase tracking-wider">
-                        <Check className="w-4 h-4 text-gold shrink-0 bg-gold/10 rounded p-0.5" />
+                      <div className="flex items-center gap-2.5 sm:gap-3 text-[11px] sm:text-xs text-gold/90 font-bold uppercase tracking-wider">
+                        <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gold shrink-0 bg-gold/10 rounded p-0.5" />
                         <span>{language === 'ne' ? 'प्रसाद डेलिभरी' : language === 'hi' ? 'प्रसाद वितरण' : 'Sacred Prasad Hand-Delivered'}</span>
                       </div>
                     </div>
                   </div>
                   <div className="pt-4 border-t border-white/5">
-                    <p className="text-[10px] text-cream/40 font-bold uppercase tracking-widest leading-normal">
+                    <p className="text-[9px] sm:text-[10px] text-cream/40 font-bold uppercase tracking-widest leading-normal">
                       {language === 'ne' ? 'तपाईँको सुरक्षा र कल्याण हाम्रो प्राथमिकता हो।' : language === 'hi' ? 'आपकी सुरक्षा और कल्याण हमारी प्राथमिकता है।' : 'Your spiritual privacy is fully secured.'}
                     </p>
                   </div>
@@ -1677,7 +1677,7 @@ const BookingForm = ({ preselectedServiceId }: { preselectedServiceId?: string |
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
-                  className="space-y-6"
+                  className="order-1 lg:order-1 space-y-6"
                 >
                   <CalendarView 
                     selectedDate={formData.date} 
@@ -1729,7 +1729,7 @@ const BookingForm = ({ preselectedServiceId }: { preselectedServiceId?: string |
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5 }}
-                  className="text-3xl font-serif font-bold text-cream mb-4"
+                  className="text-2xl sm:text-3xl font-serif font-bold text-cream mb-4"
                 >
                   {language === 'ne' ? 'धन्यवाद !' : language === 'hi' ? 'धन्यवाद !' : 'Thank You !'}
                 </motion.h3>
@@ -1737,7 +1737,7 @@ const BookingForm = ({ preselectedServiceId }: { preselectedServiceId?: string |
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.8 }}
-                  className="text-gold font-bold uppercase tracking-[0.2em] text-xs"
+                  className="text-gold font-bold uppercase tracking-[0.2em] text-[10px] sm:text-xs"
                 >
                   {language === 'ne' ? 'बुकिङ सफलतापूर्वक प्राप्त भयो' : language === 'hi' ? 'बुकिंग सफलतापूर्वक प्राप्त हुई' : 'Booking Submitted Successfully'}
                 </motion.p>
@@ -1755,7 +1755,7 @@ const BookingForm = ({ preselectedServiceId }: { preselectedServiceId?: string |
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
-                className="bg-white rounded-[3.5rem] shadow-2xl overflow-hidden"
+                className="bg-white rounded-[1.75rem] sm:rounded-[3.5rem] shadow-2xl overflow-hidden"
               >
                 <BookingConfirmation 
                   booking={lastBooking} 
@@ -1771,25 +1771,25 @@ const BookingForm = ({ preselectedServiceId }: { preselectedServiceId?: string |
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
-                className="bg-white p-8 md:p-12 rounded-[3.5rem] shadow-2xl flex flex-col justify-between"
+                className="order-1 lg:order-2 bg-white p-4 xs:p-6 sm:p-8 md:p-12 rounded-[1.75rem] sm:rounded-[3.5rem] shadow-2xl flex flex-col justify-between"
               >
-                <div className="space-y-6">
-                  <div className="border-b border-gold/15 pb-4">
-                    <h3 className="text-xl font-serif font-black text-maroon">
+                <div className="space-y-4 sm:space-y-6">
+                  <div className="border-b border-gold/15 pb-3 sm:pb-4">
+                    <h3 className="text-lg sm:text-xl font-serif font-black text-maroon">
                       {language === 'ne' ? 'परामर्शदाताको विवरण' : language === 'hi' ? 'यजमान का विवरण' : 'Yajaman (Client) Details'}
                     </h3>
-                    <p className="text-xs text-gray-400 mt-1">
+                    <p className="text-[11px] sm:text-xs text-gray-400 mt-0.5 sm:mt-1">
                       {language === 'ne' ? 'कृपया तपाईँको नाम, सम्पर्क र स्थान राख्नुहोस्।' : language === 'hi' ? 'कृपया अपना नाम, संपर्क और स्थान दर्ज करें।' : 'Please enter your personal identifiers and location.'}
                     </p>
                   </div>
 
-                  <div className="space-y-5">
-                    <div className="space-y-2">
-                      <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">{t.booking.form.labelName}</label>
+                  <div className="space-y-4 sm:space-y-5">
+                    <div className="space-y-1 sm:space-y-2">
+                      <label className="text-[10px] sm:text-[11px] font-bold uppercase tracking-widest text-gray-400">{t.booking.form.labelName}</label>
                       <input 
                         type="text" 
                         placeholder={t.booking.form.holderName}
-                        className={`w-full bg-gray-50 border ${errors.fullName ? 'border-red-400' : 'border-gray-200'} rounded-xl px-4 py-3 focus:outline-none focus:border-maroon transition-colors`}
+                        className={`w-full bg-gray-50 border ${errors.fullName ? 'border-red-400' : 'border-gray-200'} rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 focus:outline-none focus:border-maroon transition-colors text-sm sm:text-base font-medium`}
                         value={formData.fullName}
                         onChange={(e) => {
                           setFormData({...formData, fullName: e.target.value});
@@ -1799,12 +1799,12 @@ const BookingForm = ({ preselectedServiceId }: { preselectedServiceId?: string |
                       {errors.fullName && <p className="text-xs text-red-500 font-bold">{errors.fullName}</p>}
                     </div>
 
-                    <div className="space-y-2">
-                      <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">{t.booking.form.labelPhone}</label>
+                    <div className="space-y-1 sm:space-y-2">
+                      <label className="text-[10px] sm:text-[11px] font-bold uppercase tracking-widest text-gray-400">{t.booking.form.labelPhone}</label>
                       <input 
                         type="tel" 
                         placeholder="+977"
-                        className={`w-full bg-gray-50 border ${errors.phone ? 'border-red-400' : 'border-gray-200'} rounded-xl px-4 py-3 focus:outline-none focus:border-maroon transition-colors`}
+                        className={`w-full bg-gray-50 border ${errors.phone ? 'border-red-400' : 'border-gray-200'} rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 focus:outline-none focus:border-maroon transition-colors text-sm sm:text-base font-medium`}
                         value={formData.phone}
                         onChange={(e) => {
                           setFormData({...formData, phone: e.target.value});
@@ -1814,23 +1814,23 @@ const BookingForm = ({ preselectedServiceId }: { preselectedServiceId?: string |
                       {errors.phone && <p className="text-xs text-red-500 font-bold">{errors.phone}</p>}
                     </div>
 
-                    <div className="space-y-2">
-                      <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">{t.booking.form.labelLocation}</label>
+                    <div className="space-y-1 sm:space-y-2">
+                      <label className="text-[10px] sm:text-[11px] font-bold uppercase tracking-widest text-gray-400">{t.booking.form.labelLocation}</label>
                       <input 
                         type="text" 
                         placeholder={t.booking.form.holderLocation}
-                        className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-maroon transition-colors"
+                        className="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 focus:outline-none focus:border-maroon transition-colors text-sm sm:text-base font-medium"
                         value={formData.location}
                         onChange={(e) => setFormData({...formData, location: e.target.value})}
                       />
                     </div>
 
-                    <div className="space-y-2">
-                      <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">{t.booking.form.labelMessage}</label>
+                    <div className="space-y-1 sm:space-y-2">
+                      <label className="text-[10px] sm:text-[11px] font-bold uppercase tracking-widest text-gray-400">{t.booking.form.labelMessage}</label>
                       <textarea 
-                        rows={4}
+                        rows={3}
                         placeholder={t.booking.form.holderMessage}
-                        className={`w-full bg-gray-50 border ${errors.message ? 'border-red-400' : 'border-gray-200'} rounded-xl px-4 py-3 focus:outline-none focus:border-maroon transition-colors resize-none`}
+                        className={`w-full bg-gray-50 border ${errors.message ? 'border-red-400' : 'border-gray-200'} rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 focus:outline-none focus:border-maroon transition-colors resize-none text-sm sm:text-base font-medium`}
                         value={formData.message}
                         onChange={(e) => {
                           setFormData({...formData, message: e.target.value});
@@ -1842,7 +1842,7 @@ const BookingForm = ({ preselectedServiceId }: { preselectedServiceId?: string |
                   </div>
                 </div>
 
-                <div className="pt-8">
+                <div className="pt-6 sm:pt-8">
                   <button 
                     type="button"
                     onClick={() => {
@@ -1850,10 +1850,10 @@ const BookingForm = ({ preselectedServiceId }: { preselectedServiceId?: string |
                         setCurrentStep(2);
                       }
                     }}
-                    className="w-full bg-maroon hover:bg-saffron text-cream font-bold py-4 rounded-xl transition-all duration-300 shadow-md flex items-center justify-center gap-2 cursor-pointer"
+                    className="w-full bg-maroon hover:bg-saffron text-cream font-bold py-3.5 sm:py-4 rounded-xl transition-all duration-300 shadow-md flex items-center justify-center gap-2 cursor-pointer text-sm sm:text-base"
                   >
                     <span>{language === 'ne' ? 'समय र स्लट छनोट गर्नुहोस्' : language === 'hi' ? 'समय और स्लॉट चुनें' : 'Select Date & Time Slot'}</span>
-                    <ChevronRight className="w-5 h-5" />
+                    <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
                   </button>
                 </div>
               </motion.div>
@@ -2307,175 +2307,417 @@ const ContactSection = () => {
 };
 
 const MainContent = ({ setSelectedService, handleBookNow, preselectedBookingId }: any) => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const [viewMode, setViewMode] = useState<'focus' | 'all'>('focus'); // Default to focus mode to respect "ek ek section alag alag"
+  const [activeSection, setActiveSection] = useState<'services' | 'jyotish' | 'rashifal' | 'about' | 'testimonials' | 'faq' | 'contact' | 'booking'>('services');
+
+  const sectionLabels: Record<string, Record<string, { title: string, subtitle: string, icon: any }>> = {
+    ne: {
+      services: { title: "पूजा एवं अनुष्ठान", subtitle: "पवित्र अनुष्ठानहरू", icon: Flower2 },
+      jyotish: { title: "ज्योतिष सेवाहरू", subtitle: "प्राचीन ग्रह विश्लेषण", icon: Compass },
+      rashifal: { title: "दैनिक राशिफल", subtitle: "आजको नक्षत्र फल", icon: Sun },
+      about: { title: "पूज्य पण्डित जी", subtitle: "२५+ वर्षको परम्परा", icon: Scroll },
+      testimonials: { title: "भक्तका अनुभव", subtitle: "सन्तुष्ट श्रद्धालुहरू", icon: Users },
+      faq: { title: "जिज्ञासा समाधान", subtitle: "बारम्बार सोधिने प्रश्नहरू", icon: HelpCircle },
+      contact: { title: "मन्दिर र सम्पर्क", subtitle: "दर्शन र समय", icon: MapPin },
+      booking: { title: "पूजा बुकिङ", subtitle: "शीघ्र सेवा", icon: Calendar }
+    },
+    hi: {
+      services: { title: "पूजा एवं अनुष्ठान", subtitle: "पवित्र वैदिक अनुष्ठान", icon: Flower2 },
+      jyotish: { title: "ज्योतिष परामर्श", subtitle: "कुंडली एवं ग्रह विश्लेषण", icon: Compass },
+      rashifal: { title: "दैनिक राशिफल", subtitle: "आज का नक्षत्र फल", icon: Sun },
+      about: { title: "पूज्य पण्डित जी", subtitle: "२५+ वर्षों की परंपरा", icon: Scroll },
+      testimonials: { title: "भक्तों के अनुभव", subtitle: "संतुष्ट श्रद्धालु", icon: Users },
+      faq: { title: "जिज्ञासा समाधान", subtitle: "पूछे जाने वाले प्रश्न", icon: HelpCircle },
+      contact: { title: "स्थान एवं समय", subtitle: "मन्दिर दर्शन और संपर्क", icon: MapPin },
+      booking: { title: "पूजा बुकिंग", subtitle: "शुभ मुहूर्त बुक करें", icon: Calendar }
+    },
+    en: {
+      services: { title: "Pujas & Services", subtitle: "Sacred Vedic Rituals", icon: Flower2 },
+      jyotish: { title: "Astro Guidance", subtitle: "Kundali & Chart Reading", icon: Compass },
+      rashifal: { title: "Daily Horoscope", subtitle: "Zodiac Vibrations", icon: Sun },
+      about: { title: "About Pandit Ji", subtitle: "25+ Years Lineage", icon: Scroll },
+      testimonials: { title: "Devotee Feedback", subtitle: "Blessed Experiences", icon: Users },
+      faq: { title: "Faith FAQs", subtitle: "Frequently Asked Questions", icon: HelpCircle },
+      contact: { title: "Temple Location", subtitle: "Visits & Timing Details", icon: MapPin },
+      booking: { title: "Book a Puja", subtitle: "Secure Auspicious Service", icon: Calendar }
+    }
+  };
+
+  const sectionsList: ('services' | 'jyotish' | 'rashifal' | 'about' | 'testimonials' | 'faq' | 'contact' | 'booking')[] = [
+    'services', 'jyotish', 'rashifal', 'about', 'testimonials', 'faq', 'contact', 'booking'
+  ];
+
+  const currentLangLabels = sectionLabels[language as 'ne' | 'hi' | 'en'] || sectionLabels['hi'];
+
+  const handleNextSection = () => {
+    const currentIndex = sectionsList.indexOf(activeSection);
+    if (currentIndex < sectionsList.length - 1) {
+      setActiveSection(sectionsList[currentIndex + 1]);
+      document.getElementById('section-navigation-focus')?.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handlePrevSection = () => {
+    const currentIndex = sectionsList.indexOf(activeSection);
+    if (currentIndex > 0) {
+      setActiveSection(sectionsList[currentIndex - 1]);
+      document.getElementById('section-navigation-focus')?.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const renderSectionContent = (sectId: typeof activeSection) => {
+    switch(sectId) {
+      case 'services':
+        return (
+          <div className="space-y-12">
+            <ServiceSection onServiceSelect={setSelectedService} onBookNow={handleBookNow} />
+            <div className="h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent max-w-7xl mx-auto" />
+            <PathSection />
+          </div>
+        );
+      case 'jyotish':
+        return <JyotishSection onSelectService={setSelectedService} />;
+      case 'rashifal':
+        return (
+          <div className="max-w-7xl mx-auto px-2 sm:px-4 relative z-10 py-8 md:py-12 bg-white/40 rounded-[2.5rem] border border-gold/10 backdrop-blur-md">
+            <Rashifal />
+          </div>
+        );
+      case 'about':
+        return (
+          <motion.section 
+            id="about" 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="py-16 md:py-24 scroll-mt-24 bg-white/50 backdrop-blur-md rounded-[3rem] border border-gold/10 relative overflow-hidden"
+          >
+            <div className="max-w-7xl mx-auto px-4">
+              <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+                <div className="relative order-2 lg:order-1">
+                  <div className="aspect-[4/5] md:aspect-[16/9] lg:aspect-[4/5] rounded-[2rem] md:rounded-[3.5rem] overflow-hidden shadow-2xl relative group">
+                    <img 
+                      src="https://images.unsplash.com/photo-1563722216449-3660d5bfa78f?auto=format&fit=crop&q=80&w=1200" 
+                      alt="Purity and Tradition"
+                      className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-maroon/40 to-transparent opacity-60" />
+                  </div>
+                  <div className="absolute -bottom-6 -right-6 md:-bottom-10 md:-right-10 bg-maroon p-6 md:p-10 rounded-[2rem] md:rounded-[3rem] shadow-xl border border-gold/20">
+                    <p className="text-gold text-3xl md:text-4xl font-bold font-serif mb-1 md:mb-2">२५+</p>
+                    <p className="text-cream text-[10px] md:text-xs font-bold uppercase tracking-widest">
+                      {language === 'en' ? 'Years Experience' : 'वर्षको अनुभव'}
+                    </p>
+                  </div>
+                </div>
+                <div className="order-1 lg:order-2">
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-maroon mb-6 md:mb-8">{t.about.title}</h2>
+                  <div className="space-y-6 md:space-y-8 text-gray-700 leading-relaxed">
+                    <p className="text-sm md:text-base font-medium text-maroon/90">
+                      {t.about.p1}
+                    </p>
+                    
+                    <div className="grid gap-6">
+                      <div className="flex gap-4">
+                        <div className="w-12 h-12 bg-saffron/15 rounded-full flex items-center justify-center shrink-0 border border-gold/25">
+                          <Home className="w-6 h-6 text-saffron" />
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-maroon mb-1">{(t.about as any).lineage}</h4>
+                        </div>
+                      </div>
+                      <div className="flex gap-4">
+                        <div className="w-12 h-12 bg-saffron/15 rounded-full flex items-center justify-center shrink-0 border border-gold/25">
+                          <Compass className="w-6 h-6 text-saffron" />
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-maroon mb-1">{(t.about as any).philosophy}</h4>
+                        </div>
+                      </div>
+                      <div className="flex gap-4">
+                        <div className="w-12 h-12 bg-saffron/15 rounded-full flex items-center justify-center shrink-0 border border-gold/25">
+                          <Award className="w-6 h-6 text-saffron" />
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-maroon mb-1">{(t.about as any).expertise}</h4>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="grid gap-4">
+                      {t.about.list.map((item, idx) => {
+                        const [title, services] = item.split(': ');
+                        return (
+                          <motion.div 
+                            key={idx}
+                            initial={{ opacity: 0, x: -20 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: idx * 0.1 }}
+                            className="group border border-gold/15 bg-white/60 rounded-2xl p-4 hover:border-saffron/30 hover:bg-saffron/5 transition-all duration-300"
+                          >
+                            <div className="flex gap-4">
+                              <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shrink-0 border border-gold/10 group-hover:scale-110 transition-transform">
+                                <Sparkles className="w-5 h-5 text-saffron" />
+                              </div>
+                              <div>
+                                 <h4 className="font-bold text-maroon mb-1 underline decoration-saffron/30 underline-offset-4">{title}</h4>
+                                 <p className="text-sm text-gray-500 italic">{services}</p>
+                              </div>
+                            </div>
+                          </motion.div>
+                        );
+                      })}
+                    </div>
+                    <p className="font-bold text-saffron italic border-l-4 border-saffron pl-4 bg-saffron/5 py-4 rounded-r-xl">
+                      {t.about.p2}
+                    </p>
+                  </div>
+                  <div className="mt-10 pt-10 border-t border-gold/15 flex items-center gap-6">
+                    <div className="flex -space-x-4">
+                      {[1, 2, 3, 4].map((i) => (
+                        <div key={i} className="w-12 h-12 rounded-full border-4 border-white bg-gray-200 overflow-hidden shadow-sm">
+                          <img src={`https://i.pravatar.cc/100?img=${i+10}`} alt="client" referrerPolicy="no-referrer" />
+                        </div>
+                      ))}
+                    </div>
+                    <div>
+                      <p className="text-sm font-bold text-maroon">{t.about.trusted}</p>
+                      <p className="text-xs text-gray-500">{t.about.desc}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.section>
+        );
+      case 'testimonials':
+        return <Testimonials />;
+      case 'faq':
+        return <FAQ />;
+      case 'contact':
+        return <ContactSection />;
+      case 'booking':
+        return (
+          <div className="bg-white/80 p-8 md:p-12 rounded-[2.5rem] border-2 border-gold/20 shadow-xl max-w-4xl mx-auto backdrop-blur-lg">
+            <h3 className="text-2xl font-serif text-maroon font-bold text-center mb-8">
+              {language === 'en' ? 'Book New Divine Service' : 'नयाँ पूजा वा परामर्श सुरक्षित गर्नुहोस्'}
+            </h3>
+            <BookingForm preselectedServiceId={preselectedBookingId} />
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
-    <main>
+    <main className="bg-mandala min-h-screen">
       <Hero />
 
-      {/* Stats Section */}
-      <motion.section 
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1 }}
-        className="py-12 md:py-16 bg-paper border-y border-gold/10 relative overflow-hidden bg-mandala"
-      >
-        <div className="absolute top-0 left-0 w-full h-full opacity-[0.05] pointer-events-none">
-          <AnimatedSwastik className="absolute -top-4 -left-4 w-24 h-24" />
-          <AnimatedSwastik className="absolute -bottom-4 -right-4 w-24 h-24" />
+      {/* Mode Selector and Quick Jump Panel */}
+      <div id="section-navigation-focus" className="max-w-7xl mx-auto px-4 py-8 relative z-10 scroll-mt-24">
+        {/* Modern Theme Segment Control for Scroll vs Focus Mode */}
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6 bg-white/90 backdrop-blur-xl border-2 border-gold/30 rounded-3xl p-6 shadow-xl mb-10 max-w-5xl mx-auto">
+          <div className="text-left">
+            <h3 className="font-serif font-black text-maroon text-lg md:text-xl flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-saffron animate-[spin_4s_linear_infinite]" />
+              {language === 'en' ? 'Divine Layout settings' : 'दर्शन शैली व्यवस्थापन'}
+            </h3>
+            <p className="text-xs text-gray-500 mt-1">
+              {language === 'en' ? 'Choose how you want to view the sacred segments' : 'कृपया आफ्नो रुचि अनुसार शास्त्रोक्त खण्डहरू हेर्ने विधि रोज्नुहोस्'}
+            </p>
+          </div>
+          
+          <div className="flex bg-[#F1E7D4] p-1.5 rounded-2xl border border-gold/15">
+            <button
+              onClick={() => setViewMode('focus')}
+              className={`flex items-center gap-2.5 px-6 py-3 rounded-xl text-xs md:text-sm font-bold uppercase tracking-wider transition-all duration-300 ${
+                viewMode === 'focus'
+                  ? 'bg-maroon text-white shadow-md'
+                  : 'text-maroon/70 hover:bg-white/40'
+              }`}
+            >
+              <Grid className="w-4 h-4" />
+              {language === 'en' ? 'Focus-wise (One by One)' : 'एक-एक खण्ड देखें'}
+            </button>
+            <button
+              onClick={() => setViewMode('all')}
+              className={`flex items-center gap-2.5 px-6 py-3 rounded-xl text-xs md:text-sm font-bold uppercase tracking-wider transition-all duration-300 ${
+                viewMode === 'all'
+                  ? 'bg-maroon text-white shadow-md'
+                  : 'text-maroon/70 hover:bg-white/40'
+              }`}
+            >
+              <Scroll className="w-4 h-4" />
+              {language === 'en' ? 'Scroll-wise (All together)' : 'सभी खण्ड एक साथ'}
+            </button>
+          </div>
         </div>
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
-            {[
-              { label: t.stats.pujas, value: "५०००+", icon: Award },
-              { label: t.stats.rituals, value: "५०+", icon: BookOpen },
-              { label: t.stats.families, value: "२०००+", icon: Users },
-              { label: t.stats.experience, value: "२५+", icon: Clock }
-            ].map((stat, idx) => (
-              <motion.div 
-                key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
-                className="text-center"
+
+        {/* Section Tabs Panel */}
+        <div className="bg-white/70 backdrop-blur-xl border border-gold/20 rounded-[2.5rem] p-4 shadow-lg mb-12">
+          {/* Scrollable track for beautiful custom sunburst badges */}
+          <div className="flex items-center gap-3 overflow-x-auto pb-4 pt-1 px-2 no-scrollbar scroll-smooth">
+            {sectionsList.map((sect) => {
+              const info = currentLangLabels[sect];
+              const IconComp = info.icon;
+              const isSelected = activeSection === sect || viewMode === 'all';
+              
+              return (
+                <button
+                  key={sect}
+                  onClick={() => {
+                    setActiveSection(sect);
+                    if (viewMode === 'all') {
+                      const el = document.getElementById(`section-card-${sect}`);
+                      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                  }}
+                  className={`flex items-center gap-3 shrink-0 px-5 py-3.5 rounded-2xl border transition-all duration-300 ${
+                    isSelected
+                      ? 'bg-gradient-to-br from-maroon to-[#4A040D] text-white border-gold/40 shadow-md shadow-maroon/10 scale-102 ring-2 ring-gold/20'
+                      : 'bg-white/90 text-maroon/70 border-gold/15 hover:border-gold/40 hover:bg-[#FAF4E8]'
+                  }`}
+                >
+                  <div className={`p-1.5 rounded-lg ${isSelected ? 'bg-saffron text-white' : 'bg-saffron/10 text-saffron'}`}>
+                    <IconComp className="w-4 h-4" />
+                  </div>
+                  <div className="text-left">
+                    <div className="text-xs font-black tracking-wide leading-none">{info.title}</div>
+                    <div className="text-[9px] opacity-75 font-medium mt-0.5 tracking-tight">{info.subtitle}</div>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Dynamic Section Viewer Block wrapping */}
+        <div className="relative">
+          {viewMode === 'focus' ? (
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeSection}
+                initial={{ opacity: 0, scale: 0.98, y: 15 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.98, y: -15 }}
+                transition={{ duration: 0.45, ease: "easeInOut" }}
+                className="golden-section-card relative bg-white/95 rounded-[3rem] border-2 border-gold/30 shadow-[0_25px_60px_-15px_rgba(212,175,55,0.12)] p-6 md:p-12 overflow-hidden"
               >
-                <div className="w-10 h-10 md:w-12 md:h-12 bg-saffron/10 rounded-xl md:rounded-2xl flex items-center justify-center mx-auto mb-3 md:mb-4">
-                  <stat.icon className="w-5 h-5 md:w-6 h-6 text-saffron" />
+                {/* Spiritual Mandalas in backdrop of active card */}
+                <div className="absolute top-0 right-0 w-64 h-64 bg-saffron/5 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20" />
+                <div className="absolute bottom-0 left-0 w-64 h-64 bg-gold/5 rounded-full blur-3xl pointer-events-none -ml-20 -mb-20" />
+
+                {/* Highly structured Elegant Top Banner */}
+                <div className="flex flex-col items-center text-center max-w-2xl mx-auto mb-12 relative z-10 border-b border-gold/20 pb-8">
+                  <div className="w-16 h-16 bg-gradient-to-tr from-saffron to-gold text-white rounded-full flex items-center justify-center shadow-lg shadow-saffron/20 mb-4 animate-[pulse_3s_infinite]">
+                    {(() => {
+                      const Icon = currentLangLabels[activeSection].icon;
+                      return <Icon className="w-8 h-8" />;
+                    })()}
+                  </div>
+                  <h2 className="text-2xl md:text-3.5xl font-serif font-black text-maroon tracking-tight">
+                    {currentLangLabels[activeSection].title}
+                  </h2>
+                  <p className="text-xs text-saffron font-bold uppercase tracking-[0.2em] mt-2">
+                    {currentLangLabels[activeSection].subtitle}
+                  </p>
                 </div>
-                <div className="text-2xl md:text-3xl font-bold font-serif text-maroon mb-1">{stat.value}</div>
-                <div className="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest font-bold font-sans">{stat.label}</div>
+
+                {/* The Embedded Live Render */}
+                <div className="relative z-10">
+                  {renderSectionContent(activeSection)}
+                </div>
+
+                {/* Section Step Controls */}
+                <div className="flex items-center justify-between border-t border-gold/20 mt-12 pt-8 relative z-10">
+                  <button
+                    onClick={handlePrevSection}
+                    disabled={sectionsList.indexOf(activeSection) === 0}
+                    className={`flex items-center gap-2 px-5 py-3 rounded-xl font-bold text-xs uppercase tracking-wider transition-all ${
+                      sectionsList.indexOf(activeSection) === 0
+                        ? 'opacity-40 cursor-not-allowed text-gray-400'
+                        : 'bg-[#FAF4E8] text-maroon border border-gold/20 hover:bg-gold/10'
+                    }`}
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                    {language === 'en' ? 'Previous' : 'अघिल्लो'}
+                  </button>
+
+                  <div className="hidden sm:flex items-center gap-1.5">
+                    {sectionsList.map((sect, idx) => (
+                      <button
+                        key={sect}
+                        onClick={() => setActiveSection(sect)}
+                        className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                          activeSection === sect 
+                            ? 'bg-saffron w-6' 
+                            : 'bg-gold/20 hover:bg-gold/40'
+                        }`}
+                        aria-label={`Go to section ${idx + 1}`}
+                      />
+                    ))}
+                  </div>
+
+                  <button
+                    onClick={handleNextSection}
+                    disabled={sectionsList.indexOf(activeSection) === sectionsList.length - 1}
+                    className={`flex items-center gap-2 px-5 py-3 rounded-xl font-bold text-xs uppercase tracking-wider transition-all ${
+                      sectionsList.indexOf(activeSection) === sectionsList.length - 1
+                        ? 'opacity-40 cursor-not-allowed text-gray-400'
+                        : 'bg-maroon text-cream hover:bg-[#4A040D]'
+                    }`}
+                  >
+                    {language === 'en' ? 'Next' : 'अर्को'}
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
               </motion.div>
-            ))}
-          </div>
+            </AnimatePresence>
+          ) : (
+            /* Scroll mode with beautiful highly delineated separated cards */
+            <div className="space-y-16">
+              {sectionsList.map((sect) => (
+                <motion.div
+                  key={sect}
+                  id={`section-card-${sect}`}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-120px" }}
+                  transition={{ duration: 0.6 }}
+                  className="bg-white/95 rounded-[3rem] border-2 border-gold/20 shadow-xl p-6 md:p-12 relative overflow-hidden"
+                >
+                  <div className="absolute top-0 left-0 w-32 h-32 bg-scripture opacity-[0.1] pointer-events-none" />
+                  
+                  {/* Decorative Title Boundary */}
+                  <div className="border-b border-gold/15 pb-6 mb-10 flex items-center gap-4">
+                    <div className="w-12 h-12 bg-saffron/10 text-saffron rounded-full flex items-center justify-center shrink-0 border border-gold/20">
+                      {(() => {
+                        const Icon = currentLangLabels[sect].icon;
+                        return <Icon className="w-6 h-6" />;
+                      })()}
+                    </div>
+                    <div>
+                      <h3 className="text-xl md:text-2xl font-serif font-bold text-maroon">
+                        {currentLangLabels[sect].title}
+                      </h3>
+                      <p className="text-[10px] uppercase font-bold text-saffron tracking-widest mt-0.5">
+                        {currentLangLabels[sect].subtitle}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div>
+                    {renderSectionContent(sect)}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          )}
         </div>
-      </motion.section>
-
-      <ServiceSection onServiceSelect={setSelectedService} onBookNow={handleBookNow} />
-
-      <div className="h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent max-w-7xl mx-auto" />
-
-      <PathSection />
-
-      <JyotishSection onSelectService={setSelectedService} />
-
-      <div className="max-w-7xl mx-auto px-2 sm:px-4 relative z-10 py-8 md:py-12">
-        <Rashifal />
       </div>
-
-      <Testimonials />
-
-      {/* About Section */}
-      <motion.section 
-        id="about" 
-        initial={{ opacity: 0, y: 60 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.8 }}
-        className="py-16 md:py-24 scroll-mt-24 bg-white relative overflow-hidden"
-      >
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            <div className="relative order-2 lg:order-1">
-              <div className="aspect-[4/5] md:aspect-[16/9] lg:aspect-[4/5] rounded-[2rem] md:rounded-[3.5rem] overflow-hidden shadow-2xl relative group">
-                <img 
-                  src="https://images.unsplash.com/photo-1563722216449-3660d5bfa78f?auto=format&fit=crop&q=80&w=1200" 
-                  alt="Purity and Tradition"
-                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-maroon/40 to-transparent opacity-60" />
-              </div>
-              <div className="absolute -bottom-6 -right-6 md:-bottom-10 md:-right-10 bg-maroon p-6 md:p-10 rounded-[2rem] md:rounded-[3rem] shadow-xl">
-                <p className="text-gold text-3xl md:text-4xl font-bold font-serif mb-1 md:mb-2">२५+</p>
-                <p className="text-cream text-[10px] md:text-xs font-bold uppercase tracking-widest">वर्षको अनुभव</p>
-              </div>
-            </div>
-            <div className="order-1 lg:order-2">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-maroon mb-6 md:mb-8">{t.about.title}</h2>
-              <div className="space-y-6 md:space-y-8 text-gray-600 leading-relaxed">
-                <p className="text-sm md:text-base font-medium text-maroon/80">
-                  {t.about.p1}
-                </p>
-                
-                <div className="grid gap-6">
-                  <div className="flex gap-4">
-                    <div className="w-12 h-12 bg-saffron/10 rounded-full flex items-center justify-center shrink-0">
-                      <Home className="w-6 h-6 text-saffron" />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-maroon mb-1">{(t.about as any).lineage}</h4>
-                    </div>
-                  </div>
-                  <div className="flex gap-4">
-                    <div className="w-12 h-12 bg-saffron/10 rounded-full flex items-center justify-center shrink-0">
-                      <Compass className="w-6 h-6 text-saffron" />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-maroon mb-1">{(t.about as any).philosophy}</h4>
-                    </div>
-                  </div>
-                  <div className="flex gap-4">
-                    <div className="w-12 h-12 bg-saffron/10 rounded-full flex items-center justify-center shrink-0">
-                      <Award className="w-6 h-6 text-saffron" />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-maroon mb-1">{(t.about as any).expertise}</h4>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="grid gap-4">
-                  {t.about.list.map((item, idx) => {
-                    const [title, services] = item.split(': ');
-                    return (
-                      <motion.div 
-                        key={idx}
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: idx * 0.1 }}
-                        className="group border border-gray-100 rounded-2xl p-4 hover:border-saffron/30 hover:bg-saffron/5 transition-all duration-300"
-                      >
-                        <div className="flex gap-4">
-                          <div className="w-10 h-10 bg-paper rounded-xl flex items-center justify-center shrink-0 border border-gray-100 group-hover:scale-110 transition-transform">
-                            <Sparkles className="w-5 h-5 text-saffron" />
-                          </div>
-                          <div>
-                             <h4 className="font-bold text-maroon mb-1 underline decoration-saffron/30 underline-offset-4">{title}</h4>
-                             <p className="text-sm text-gray-500 italic">{services}</p>
-                          </div>
-                        </div>
-                      </motion.div>
-                    );
-                  })}
-                </div>
-                <p className="font-bold text-saffron italic border-l-4 border-saffron pl-4 bg-saffron/5 py-3 rounded-r-xl">
-                  {t.about.p2}
-                </p>
-              </div>
-              <div className="mt-10 pt-10 border-t border-gray-100 flex items-center gap-6">
-                <div className="flex -space-x-4">
-                  {[1, 2, 3, 4].map((i) => (
-                    <div key={i} className="w-12 h-12 rounded-full border-4 border-white bg-gray-200 overflow-hidden">
-                      <img src={`https://i.pravatar.cc/100?img=${i+10}`} alt="client" />
-                    </div>
-                  ))}
-                </div>
-                <div>
-                  <p className="text-sm font-bold text-maroon">{t.about.trusted}</p>
-                  <p className="text-xs text-gray-400">{t.about.desc}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </motion.section>
-
-      <FAQ />
-
-      <ContactSection />
-
-      <BookingForm preselectedServiceId={preselectedBookingId} />
     </main>
   );
 };

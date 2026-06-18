@@ -9,8 +9,9 @@ import { GoogleGenAI, Type } from "@google/genai";
 
 dotenv.config();
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// For CJS compatibility when compiled by esbuild
+const _filename = typeof __filename !== "undefined" ? __filename : "";
+const _dirname = typeof __dirname !== "undefined" ? __dirname : "";
 
 // Initialize Gemini lazily to avoid startup crashes
 let aiInstance: GoogleGenAI | null = null;

@@ -5,24 +5,24 @@
   --font-serif: "Cormorant Garamond", serif;
   --font-sans: "Poppins", "Montserrat", sans-serif;
   
-  --color-saffron: #FF9933;
-  --color-maroon: #800000;
-  --color-gold: #D4AF37;
-  --color-cream: #FFFDD0;
-  --color-paper: #FDFBF7;
-  --color-paper-dark: #F5EFE6;
-
+  --color-saffron: #FF7000;       /* Sacred Luminous Saffron */
+  --color-maroon: #630511;        /* Royal Deep Burgundy Maroon for text and brand stability */
+  --color-gold: #D4AF37;          /* Luminous Royal Sun Gold */
+  --color-cream: #FAF3E0;         /* Soft Radiant Golden Cream */
+  --color-paper: #FFFDF9;         /* Brilliant Bright Sun background */
+  --color-paper-dark: #F7EFE0;    /* Soft Textured Sand Ivory background */
+  
   @keyframes glow {
-    0%, 100% { filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.4)); }
-    50% { filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.8)); }
+    0%, 100% { filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.5)); }
+    50% { filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.9)); }
   }
   @keyframes float {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+    50% { transform: translateY(-8px); }
   }
-  @keyframes music-bar {
-    0%, 100% { height: 4px; }
-    50% { height: 12px; }
+  @keyframes tw-spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
   }
 }
 
@@ -34,28 +34,129 @@
   animation: float 4s ease-in-out infinite;
 }
 
+.animate-spin-slow {
+  animation: tw-spin-slow 25s linear infinite;
+}
+
 .bg-scripture {
   background-image: 
-    radial-gradient(circle at 2px 2px, rgba(128, 0, 0, 0.05) 1px, transparent 0);
+    radial-gradient(circle at 2px 2px, rgba(212, 175, 55, 0.08) 1.5px, transparent 0);
   background-size: 24px 24px;
 }
 
 .bg-mandala {
   background-color: var(--color-paper);
-  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0l6.5 18.5 18.5 2.5-13.5 13 3 18.5-14.5-9-14.5 9 3-18.5-13.5-13 18.5-2.5L30 0z' fill='%23d4af37' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E");
+  background-image: 
+    radial-gradient(circle at 12% 24%, rgba(212, 175, 55, 0.05) 2px, transparent 0),
+    radial-gradient(circle at 88% 78%, rgba(212, 175, 55, 0.05) 2px, transparent 0),
+    radial-gradient(circle at 50% 50%, rgba(99, 5, 17, 0.02) 1px, transparent 0);
+  background-size: 100px 100px, 120px 120px, 40px 40px;
 }
 
 .bg-maroon-pattern {
   background-color: var(--color-maroon);
-  background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0l2 18h18l-15 11 6 11-11-7-11 7 6-11-15-11h18z' fill='%23ffffff' fill-opacity='0.02' fill-rule='evenodd'/%3E%3C/svg%3E");
+  background-image: 
+    radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.2) 1.5px, transparent 0);
+  background-size: 18px 18px;
 }
 
 body {
   font-family: var(--font-sans);
   background-color: var(--color-paper);
-  color: #2D2D2D;
+  color: #3B1C0B; /* Deep sacred earthy brown for maximum bright contrast */
+  overflow-x: hidden;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-sans);
+  color: var(--color-maroon);
+}
+
+/* Polished BRIGHT Site & GOLDEN Aura Overrides */
+.bg-white {
+  background-color: #FFFFFF !important;
+  border-color: rgba(212, 175, 55, 0.3) !important;
+  color: #3B1C0B !important;
+}
+
+.bg-gray-50, .bg-slate-50, .bg-paper-dark {
+  background-color: #FAF4E8 !important; /* Beautiful rich sand-gold cream */
+  border-color: rgba(212, 175, 55, 0.25) !important;
+}
+
+.bg-gray-100, .bg-slate-100 {
+  background-color: #F1E7D4 !important;
+}
+
+/* Text Elements Contrast on Bright/Luminous Golden Base */
+.text-gray-900, .text-gray-800, .text-gray-700, .text-slate-900, .text-slate-800, .text-slate-700 {
+  color: #4A1A10 !important; /* Rich reddish-dark wood tone */
+}
+
+.text-gray-600, .text-gray-500, .text-slate-600, .text-slate-500 {
+  color: #6C5542 !important; /* Golden-sand tinted brown-gray */
+}
+
+/* Custom Overrides for Brand Elements */
+.text-cream {
+  color: #FAF3E0 !important;
+}
+
+.text-maroon {
+  color: var(--color-maroon) !important;
+}
+
+.text-gold, .text-yellow-500, .text-yellow-600 {
+  color: #C08A1B !important; /* Perfect high-contract shiny gold color for readability */
+}
+
+.text-saffron, .text-orange-500, .text-orange-600 {
+  color: var(--color-saffron) !important;
+}
+
+/* High Contrast Input Fields inside Bright Theme */
+input, textarea, select {
+  background-color: #FFFFFF !important;
+  border: 1.5px solid rgba(212, 175, 55, 0.4) !important;
+  color: #3B1C0B !important;
+  border-radius: 12px !important;
+}
+
+input:focus, textarea:focus, select:focus {
+  background-color: #FFFDF9 !important;
+  border-color: var(--color-saffron) !important;
+  outline: none !important;
+  box-shadow: 0 0 10px rgba(255, 112, 0, 0.2) !important;
+}
+
+/* Bright Theme Scrollbars with Saffron highlight */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #FFFDF9;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(212, 175, 55, 0.45);
+  border-radius: 6px;
+  border: 2px solid #FFFDF9;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(212, 175, 55, 0.75);
+}
+
+/* High Contrast and Smooth Link States */
+a {
+  color: var(--color-maroon);
+  transition: all 0.2s ease-in-out;
+}
+a:hover {
+  color: var(--color-saffron);
+}
+
+/* Dialogs/Modals Bright Styling */
+.modal-overlay {
+  background-color: rgba(99, 5, 17, 0.25) !important;
+  backdrop-filter: blur(8px);
 }
