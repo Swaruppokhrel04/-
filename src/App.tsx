@@ -206,11 +206,12 @@ const Navbar = ({ activeSection }: { activeSection?: 'services' | 'jyotish' | 'r
   }) : [];
 
   return (
-    <nav 
-      className="fixed top-0 left-0 w-full z-50 bg-paper/70 backdrop-blur-2xl border-b border-gold/10 transition-all duration-500"
-      role="navigation"
-      aria-label="Main Navigation"
-    >
+    <>
+      <nav 
+        className="fixed top-0 left-0 w-full z-50 bg-paper/70 backdrop-blur-2xl border-b border-gold/10 transition-all duration-500"
+        role="navigation"
+        aria-label="Main Navigation"
+      >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20 lg:h-24">
           <div 
@@ -573,6 +574,8 @@ const Navbar = ({ activeSection }: { activeSection?: 'services' | 'jyotish' | 'r
       </AnimatePresence>
 
 
+    </nav>
+
       {/* Mobile Nav Drawer */}
       <AnimatePresence>
         {isOpen && (
@@ -800,7 +803,7 @@ const Navbar = ({ activeSection }: { activeSection?: 'services' | 'jyotish' | 'r
           </motion.div>
         )}
       </AnimatePresence>
-    </nav>
+    </>
   );
 };
 
