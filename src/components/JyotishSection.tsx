@@ -1,17 +1,57 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Sparkles, Star, Moon, Sun, ChevronRight, CheckCircle2, Plus, Minus, HelpCircle } from 'lucide-react';
 import { SERVICES } from '../constants.ts';
 import { useLanguage } from '../LanguageContext.tsx';
 import { SafeImage } from './SafeImage.tsx';
 
+const VEDIC_INSIGHTS = [
+  {
+    ne: "वैदिक ज्योतिष (ज्योतिष) लाई ६ वेदाङ्गहरू मध्ये एक मानिन्छ र यसलाई 'वेदको आँखा' भनिन्छ।",
+    hi: "वैदिक ज्योतिष (ज्योतिष) को ६ वेदाङ्गों में से एक माना जाता है और इसे 'वेद का नेत्र' कहा जाता है।",
+    en: "Vedic Astrology (Jyotish) is considered one of the six Vedangas (limbs of the Vedas) and is termed the 'Eye of the Veda'."
+  },
+  {
+    ne: "२७ नक्षत्रहरू मध्ये प्रत्येक नक्षत्रको आफ्नै विशिष्ट वृक्ष (आराध्य वृक्ष) र शासक देवता हुन्छन्।",
+    hi: "२७ नक्षत्रों में से प्रत्येक नक्षत्र का अपना विशिष्ट वृक्ष (आराध्य वृक्ष) और शासक देवता होते हैं।",
+    en: "Each of the 27 Nakshatras (lunar mansions) has its own specific sacred tree (Aradhya Vriksha) and ruling deity."
+  },
+  {
+    ne: "वैदिक पद्धतिमा सूर्यले एक राशिबाट अर्को राशिमा प्रवेश गर्ने समयलाई 'संक्रान्ति' भनिन्छ, जसमध्ये मकर संक्रान्ति सबैभन्दा महत्वपूर्ण मानिन्छ।",
+    hi: "वैदिक पद्धति में सूर्य के एक राशि से दूसरी राशि में प्रवेश करने के समय को 'संक्रांति' कहा जाता है, जिसमें मकर संक्रांति अत्यंत महत्वपूर्ण है।",
+    en: "The movement of the Sun from one Zodiac sign to another is called 'Sankranti'. Makar Sankranti marks the transit of the Sun into Capricorn."
+  },
+  {
+    ne: "वैदिक ज्योतिषको सबैभन्दा पुराना उपलब्ध ग्रन्थहरू मध्ये एक 'वेदाङ्ग ज्योतिष' हो, जुन लगभग १४०० ईसा पूर्वको मानिन्छ।",
+    hi: "वैदिक ज्योतिष के सबसे पुराने उपलब्ध ग्रंथों में से एक 'वेदांग ज्योतिष' है, जिसे लगभग १४०० ईसा पूर्व का माना जाता है।",
+    en: "One of the oldest surviving texts on Vedic astronomy and astrology is the 'Vedanga Jyotisha', composed around 1400 BCE."
+  },
+  {
+    ne: "बृहस्पति (गुरु) लाई सबैभन्दा गुरुत्वपूर्ण र कल्याणकारी ग्रह मानिन्छ। यसले ज्ञान, बुद्धि र भाग्यको प्रतिनिधित्व गर्दछ।",
+    hi: "बृहस्पति (गुरु) को सबसे शुभ और कल्याणकारी ग्रह माना जाता है, जो ज्ञान, बुद्धि और सौभाग्य का प्रतिनिधित्व करता है।",
+    en: "Jupiter (Guru) is considered the most benevolent and auspicious planet, representing wisdom, spiritual knowledge, and expansion."
+  },
+  {
+    ne: "चन्द्रमाले प्रत्येक नक्षत्रमा लगभग १ दिन बिताउँछ र सम्पूर्ण चक्र पूरा गर्न लगभग २७.३ दिन लगाउँछ, जसलाई नक्षत्र महिना भनिन्छ।",
+    hi: "चंद्रमा प्रत्येक नक्षत्र में लगभग १ दिन बिताता है और पूरा चक्र पूरा करने में लगभग २७.३ दिन लगाता है, जिसे नक्षत्र मास कहा जाता है।",
+    en: "The Moon spends approximately one day in each of the 27 Nakshatras, completing the entire lunar orbit in about 27.3 days."
+  }
+];
+
 interface JyotishSectionProps {
   onSelectService: (service: any) => void;
 }
 
 export const JyotishSection: React.FC<JyotishSectionProps> = ({ onSelectService }) => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [insightIndex, setInsightIndex] = useState(0);
+
+  useEffect(() => {
+    const randomIndex = Math.floor(Math.random() * VEDIC_INSIGHTS.length);
+    setInsightIndex(randomIndex);
+  }, []);
+
   const astrologyServices = SERVICES.filter(s => s.category === 'Astrology');
   const jt = (t as any).jyotish_section;
 
@@ -119,6 +159,66 @@ export const JyotishSection: React.FC<JyotishSectionProps> = ({ onSelectService 
                 <Moon className="w-6 h-6" />
               </motion.div>
             </div>
+
+            {/* Elegant Vedic Insight Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3, duration: 0.6 }}
+              className="mt-10 w-full max-w-md mx-auto bg-white/5 backdrop-blur-md rounded-[2.5rem] border-2 border-gold/30 p-6 relative overflow-hidden group shadow-xl"
+            >
+              {/* Background elegant pattern glow */}
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gold/5 rounded-full blur-2xl pointer-events-none" />
+              
+              <div className="flex items-center justify-between mb-4 relative z-10 border-b border-gold/10 pb-3">
+                <div className="flex items-center gap-2.5">
+                  <div className="p-2 rounded-xl bg-gold/20 text-gold animate-[spin_8s_linear_infinite]">
+                    <Sparkles className="w-4 h-4 fill-current" />
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-black tracking-[0.2em] text-gold uppercase">
+                      {language === 'ne' ? 'वैदिक अन्तर्दृष्टि' : language === 'hi' ? 'वैदिक अंतर्दृष्टि' : 'Vedic Insight'}
+                    </h4>
+                    <p className="text-[10px] text-cream/60">
+                      {language === 'ne' ? 'नवीनतम दिव्य सूत्र' : language === 'hi' ? 'दिव्य ज्योतिष सूत्र' : 'Astro-Wisdom Fact'}
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    let nextIdx = Math.floor(Math.random() * VEDIC_INSIGHTS.length);
+                    if (nextIdx === insightIndex && VEDIC_INSIGHTS.length > 1) {
+                      nextIdx = (nextIdx + 1) % VEDIC_INSIGHTS.length;
+                    }
+                    setInsightIndex(nextIdx);
+                  }}
+                  className="p-2 rounded-lg bg-white/5 hover:bg-gold/20 hover:text-gold text-cream/70 transition-all duration-300 active:scale-90 cursor-pointer"
+                  title={language === 'ne' ? 'अर्को ज्ञान' : language === 'hi' ? 'अगला सूत्र' : 'Next Insight'}
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="animate-spin-slow duration-1000">
+                    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+                  </svg>
+                </button>
+              </div>
+
+              <div className="relative z-10 min-h-[70px]">
+                <AnimatePresence mode="wait">
+                  <motion.p
+                    key={insightIndex}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 10 }}
+                    transition={{ duration: 0.3 }}
+                    className="text-cream text-xs md:text-[14px] leading-relaxed font-serif italic text-left"
+                  >
+                    "{VEDIC_INSIGHTS[insightIndex][language] || VEDIC_INSIGHTS[insightIndex]['en']}"
+                  </motion.p>
+                </AnimatePresence>
+              </div>
+            </motion.div>
           </motion.div>
         </div>
 
