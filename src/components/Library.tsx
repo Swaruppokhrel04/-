@@ -175,7 +175,7 @@ export const Library = () => {
 
   return (
     <section className="min-h-screen bg-mandala pt-32 pb-24 px-4">
-      <div className="max-w-7xl mx-auto">
+      <div className="w-full max-w-[96%] xl:max-w-[94%] mx-auto">
         <header className="text-center mb-16">
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}

@@ -102,7 +102,7 @@ export default function DailyNews() {
   const content = news[language] || news.en;
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-12">
+    <div className="w-full max-w-[96%] xl:max-w-[94%] mx-auto px-4 py-12">
       {/* Featured Sanskrit Wisdom Section */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}

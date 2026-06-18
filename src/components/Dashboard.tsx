@@ -195,7 +195,7 @@ export const Dashboard = () => {
 
   return (
     <div className="pt-32 pb-20 min-h-screen bg-paper-dark">
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="w-full max-w-[96%] xl:max-w-[94%] mx-auto px-4">
         <div className="flex flex-col lg:flex-row gap-8">
           
           {/* Sidebar */}

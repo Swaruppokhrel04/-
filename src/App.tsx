@@ -207,7 +207,7 @@ const Navbar = ({ activeSection }: { activeSection?: 'services' | 'jyotish' | 'r
         role="navigation"
         aria-label="Main Navigation"
       >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-[96%] xl:max-w-[94%] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20 lg:h-24">
           <div 
             className="flex items-center gap-3 group cursor-pointer" 
@@ -390,52 +390,10 @@ const Navbar = ({ activeSection }: { activeSection?: 'services' | 'jyotish' | 'r
                   {t.nav.faq}
                 </a>
               </li>
-              {user && (
-                <li>
-                  <Link 
-                    to="/dashboard" 
-                    className={cn(
-                      "text-sm font-bold transition-all hover:text-saffron",
-                      location.pathname === '/dashboard' ? "text-saffron" : "text-maroon"
-                    )}
-                  >
-                    {(t.nav as any).dashboard}
-                  </Link>
-                </li>
-              )}
             </ul>
 
             <div className="flex items-center gap-4">
               <LanguageSwitcher />
-              
-              {user ? (
-                <div className="flex items-center gap-4 border-l border-gold/10 pl-6">
-                  <div className="flex items-center gap-2 group relative cursor-pointer">
-                    {user.photoURL ? (
-                      <SafeImage src={user.photoURL} alt={user.displayName || ''} className="w-8 h-8 rounded-full border border-gold/20" fallbackType="avatar" seed={user.uid} />
-                    ) : (
-                      <div className="w-8 h-8 bg-maroon/10 rounded-full flex items-center justify-center text-maroon font-bold text-xs uppercase">
-                        {user.displayName?.[0] || <Users className="w-4 h-4" />}
-                      </div>
-                    )}
-                    <button 
-                      onClick={() => signOut()}
-                      className="text-xs font-bold text-gray-500 hover:text-maroon transition-colors"
-                      aria-label="Logout"
-                    >
-                      {t.nav.logout}
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <button 
-                  onClick={() => signIn()}
-                  className="text-sm font-bold text-maroon hover:text-saffron transition-colors"
-                  aria-label="Login"
-                >
-                  {t.nav.login}
-                </button>
-              )}
 
               <a 
                 href="#booking" 
@@ -658,23 +616,6 @@ const Navbar = ({ activeSection }: { activeSection?: 'services' | 'jyotish' | 'r
                       );
                     })}
                     
-                    {user && (
-                      <li>
-                        <Link 
-                          to="/dashboard" 
-                          onClick={() => setIsOpen(false)}
-                          className={cn(
-                            "flex items-center gap-4 text-lg font-bold py-4 px-5 rounded-2xl transition-all duration-300",
-                            location.pathname === '/dashboard' 
-                              ? "bg-maroon text-white shadow-lg shadow-maroon/20" 
-                              : "text-gray-800 hover:bg-maroon/5 hover:text-maroon"
-                          )}
-                        >
-                          <Users className={cn("w-5 h-5", location.pathname === '/dashboard' ? "text-gold" : "text-maroon/40")} />
-                          {(t.nav as any).dashboard}
-                        </Link>
-                      </li>
-                    )}
                   </ul>
                 </nav>
 
@@ -685,37 +626,6 @@ const Navbar = ({ activeSection }: { activeSection?: 'services' | 'jyotish' | 'r
                       <LanguageSwitcher />
                     </div>
                   </div>
-
-                  {user ? (
-                    <div className="bg-gradient-to-br from-maroon/5 to-saffron/5 rounded-3xl p-5 border border-maroon/10">
-                      <div className="flex items-center gap-4 mb-4">
-                        {user.photoURL ? (
-                          <SafeImage src={user.photoURL} alt="user avatar" className="w-12 h-12 rounded-full ring-2 ring-gold/20" fallbackType="avatar" seed={user.uid} />
-                        ) : (
-                          <div className="w-12 h-12 bg-maroon text-gold rounded-full flex items-center justify-center text-xl font-bold uppercase ring-2 ring-gold/20">
-                            {user.displayName?.[0] || 'Y'}
-                          </div>
-                        )}
-                        <div className="min-w-0">
-                          <p className="text-sm font-black text-maroon truncate leading-tight">{user.displayName || 'Yajman'}</p>
-                          <p className="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Devotee Profile</p>
-                        </div>
-                      </div>
-                      <button 
-                        onClick={() => { signOut(); setIsOpen(false); }}
-                        className="w-full text-xs font-black text-maroon uppercase tracking-widest text-center py-2.5 bg-white rounded-xl transition-all hover:bg-maroon hover:text-white border border-maroon/10"
-                      >
-                        {t.nav.logout}
-                      </button>
-                    </div>
-                  ) : (
-                    <button 
-                      onClick={() => { signIn(); setIsOpen(false); }} 
-                      className="w-full py-4 rounded-2xl bg-white border-2 border-maroon/10 text-maroon font-bold hover:bg-maroon hover:text-white transition-all flex items-center justify-center gap-3 shadow-sm active:scale-95"
-                    >
-                      <Users className="w-5 h-5" /> {t.nav.login}
-                    </button>
-                  )}
 
                   <div className="grid grid-cols-1 gap-3 pb-12">
                     <a 
@@ -1376,7 +1286,7 @@ const ServiceSection = ({
       className={`py-24 scroll-mt-24 transition-colors duration-1000 relative ${activeTab === 'jyotish' ? 'bg-maroon/95 text-cream' : 'bg-paper'}`}
     >
       {activeTab === 'jyotish' && <Stars />}
-      <div className="max-w-7xl mx-auto px-4 relative z-10">
+      <div className="w-full max-w-[96%] xl:max-w-[94%] mx-auto px-4 relative z-10">
         <div className="max-w-3xl mb-16">
           <h2 className={`text-xs font-bold uppercase tracking-[0.3em] mb-4 ${activeTab === 'jyotish' ? 'text-gold' : 'text-saffron'}`}>{t.services.tag}</h2>
           <p className={`text-2xl sm:text-3xl md:text-4xl font-bold leading-tight ${activeTab === 'jyotish' ? 'text-white' : 'text-maroon'}`}>
@@ -1626,7 +1536,7 @@ const BookingForm = ({ preselectedServiceId }: { preselectedServiceId?: string |
         <div className="absolute bottom-0 right-0 w-96 h-96 border-8 border-gold rounded-full translate-x-1/2 translate-y-1/2" />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 relative z-10">
+      <div className="w-full max-w-[96%] xl:max-w-[94%] mx-auto px-4 relative z-10">
         <div className="text-center mb-10">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-cream mb-4">{t.booking.title.split(' ')[0]} <span className="italic text-gold">{t.booking.title.split(' ')[1]}</span> {t.booking.title.split(' ').slice(2).join(' ')}</h2>
           <p className="text-cream/70 max-w-2xl mx-auto text-xs md:text-sm">{t.booking.p}</p>
@@ -2115,7 +2025,7 @@ const PathSection = () => {
       <div className="absolute top-8 left-8 text-maroon/10"><AnimatedSwastik className="w-10 h-10" /></div>
       <div className="absolute bottom-8 right-8 text-maroon/10"><AnimatedSwastik className="w-10 h-10" /></div>
 
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="w-full max-w-[96%] xl:max-w-[94%] mx-auto px-4">
         <div className="text-center mb-12 md:mb-16">
           <Diya className="w-8 h-8 text-saffron mx-auto mb-4 animate-glow" />
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-serif text-maroon mb-4">पाठ र पारायण</h2>
@@ -2320,7 +2230,7 @@ const ContactSection = () => {
       transition={{ duration: 0.6 }}
       className="py-24 bg-white"
     >
-      <div className="max-w-7xl mx-auto px-4 text-center">
+      <div className="w-full max-w-[96%] xl:max-w-[94%] mx-auto px-4 text-center">
         <motion.button 
           onClick={ringBell}
           animate={isRinging ? { rotate: [0, -20, 20, -20, 20, 0] } : {}}
@@ -2436,7 +2346,7 @@ const MainContent = ({ setSelectedService, handleBookNow, preselectedBookingId, 
         return (
           <div className="space-y-12">
             <ServiceSection onServiceSelect={setSelectedService} onBookNow={handleBookNow} />
-            <div className="h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent max-w-7xl mx-auto" />
+            <div className="h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent w-full max-w-[96%] mx-auto" />
             <PathSection />
           </div>
         );
@@ -2444,7 +2354,7 @@ const MainContent = ({ setSelectedService, handleBookNow, preselectedBookingId, 
         return <JyotishSection onSelectService={setSelectedService} />;
       case 'rashifal':
         return (
-          <div className="max-w-7xl mx-auto px-2 sm:px-4 relative z-10 py-8 md:py-12 bg-white/40 rounded-[2.5rem] border border-gold/10 backdrop-blur-md">
+          <div className="w-full max-w-[96%] xl:max-w-[94%] mx-auto px-2 sm:px-4 relative z-10 py-8 md:py-12 bg-white/40 rounded-[2.5rem] border border-gold/10 backdrop-blur-md">
             <Rashifal />
           </div>
         );
@@ -2457,7 +2367,7 @@ const MainContent = ({ setSelectedService, handleBookNow, preselectedBookingId, 
             transition={{ duration: 0.6 }}
             className="py-16 md:py-24 scroll-mt-24 bg-white/50 backdrop-blur-md rounded-[3rem] border border-gold/10 relative overflow-hidden"
           >
-            <div className="max-w-7xl mx-auto px-4">
+            <div className="w-full max-w-[96%] xl:max-w-[94%] mx-auto px-4">
               <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
                 <div className="relative order-2 lg:order-1">
                   <div className="aspect-[4/5] md:aspect-[16/9] lg:aspect-[4/5] rounded-[2rem] md:rounded-[3.5rem] overflow-hidden shadow-2xl relative group">
@@ -2587,9 +2497,9 @@ const MainContent = ({ setSelectedService, handleBookNow, preselectedBookingId, 
       />
 
       {/* Mode Selector and Quick Jump Panel */}
-      <div id="section-navigation-focus" className="max-w-7xl mx-auto px-4 py-8 relative z-10 scroll-mt-24">
+      <div id="section-navigation-focus" className="w-full max-w-[96%] xl:max-w-[94%] mx-auto px-4 py-8 relative z-10 scroll-mt-24">
         {/* Modern Theme Segment Control for Scroll vs Focus Mode */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6 bg-white/90 backdrop-blur-xl border-2 border-gold/30 rounded-3xl p-6 shadow-xl mb-10 max-w-5xl mx-auto">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6 bg-white/90 backdrop-blur-xl border-2 border-gold/30 rounded-3xl p-6 shadow-xl mb-10 w-full max-w-[96%] xl:max-w-[94%] mx-auto">
           <div className="text-left">
             <h3 className="font-serif font-black text-maroon text-lg md:text-xl flex items-center gap-2">
               <Sparkles className="w-5 h-5 text-saffron animate-[spin_4s_linear_infinite]" />

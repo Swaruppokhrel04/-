@@ -40,12 +40,6 @@ export const UserGuide: React.FC = () => {
       color: "gold"
     },
     {
-      title: "User Dashboard",
-      icon: <User className="w-6 h-6" />,
-      content: "Once signed in, access your personal dashboard to view your booking history, profile settings, and saved items. It helps you keep track of your spiritual journey with us.",
-      color: "indigo"
-    },
-    {
       title: "Language & Accessibility",
       icon: <Globe className="w-6 h-6" />,
       content: "The app supports Nepali, Hindi, and English. Use the language switcher in the top navigation bar to choose your preferred language. The entire interface will adapt to your choice.",
@@ -55,7 +49,7 @@ export const UserGuide: React.FC = () => {
 
   return (
     <div className="pt-32 pb-20 bg-paper min-h-screen">
-      <div className="container mx-auto px-6 max-w-4xl">
+      <div className="w-full max-w-[96%] xl:max-w-[94%] mx-auto px-6">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
