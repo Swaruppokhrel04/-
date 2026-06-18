@@ -69,6 +69,7 @@ import { Library } from './components/Library.tsx';
 import { Rashifal } from './components/Rashifal.tsx';
 import { JyotishSection } from './components/JyotishSection.tsx';
 import { Testimonials } from './components/Testimonials.tsx';
+import { FloatingSidebar } from './components/FloatingSidebar.tsx';
 
 const Navbar = ({ activeSection }: { activeSection?: 'services' | 'jyotish' | 'rashifal' | 'about' | 'testimonials' | 'faq' | 'contact' | 'booking' }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -2592,6 +2593,11 @@ const MainContent = ({ setSelectedService, handleBookNow, preselectedBookingId, 
   return (
     <main className="bg-mandala min-h-screen">
       <Hero />
+      <FloatingSidebar 
+        activeSection={activeSection} 
+        setActiveSection={setActiveSection} 
+        viewMode={viewMode}
+      />
 
       {/* Mode Selector and Quick Jump Panel */}
       <div id="section-navigation-focus" className="max-w-7xl mx-auto px-4 py-8 relative z-10 scroll-mt-24">
