@@ -68,6 +68,7 @@ import { Library } from './components/Library.tsx';
 import { Rashifal } from './components/Rashifal.tsx';
 import { JyotishSection } from './components/JyotishSection.tsx';
 import { FloatingSidebar } from './components/FloatingSidebar.tsx';
+import { WelcomeBanner } from './components/WelcomeBanner.tsx';
 
 const Navbar = ({ activeSection }: { activeSection?: 'services' | 'jyotish' | 'rashifal' | 'about' | 'faq' | 'contact' | 'booking' }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -2729,6 +2730,7 @@ export default function App() {
     <BrowserRouter>
       <div className="min-h-screen bg-paper pb-32 md:pb-0 font-sans text-gray-900 selection:bg-maroon selection:text-white relative overflow-hidden">
         <DecorativeBackground />
+        <WelcomeBanner />
         <Navbar activeSection={activeSection} />
         
         <Routes>
