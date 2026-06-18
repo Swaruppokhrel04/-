@@ -226,6 +226,132 @@ async function startServer() {
     }
   });
 
+  app.post("/api/book", (req, res) => {
+    res.json({ success: true });
+  });
+
+  app.post("/api/contact", (req, res) => {
+    res.json({ success: true });
+  });
+
+  app.post("/api/chat", async (req, res) => {
+    try {
+      const { message, history } = req.body;
+      const ai = getAi();
+      if (!ai) {
+        return res.json({ response: "Namaste! I am your Astro-helper at Shree Nara Narayana. For personalized astrology or pujas, please feel free to book a session through our website." });
+      }
+
+      const formattedContents = [];
+      if (history && Array.isArray(history)) {
+        for (const turn of history) {
+          formattedContents.push({
+            role: turn.role,
+            parts: [{ text: turn.content }]
+          });
+        }
+      }
+      formattedContents.push({
+        role: "user",
+        parts: [{ text: message }]
+      });
+
+      const systemInstruction = `You are a helpful, knowledgeable, and polite Vedic Astrologer, Hindu Priest, and Spiritual Guide for 'Shree Nara Narayana' temple and astrological services. 
+      Help the user with questions regarding Sanatana Dharma, Pujas, astrological concepts, auspicious timings (Muhurat), and services offered.
+      Keep your replies warm, respectful, informative, and relatively concise. Offer or suggest booking a puja or consult if relevant.`;
+
+      const aiResponse = await ai.models.generateContent({
+        model: "gemini-2.5-flash",
+        contents: formattedContents,
+        config: {
+          systemInstruction,
+        }
+      });
+
+      res.json({ response: aiResponse.text?.trim() });
+    } catch (error: any) {
+      console.error("Chat API error:", error);
+      res.status(500).json({ response: "Namaste! I am currently taking standard queries. Please try again soon." });
+    }
+  });
+
+  app.post("/api/panchang", async (req, res) => {
+    try {
+      const { date, location } = req.body;
+      const ai = getAi();
+      const fallbackPanchang = {
+        tithi: "Ekadashi",
+        nakshatra: "Rohini",
+        yoga: "Harshana",
+        karana: "Bava",
+        paksha: "Shukla Paksha",
+        masam: "Jyeshtha",
+        sunrise: "05:15 AM",
+        sunset: "06:45 PM",
+        rahuKaal: "01:30 PM - 03:00 PM",
+        gulikaKaal: "09:00 AM - 10:30 AM",
+        abhijitMuhurat: "11:45 AM - 12:35 PM",
+        meaning: "Ekadashi is highly auspicious for fasting, meditation, and spiritual energy, especially associated with Lord Vishnu."
+      };
+
+      if (!ai) {
+        return res.json(fallbackPanchang);
+      }
+
+      const prompt = `Calculate and provide highly realistic and authentic Vedic Panchang details for the date: ${date} at location: ${location}.
+      Respond ONLY with a JSON object containing the following keys matching the schema:
+      {
+        "tithi": "string (e.g. Dwadashi, Ekadashi etc.)",
+        "nakshatra": "string (e.g. Rohini, Ashwini etc.)",
+        "yoga": "string",
+        "karana": "string",
+        "paksha": "string (Shukla Paksha or Krishna Paksha)",
+        "masam": "string (Hindu Month e.g., Jyeshtha, Ashadha)",
+        "sunrise": "string (e.g., '05:22 AM')",
+        "sunset": "string (e.g., '06:51 PM')",
+        "rahuKaal": "string (e.g., '01:30 PM - 03:00 PM')",
+        "gulikaKaal": "string (e.g., '09:00 AM - 10:30 AM')",
+        "abhijitMuhurat": "string (e.g., '11:50 AM - 12:40 PM')",
+        "meaning": "string (A beautiful 1-2 sentence description explaining the spiritual importance and auspicious characteristics of this tithi and nakshatra combination)"
+      }`;
+
+      const response = await ai.models.generateContent({
+        model: "gemini-2.5-flash",
+        contents: prompt,
+        config: {
+          responseMimeType: "application/json",
+          responseSchema: {
+            type: Type.OBJECT,
+            properties: {
+              tithi: { type: Type.STRING },
+              nakshatra: { type: Type.STRING },
+              yoga: { type: Type.STRING },
+              karana: { type: Type.STRING },
+              paksha: { type: Type.STRING },
+              masam: { type: Type.STRING },
+              sunrise: { type: Type.STRING },
+              sunset: { type: Type.STRING },
+              rahuKaal: { type: Type.STRING },
+              gulikaKaal: { type: Type.STRING },
+              abhijitMuhurat: { type: Type.STRING },
+              meaning: { type: Type.STRING }
+            },
+            required: [
+              "tithi", "nakshatra", "yoga", "karana", "paksha", "masam",
+              "sunrise", "sunset", "rahuKaal", "gulikaKaal", "abhijitMuhurat", "meaning"
+            ]
+          }
+        }
+      });
+
+      const data = JSON.parse(response.text?.trim() || "{}");
+      res.json(data);
+    } catch (error) {
+      console.error("Panchang API error:", error);
+      res.status(500).json({ error: "Failed to load panchang data" });
+    }
+  });
+
   app.get("/api/health", (req, res) => {
     res.json({ status: "ok" });
   });

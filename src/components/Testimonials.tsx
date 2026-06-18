@@ -27,24 +27,51 @@ export const Testimonials = () => {
           >
             <Sparkles className="w-8 h-8" />
           </motion.div>
-          <h2 className="text-3xl md:text-5xl font-bold font-serif text-maroon mb-4">
+          <motion.h2 
+            initial={{ opacity: 0, y: -20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-3xl md:text-5xl font-bold font-serif text-maroon mb-4"
+          >
             {t.testimonials.title}
-          </h2>
-          <p className="text-gray-500 max-w-2xl mx-auto text-lg leading-relaxed">
+          </motion.h2>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-gray-500 max-w-2xl mx-auto text-lg leading-relaxed"
+          >
             {t.testimonials.subtitle}
-          </p>
-          <div className="w-24 h-1 bg-gold/30 mx-auto mt-6 rounded-full" />
+          </motion.p>
+          <motion.div 
+            initial={{ width: 0 }}
+            whileInView={{ width: 96 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="h-1 bg-gold/30 mx-auto mt-6 rounded-full" 
+          />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {TESTIMONIALS.map((testimonial, idx) => (
             <motion.div
               key={testimonial.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.1, duration: 0.5 }}
-              whileHover={{ y: -5 }}
+              initial={{ opacity: 0, y: 50, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ 
+                type: "spring",
+                stiffness: 80,
+                damping: 15,
+                delay: idx * 0.15 
+              }}
+              whileHover={{ 
+                y: -10,
+                scale: 1.02,
+                transition: { duration: 0.3, ease: "easeOut" }
+              }}
               className="bg-white p-8 rounded-[2rem] border border-gold/10 shadow-xl shadow-maroon/5 relative group transition-all duration-300"
             >
               <div className="absolute top-6 right-8 text-gold/10 group-hover:text-gold/20 transition-colors">

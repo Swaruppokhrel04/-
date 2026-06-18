@@ -45,7 +45,7 @@ import { SERVICES, CONTACT_INFO } from './constants.ts';
 import { cn } from './lib/utils';
 import { BookingFormData, PujaService } from './types.ts';
 import { CalendarView } from './components/Calendar.tsx';
-import { db } from './lib/firebase';
+import { db, auth } from './lib/firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 import { useLanguage } from './LanguageContext';
@@ -1352,9 +1352,57 @@ const ServiceSection = ({
   );
 };
 
+enum BookingOperationType {
+  CREATE = 'create',
+  UPDATE = 'update',
+  DELETE = 'delete',
+  LIST = 'list',
+  GET = 'get',
+  WRITE = 'write',
+}
+
+interface FirestoreErrorInfo {
+  error: string;
+  operationType: BookingOperationType;
+  path: string | null;
+  authInfo: {
+    userId?: string | null;
+    email?: string | null;
+    emailVerified?: boolean | null;
+    isAnonymous?: boolean | null;
+    tenantId?: string | null;
+    providerInfo?: {
+      providerId?: string | null;
+      email?: string | null;
+    }[];
+  }
+}
+
+function handleFirestoreError(error: unknown, operationType: BookingOperationType, path: string | null) {
+  const errInfo: FirestoreErrorInfo = {
+    error: error instanceof Error ? error.message : String(error),
+    authInfo: {
+      userId: auth?.currentUser?.uid,
+      email: auth?.currentUser?.email,
+      emailVerified: auth?.currentUser?.emailVerified,
+      isAnonymous: auth?.currentUser?.isAnonymous,
+      tenantId: auth?.currentUser?.tenantId,
+      providerInfo: auth?.currentUser?.providerData?.map(provider => ({
+        providerId: provider.providerId,
+        email: provider.email,
+      })) || []
+    },
+    operationType,
+    path
+  };
+  console.error('Firestore Error: ', JSON.stringify(errInfo));
+  throw new Error(JSON.stringify(errInfo));
+}
+
 const BookingForm = ({ preselectedServiceId }: { preselectedServiceId?: string | null }) => {
   const { t, language } = useLanguage();
   const { user } = useAuth();
+  const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<BookingFormData>({
     fullName: user?.displayName || '',
     phone: '',
@@ -1382,22 +1430,41 @@ const BookingForm = ({ preselectedServiceId }: { preselectedServiceId?: string |
 
   const [errors, setErrors] = useState<Partial<Record<keyof BookingFormData, string>>>({});
 
-  const validate = () => {
-    const newErrors: Partial<Record<keyof BookingFormData, string>> = {};
-    
-    if (!formData.fullName.trim()) newErrors.fullName = "Name is required";
-    if (!formData.phone.trim()) newErrors.phone = "Phone is required";
-    if (formData.phone.trim() && !/^\+?[0-9]{7,15}$/.test(formData.phone.trim())) {
-      newErrors.phone = "कृपया मान्य फोन नम्बर राख्नुहोस्।";
-    }
-    
-    if (!formData.message.trim()) newErrors.message = "Message is required";
+  const isStep1Valid = () => {
+    const name = formData.fullName.trim();
+    const phone = formData.phone.trim();
+    const message = formData.message.trim();
+    if (!name) return false;
+    if (!phone) return false;
+    if (!/^\+?[0-9]{7,15}$/.test(phone)) return false;
+    if (!message) return false;
+    return true;
+  };
 
-    if (!formData.date) newErrors.date = "Please select a date";
-    if (!formData.time) newErrors.time = "Please select a time slot";
+  const validateStep1 = () => {
+    const newErrors: Partial<Record<keyof BookingFormData, string>> = {};
+    if (!formData.fullName.trim()) newErrors.fullName = language === 'ne' ? "नाम अनिवार्य छ" : language === 'hi' ? "नाम अनिवार्य है" : "Name is required";
+    if (!formData.phone.trim()) newErrors.phone = language === 'ne' ? "फोन नम्बर अनिवार्य छ" : language === 'hi' ? "फ़ोन नंबर अनिवार्य है" : "Phone is required";
+    if (formData.phone.trim() && !/^\+?[0-9]{7,15}$/.test(formData.phone.trim())) {
+      newErrors.phone = language === 'ne' ? "कृपया मान्य फोन नम्बर राख्नुहोस्।" : language === 'hi' ? "कृपया मान्य फोन नंबर दर्ज करें।" : "Please enter a valid phone number";
+    }
+    if (!formData.message.trim()) newErrors.message = language === 'ne' ? "सङ्कल्प सन्देश आवश्यक छ" : language === 'hi' ? "संकल्प संदेश आवश्यक है" : "Sankalpa message is required";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
+  };
+
+  const validateStep2 = () => {
+    const newErrors: Partial<Record<keyof BookingFormData, string>> = {};
+    if (!formData.date) newErrors.date = language === 'ne' ? "कृपया पात्रोबाट तिथि छनोट गर्नुहोस्" : language === 'hi' ? "कृपया कैलेंडर से तिथि चुनें" : "Please select a date from calendar";
+    if (!formData.time) newErrors.time = language === 'ne' ? "कृपया समय स्लट छनोट गर्नुहोस्" : language === 'hi' ? "कृपया समय स्लॉट चुनें" : "Please select a time slot";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const validate = () => {
+    return validateStep1() && validateStep2();
   };
 
   const [showBookingConfirm, setShowBookingConfirm] = useState(false);
@@ -1417,12 +1484,17 @@ const BookingForm = ({ preselectedServiceId }: { preselectedServiceId?: string |
 
     try {
       // 1. Save to Firestore
-      await addDoc(collection(db, 'bookings'), {
-        ...formData,
-        userId: user?.uid || 'guest',
-        status: 'pending',
-        createdAt: serverTimestamp()
-      });
+      try {
+        await addDoc(collection(db, 'bookings'), {
+          ...formData,
+          email: user?.email || '',
+          userId: user?.uid || 'guest',
+          status: 'pending',
+          createdAt: serverTimestamp()
+        });
+      } catch (err) {
+         handleFirestoreError(err, BookingOperationType.CREATE, 'bookings');
+      }
 
       // 2. Send Email via API
       const response = await fetch('/api/book', {
@@ -1437,6 +1509,7 @@ const BookingForm = ({ preselectedServiceId }: { preselectedServiceId?: string |
         
         // Show acknowledgment first
         setIsAcknowledging(true);
+        setCurrentStep(3);
         
         // Reset form
         setFormData({
@@ -1460,7 +1533,7 @@ const BookingForm = ({ preselectedServiceId }: { preselectedServiceId?: string |
       }
     } catch (error) {
       console.error("Booking error:", error);
-      setSubmitError("Network error. Please check your connection and try again.");
+      setSubmitError(error instanceof Error ? error.message : "Network error. Please check your connection and try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -1481,43 +1554,167 @@ const BookingForm = ({ preselectedServiceId }: { preselectedServiceId?: string |
       </div>
 
       <div className="max-w-7xl mx-auto px-4 relative z-10">
-        <div className="text-center mb-12 md:mb-16">
+        <div className="text-center mb-10">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-cream mb-4">{t.booking.title.split(' ')[0]} <span className="italic text-gold">{t.booking.title.split(' ')[1]}</span> {t.booking.title.split(' ').slice(2).join(' ')}</h2>
           <p className="text-cream/70 max-w-2xl mx-auto text-xs md:text-sm">{t.booking.p}</p>
         </div>
 
-        <div className="grid lg:grid-cols-[1fr_1.2fr] gap-8 md:gap-12 items-start">
-          <motion.div 
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="space-y-8"
-          >
-            <CalendarView 
-              selectedDate={formData.date} 
-              selectedTime={formData.time}
-              onDateSelect={(d) => setFormData({...formData, date: d})} 
-              onTimeSelect={(t) => {
-                setFormData({...formData, time: t});
-                if (errors.time) setErrors({...errors, time: undefined});
+        {/* Visual Progress Bar */}
+        <div className="max-w-xl mx-auto mb-12 relative z-20" id="booking-progress-bar">
+          <div className="relative flex items-center justify-between">
+            {/* Background connection lines */}
+            <div className="absolute left-6 right-6 top-5 -translate-y-1/2 h-1 bg-white/10 rounded-full z-0" />
+            <div 
+              className="absolute left-6 top-5 -translate-y-1/2 h-1 bg-gradient-to-r from-gold to-saffron rounded-full transition-all duration-500 ease-out z-0" 
+              style={{ 
+                width: `${((isAcknowledging || showBookingConfirm ? 3 : currentStep) - 1) / 2 * 93}%` 
               }}
             />
-            {errors.date && <p className="text-xs text-red-500 font-bold mt-2">{errors.date}</p>}
-            {errors.time && <p className="text-xs text-red-500 font-bold mt-2">{errors.time}</p>}
-            
-            <div className="hidden">
-              {/* Muhurat info removed as requested */}
-            </div>
-          </motion.div>
 
+            {/* Steps circles */}
+            {[
+              { id: 1, label: language === 'ne' ? 'विवरण' : language === 'hi' ? 'विवरण' : 'Details' },
+              { id: 2, label: language === 'ne' ? 'तिथि र समय' : language === 'hi' ? 'तिथि और समय' : 'Date & Time' },
+              { id: 3, label: language === 'ne' ? 'पुष्टिकरण' : language === 'hi' ? 'पुष्टि' : 'Confirmation' }
+            ].map((st) => {
+              const activeStep = isAcknowledging || showBookingConfirm ? 3 : currentStep;
+              const isActive = activeStep >= st.id;
+              const isCurrent = activeStep === st.id;
+              
+              return (
+                <div key={st.id} className="relative z-10 flex flex-col items-center flex-1">
+                  <motion.button
+                    type="button"
+                    disabled={st.id === 3 || (st.id === 2 && !isStep1Valid())}
+                    onClick={() => {
+                      if (st.id === 1) {
+                        setCurrentStep(1);
+                      } else if (st.id === 2) {
+                        if (validateStep1()) {
+                          setCurrentStep(2);
+                        }
+                      }
+                    }}
+                    whileHover={{ scale: st.id <= 2 ? 1.1 : 1 }}
+                    whileTap={{ scale: st.id <= 2 ? 0.95 : 1 }}
+                    className={`w-10 h-10 md:w-11 md:h-11 rounded-full flex items-center justify-center font-black border-2 transition-all duration-300 shadow-md ${
+                      isCurrent 
+                        ? 'bg-gold border-gold text-maroon shadow-lg shadow-gold/30' 
+                        : isActive 
+                        ? 'bg-cream border-gold text-maroon cursor-pointer' 
+                        : 'bg-maroon-dark/60 border-white/10 text-cream/40 cursor-not-allowed'
+                    }`}
+                  >
+                    {activeStep > st.id ? (
+                      <Check className="w-5 h-5 text-maroon stroke-[3px]" />
+                    ) : (
+                      <span className="text-xs font-bold">{st.id}</span>
+                    )}
+                  </motion.button>
+                  <span className={`text-[9px] md:text-[11px] font-black uppercase tracking-wider mt-2.5 transition-colors duration-300 ${
+                    isActive ? 'text-gold' : 'text-cream/40'
+                  }`}>
+                    {st.label}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className={isAcknowledging || showBookingConfirm ? "max-w-2xl mx-auto w-full" : "grid lg:grid-cols-[1fr_1.2fr] gap-8 md:gap-12 items-start"}>
+          
+          {/* Left Column depending on current step (hidden context on step 3) */}
+          {!(isAcknowledging || showBookingConfirm) && (
+            <AnimatePresence mode="wait">
+              {currentStep === 1 ? (
+                <motion.div
+                  key="step1-info"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  className="bg-white/5 backdrop-blur-md p-8 md:p-10 rounded-[3rem] border border-gold/10 text-cream space-y-6 flex flex-col justify-between min-h-[460px]"
+                >
+                  <div className="space-y-4">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-gold/10 text-gold text-[10px] font-bold uppercase tracking-widest rounded-full border border-gold/20">
+                      <Sparkles className="w-3.5 h-3.5 text-gold animate-pulse" />
+                      <span>{language === 'ne' ? 'वैदिक प्रक्रिया' : language === 'hi' ? 'वैदिक विधि' : 'Vedic Procedure'}</span>
+                    </div>
+                    <h3 className="text-2xl md:text-3xl font-serif font-black text-white leading-tight">
+                      {language === 'ne' ? 'आफ्नो संकल्प तयार गर्नुहोस्' : language === 'hi' ? 'अपना संकल्प तैयार करें' : 'Prepare Your Sacred Sankalpa'}
+                    </h3>
+                    <p className="text-sm text-cream/80 leading-relaxed font-normal">
+                      {language === 'ne' 
+                        ? 'हाम्रा आदरणीय पण्डितजीहरूले पूजा सुरु गर्नुअघि तपाईँको नाम र सङ्कल्प उच्चारण गर्नुहुनेछ। कृपया आफ्नो पूरा विवरण र पूजासँग सम्बन्धित विशेष मनसाय (सङ्कल्प) को उल्लेख गर्नुहोस्।' 
+                        : language === 'hi' 
+                          ? 'हमारे सम्मानित पंडित जी पूजा शुरू करने से पहले आपके नाम और संकल्प का उच्चारण करेंगे। कृपया अपना पूरा विवरण और पूजा से संबंधित विशेष उद्देश्य (संकल्प) का उल्लेख करें।' 
+                          : 'Our respected Pandit Jis will recite your name and custom Sankalpa before starting the ritual. Please share your family details and specific intentions.'}
+                    </p>
+                    <div className="space-y-3 pt-6 border-t border-gold/10">
+                      <div className="flex items-center gap-3 text-xs text-gold/90 font-bold uppercase tracking-wider">
+                        <Check className="w-4 h-4 text-gold shrink-0 bg-gold/10 rounded p-0.5" />
+                        <span>{language === 'ne' ? 'पूजा सामग्रीको व्यवस्था' : language === 'hi' ? 'पूजा सामग्री की व्यवस्था' : 'All Pooja Samagri Arranged'}</span>
+                      </div>
+                      <div className="flex items-center gap-3 text-xs text-gold/90 font-bold uppercase tracking-wider">
+                        <Check className="w-4 h-4 text-gold shrink-0 bg-gold/10 rounded p-0.5" />
+                        <span>{language === 'ne' ? 'प्रत्यक्ष भिडियो प्रसारण' : language === 'hi' ? 'लाइव वीडियो प्रसारण' : 'Live High-Quality Broadcast'}</span>
+                      </div>
+                      <div className="flex items-center gap-3 text-xs text-gold/90 font-bold uppercase tracking-wider">
+                        <Check className="w-4 h-4 text-gold shrink-0 bg-gold/10 rounded p-0.5" />
+                        <span>{language === 'ne' ? 'प्रसाद डेलिभरी' : language === 'hi' ? 'प्रसाद वितरण' : 'Sacred Prasad Hand-Delivered'}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="pt-4 border-t border-white/5">
+                    <p className="text-[10px] text-cream/40 font-bold uppercase tracking-widest leading-normal">
+                      {language === 'ne' ? 'तपाईँको सुरक्षा र कल्याण हाम्रो प्राथमिकता हो।' : language === 'hi' ? 'आपकी सुरक्षा और कल्याण हमारी प्राथमिकता है।' : 'Your spiritual privacy is fully secured.'}
+                    </p>
+                  </div>
+                </motion.div>
+              ) : (
+                <motion.div 
+                  key="step2-calendar"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  className="space-y-6"
+                >
+                  <CalendarView 
+                    selectedDate={formData.date} 
+                    selectedTime={formData.time}
+                    onDateSelect={(d) => {
+                      setFormData({...formData, date: d});
+                      if (errors.date) setErrors({...errors, date: undefined});
+                    }} 
+                    onTimeSelect={(t) => {
+                      setFormData({...formData, time: t});
+                      if (errors.time) setErrors({...errors, time: undefined});
+                    }}
+                  />
+                  {errors.date && (
+                    <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-xs text-red-400 font-bold mt-2 bg-red-500/10 p-2.5 rounded-lg border border-red-500/20">
+                      {errors.date}
+                    </motion.p>
+                  )}
+                  {errors.time && (
+                    <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-xs text-red-400 font-bold mt-2 bg-red-500/10 p-2.5 rounded-lg border border-red-500/20">
+                      {errors.time}
+                    </motion.p>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          )}
+
+          {/* Right Column containing the states (Step 1, Step 2 or Confirmation Views) */}
           <AnimatePresence mode="wait">
             {isAcknowledging ? (
               <motion.div
                 key="acknowledgment"
-                initial={{ opacity: 0, scale: 0.9 }}
+                initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 1.1 }}
-                className="bg-maroon p-12 rounded-[3.5rem] shadow-2xl flex flex-col items-center justify-center text-center overflow-hidden relative"
+                exit={{ opacity: 0, scale: 1.05 }}
+                className="bg-maroon p-12 rounded-[3.5rem] shadow-2xl flex flex-col items-center justify-center text-center overflow-hidden relative min-h-[460px]"
               >
                 <Stars className="opacity-40" />
                 <motion.div
@@ -1526,7 +1723,7 @@ const BookingForm = ({ preselectedServiceId }: { preselectedServiceId?: string |
                   transition={{ type: "spring", damping: 10, stiffness: 100, delay: 0.2 }}
                   className="w-24 h-24 bg-gold/20 rounded-full flex items-center justify-center mb-8 border border-gold/30"
                 >
-                  <Flower2 className="w-12 h-12 text-gold" />
+                  <Flower2 className="w-12 h-12 text-gold animate-spin-slow" />
                 </motion.div>
                 <motion.h3 
                   initial={{ opacity: 0, y: 10 }}
@@ -1562,182 +1759,260 @@ const BookingForm = ({ preselectedServiceId }: { preselectedServiceId?: string |
               >
                 <BookingConfirmation 
                   booking={lastBooking} 
-                  onClose={() => setShowBookingConfirm(false)} 
+                  onClose={() => {
+                    setShowBookingConfirm(false);
+                    setCurrentStep(1);
+                  }} 
                 />
+              </motion.div>
+            ) : currentStep === 1 ? (
+              <motion.div 
+                key="step1-form"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                className="bg-white p-8 md:p-12 rounded-[3.5rem] shadow-2xl flex flex-col justify-between"
+              >
+                <div className="space-y-6">
+                  <div className="border-b border-gold/15 pb-4">
+                    <h3 className="text-xl font-serif font-black text-maroon">
+                      {language === 'ne' ? 'परामर्शदाताको विवरण' : language === 'hi' ? 'यजमान का विवरण' : 'Yajaman (Client) Details'}
+                    </h3>
+                    <p className="text-xs text-gray-400 mt-1">
+                      {language === 'ne' ? 'कृपया तपाईँको नाम, सम्पर्क र स्थान राख्नुहोस्।' : language === 'hi' ? 'कृपया अपना नाम, संपर्क और स्थान दर्ज करें।' : 'Please enter your personal identifiers and location.'}
+                    </p>
+                  </div>
+
+                  <div className="space-y-5">
+                    <div className="space-y-2">
+                      <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">{t.booking.form.labelName}</label>
+                      <input 
+                        type="text" 
+                        placeholder={t.booking.form.holderName}
+                        className={`w-full bg-gray-50 border ${errors.fullName ? 'border-red-400' : 'border-gray-200'} rounded-xl px-4 py-3 focus:outline-none focus:border-maroon transition-colors`}
+                        value={formData.fullName}
+                        onChange={(e) => {
+                          setFormData({...formData, fullName: e.target.value});
+                          if (errors.fullName) setErrors({...errors, fullName: undefined});
+                        }}
+                      />
+                      {errors.fullName && <p className="text-xs text-red-500 font-bold">{errors.fullName}</p>}
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">{t.booking.form.labelPhone}</label>
+                      <input 
+                        type="tel" 
+                        placeholder="+977"
+                        className={`w-full bg-gray-50 border ${errors.phone ? 'border-red-400' : 'border-gray-200'} rounded-xl px-4 py-3 focus:outline-none focus:border-maroon transition-colors`}
+                        value={formData.phone}
+                        onChange={(e) => {
+                          setFormData({...formData, phone: e.target.value});
+                          if (errors.phone) setErrors({...errors, phone: undefined});
+                        }}
+                      />
+                      {errors.phone && <p className="text-xs text-red-500 font-bold">{errors.phone}</p>}
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">{t.booking.form.labelLocation}</label>
+                      <input 
+                        type="text" 
+                        placeholder={t.booking.form.holderLocation}
+                        className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-maroon transition-colors"
+                        value={formData.location}
+                        onChange={(e) => setFormData({...formData, location: e.target.value})}
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">{t.booking.form.labelMessage}</label>
+                      <textarea 
+                        rows={4}
+                        placeholder={t.booking.form.holderMessage}
+                        className={`w-full bg-gray-50 border ${errors.message ? 'border-red-400' : 'border-gray-200'} rounded-xl px-4 py-3 focus:outline-none focus:border-maroon transition-colors resize-none`}
+                        value={formData.message}
+                        onChange={(e) => {
+                          setFormData({...formData, message: e.target.value});
+                          if (errors.message) setErrors({...errors, message: undefined});
+                        }}
+                      />
+                      {errors.message && <p className="text-xs text-red-500 font-bold">{errors.message}</p>}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="pt-8">
+                  <button 
+                    type="button"
+                    onClick={() => {
+                      if (validateStep1()) {
+                        setCurrentStep(2);
+                      }
+                    }}
+                    className="w-full bg-maroon hover:bg-saffron text-cream font-bold py-4 rounded-xl transition-all duration-300 shadow-md flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    <span>{language === 'ne' ? 'समय र स्लट छनोट गर्नुहोस्' : language === 'hi' ? 'समय और स्लॉट चुनें' : 'Select Date & Time Slot'}</span>
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
+                </div>
               </motion.div>
             ) : (
               <motion.div 
-                key="form"
-                initial={{ opacity: 0, x: 30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                className="bg-white p-8 md:p-12 rounded-[3.5rem] shadow-2xl"
+                key="step2-form"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                className="bg-white p-8 md:p-12 rounded-[3.5rem] shadow-2xl flex flex-col justify-between"
               >
-                <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {submitError && (
-                    <div className="md:col-span-2 p-4 bg-red-50 border border-red-200 text-red-600 rounded-xl text-sm font-medium flex items-center gap-2">
-                       <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
-                       {submitError}
-                    </div>
-                  )}
-                  <div className="space-y-2">
-                    <label className="text-sm font-bold uppercase tracking-widest text-gray-500">{t.booking.form.labelName}</label>
-                    <input 
-                      type="text" 
-                      placeholder={t.booking.form.holderName}
-                      className={`w-full bg-gray-50 border ${errors.fullName ? 'border-red-400' : 'border-gray-200'} rounded-xl px-4 py-3 focus:outline-none focus:border-maroon transition-colors`}
-                      value={formData.fullName}
-                      onChange={(e) => {
-                        setFormData({...formData, fullName: e.target.value});
-                        if (errors.fullName) setErrors({...errors, fullName: undefined});
-                      }}
-                    />
-                    {errors.fullName && <p className="text-xs text-red-500 font-bold">{errors.fullName}</p>}
+                <div className="space-y-6">
+                  <div className="border-b border-gold/15 pb-4">
+                    <h3 className="text-xl font-serif font-black text-maroon">
+                      {language === 'ne' ? 'पूजा सेवा र मुहूर्त' : language === 'hi' ? 'पूजा सेवा और मुहूर्त' : 'Puja & Auspicious Slot'}
+                    </h3>
+                    <p className="text-xs text-gray-400 mt-1">
+                      {language === 'ne' ? 'कृपया सेवा चयन गरी पात्रोबाट उपयुक्त समय रोज्नुहोस्।' : language === 'hi' ? 'कृपया सेवा का चयन करें और कैलेंडर से अनुकूल समय चुनें।' : 'Select the dynamic Vedic service and auspicious hour constraint.'}
+                    </p>
                   </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-bold uppercase tracking-widest text-gray-500">{t.booking.form.labelPhone}</label>
-                    <input 
-                      type="tel" 
-                      placeholder="+977"
-                      className={`w-full bg-gray-50 border ${errors.phone ? 'border-red-400' : 'border-gray-200'} rounded-xl px-4 py-3 focus:outline-none focus:border-maroon transition-colors`}
-                      value={formData.phone}
-                      onChange={(e) => {
-                        setFormData({...formData, phone: e.target.value});
-                        if (errors.phone) setErrors({...errors, phone: undefined});
-                      }}
-                    />
-                    {errors.phone && <p className="text-xs text-red-500 font-bold">{errors.phone}</p>}
-                  </div>
-                  <div className="space-y-2 md:col-span-2 relative">
-                    <label className="text-sm font-bold uppercase tracking-widest text-gray-500">{t.booking.form.labelService}</label>
-                    {(() => {
-                      const selectedServiceObj = SERVICES.find(s => s.id === formData.pujaType);
-                      const selectedLabel = selectedServiceObj 
-                        ? (t.services_list[selectedServiceObj.id as keyof typeof t.services_list]?.name || selectedServiceObj.name) 
-                        : '';
-                      return (
-                        <div className="relative">
-                          {/* Trigger Button */}
-                          <button
-                            type="button"
-                            onClick={() => setIsServiceDropdownOpen(!isServiceDropdownOpen)}
-                            className="w-full bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-maroon/20 transition-all font-bold text-base md:text-lg text-maroon flex items-center justify-between text-left cursor-pointer"
-                          >
-                            <span>{selectedLabel}</span>
-                            {isServiceDropdownOpen ? (
-                              <ChevronUp className="w-5 h-5 text-gold shrink-0" />
-                            ) : (
-                              <ChevronDown className="w-5 h-5 text-gold shrink-0" />
-                            )}
-                          </button>
 
-                          {/* Backdrop to dismiss on clicking outside */}
-                          {isServiceDropdownOpen && (
-                            <div 
-                              className="fixed inset-0 z-40 bg-transparent" 
-                              onClick={() => setIsServiceDropdownOpen(false)} 
-                            />
-                          )}
+                  <div className="space-y-5">
+                    {submitError && (
+                      <div className="p-4 bg-red-50 border border-red-200 text-red-600 rounded-xl text-sm font-medium flex items-center gap-2">
+                        <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+                        {submitError}
+                      </div>
+                    )}
 
-                          {/* Dropdown Options List - Opening strictly UPSIDE (upward direction) */}
-                          <AnimatePresence>
+                    <div className="space-y-2 relative">
+                      <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">{t.booking.form.labelService}</label>
+                      {(() => {
+                        const selectedServiceObj = SERVICES.find(s => s.id === formData.pujaType);
+                        const selectedLabel = selectedServiceObj 
+                          ? (t.services_list[selectedServiceObj.id as keyof typeof t.services_list]?.name || selectedServiceObj.name) 
+                          : '';
+                        return (
+                          <div className="relative">
+                            {/* Trigger Button */}
+                            <button
+                              type="button"
+                              onClick={() => setIsServiceDropdownOpen(!isServiceDropdownOpen)}
+                              className="w-full bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-xl px-5 py-3.5 focus:outline-none focus:ring-2 focus:ring-maroon/20 transition-all font-bold text-[15px] md:text-base text-maroon flex items-center justify-between text-left cursor-pointer"
+                            >
+                              <span className="truncate pr-4">{selectedLabel}</span>
+                              {isServiceDropdownOpen ? (
+                                <ChevronUp className="w-5 h-5 text-gold shrink-0" />
+                              ) : (
+                                <ChevronDown className="w-5 h-5 text-gold shrink-0" />
+                              )}
+                            </button>
+
+                            {/* Backdrop to dismiss on clicking outside */}
                             {isServiceDropdownOpen && (
-                              <motion.div
-                                initial={{ opacity: 0, y: 15, scale: 0.95 }}
-                                animate={{ opacity: 1, y: 0, scale: 1 }}
-                                exit={{ opacity: 0, y: 15, scale: 0.95 }}
-                                transition={{ duration: 0.15 }}
-                                className="absolute bottom-full left-0 right-0 mb-3 bg-white border border-gold/20 rounded-2xl shadow-2xl shadow-maroon/10 z-50 overflow-hidden"
-                              >
-                                <div className="p-2 max-h-70 overflow-y-auto font-sans">
-                                  {SERVICES.map((s) => {
-                                    const isSelected = formData.pujaType === s.id;
-                                    const label = t.services_list[s.id as keyof typeof t.services_list]?.name || s.name;
-                                    return (
-                                      <button
-                                        key={s.id}
-                                        type="button"
-                                        onClick={() => {
-                                          setFormData({ ...formData, pujaType: s.id });
-                                          setIsServiceDropdownOpen(false);
-                                        }}
-                                        className={`w-full flex items-center justify-between px-5 py-4 rounded-xl text-left text-sm md:text-base font-bold transition-all cursor-pointer ${
-                                          isSelected 
-                                            ? 'bg-maroon text-cream' 
-                                            : 'text-gray-700 hover:bg-maroon/5 hover:text-maroon'
-                                        }`}
-                                      >
-                                        <span>{label}</span>
-                                        {isSelected && <Check className="w-4 h-4 text-gold shrink-0" />}
-                                      </button>
-                                    );
-                                  })}
-                                </div>
-                              </motion.div>
+                              <div 
+                                className="fixed inset-0 z-40 bg-transparent" 
+                                onClick={() => setIsServiceDropdownOpen(false)} 
+                              />
                             )}
-                          </AnimatePresence>
-                        </div>
-                      );
-                    })()}
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-bold uppercase tracking-widest text-gray-500">{t.booking.form.labelDate}</label>
-                    <div className="p-4 bg-maroon/5 border border-maroon/10 rounded-xl">
-                      <div className="flex items-center gap-3">
-                        <Calendar className="w-5 h-5 text-maroon" />
-                        <div>
-                          <p className="text-sm font-bold text-maroon">
-                            {formData.date ? format(new Date(formData.date), 'PPPP') : 'No date selected'}
-                          </p>
-                          <p className="text-[10px] uppercase font-bold text-saffron tracking-wider">
-                            {formData.time ? `Selected Time: ${formData.time}` : 'Please select time from calendar'}
-                          </p>
+
+                            {/* Dropdown Options List - Opening strictly UPSIDE (upward direction) */}
+                            <AnimatePresence>
+                              {isServiceDropdownOpen && (
+                                <motion.div
+                                  initial={{ opacity: 0, y: 15, scale: 0.95 }}
+                                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                                  exit={{ opacity: 0, y: 15, scale: 0.95 }}
+                                  transition={{ duration: 0.15 }}
+                                  className="absolute bottom-full left-0 right-0 mb-3 bg-white border border-gold/20 rounded-2xl shadow-2xl shadow-maroon/10 z-50 overflow-hidden"
+                                >
+                                  <div className="p-2 max-h-70 overflow-y-auto font-sans">
+                                    {SERVICES.map((s) => {
+                                      const isSelected = formData.pujaType === s.id;
+                                      const label = t.services_list[s.id as keyof typeof t.services_list]?.name || s.name;
+                                      return (
+                                        <button
+                                          key={s.id}
+                                          type="button"
+                                          onClick={() => {
+                                            setFormData({ ...formData, pujaType: s.id });
+                                            setIsServiceDropdownOpen(false);
+                                          }}
+                                          className={`w-full flex items-center justify-between px-5 py-4 rounded-xl text-left text-sm font-bold transition-all cursor-pointer ${
+                                            isSelected 
+                                              ? 'bg-maroon text-cream font-black' 
+                                              : 'text-gray-700 hover:bg-maroon/5 hover:text-maroon'
+                                          }`}
+                                        >
+                                          <span>{label}</span>
+                                          {isSelected && <Check className="w-4 h-4 text-gold shrink-0" />}
+                                        </button>
+                                      );
+                                    })}
+                                  </div>
+                                </motion.div>
+                              )}
+                            </AnimatePresence>
+                          </div>
+                        );
+                      })()}
+                    </div>
+
+                    <div className="space-y-4 pt-1">
+                      <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500">{t.booking.form.labelDate}</label>
+                      <div className="p-4 bg-maroon/5 border border-maroon/10 rounded-2xl shadow-sm">
+                        <div className="flex items-center gap-4">
+                          <span className="w-10 h-10 bg-maroon/10 rounded-xl flex items-center justify-center text-maroon shrink-0">
+                            <Calendar className="w-5 h-5 text-maroon" />
+                          </span>
+                          <div className="min-w-0">
+                            <p className="text-sm font-bold text-gray-400 uppercase tracking-widest text-[9px]">
+                              {language === 'ne' ? 'चयन गरिएको मिति' : language === 'hi' ? 'चयनित तिथि' : 'Selected Date'}
+                            </p>
+                            <p className="text-base font-black text-maroon truncate mt-0.5 leading-tight">
+                              {formData.date ? format(new Date(formData.date), 'PPPP') : (language === 'ne' ? 'पात्रोबाट एउटा मिति रोज्नुहोस्' : language === 'hi' ? 'कैलेंडर से तिथि चुनें' : 'Select a date on the calendar')}
+                            </p>
+                            <p className="text-[11px] uppercase font-black text-saffron tracking-wider mt-1 flex items-center gap-1">
+                              <Clock className="w-3.5 h-3.5" />
+                              {formData.time ? `Selected Time: ${formData.time}` : (language === 'ne' ? 'समय छनौट गर्नुहोस्' : language === 'hi' ? 'समय चुनें' : 'Choose time slot on calendar')}
+                            </p>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-bold uppercase tracking-widest text-gray-500">{t.booking.form.labelLocation}</label>
-                    <input 
-                      type="text" 
-                      placeholder={t.booking.form.holderLocation}
-                      className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-maroon transition-colors"
-                      value={formData.location}
-                      onChange={(e) => setFormData({...formData, location: e.target.value})}
-                    />
-                  </div>
-                  <div className="space-y-2 md:col-span-2">
-                    <label className="text-sm font-bold uppercase tracking-widest text-gray-500">{t.booking.form.labelMessage}</label>
-                    <textarea 
-                      rows={4}
-                      placeholder={t.booking.form.holderMessage}
-                      className={`w-full bg-gray-50 border ${errors.message ? 'border-red-400' : 'border-gray-200'} rounded-xl px-4 py-3 focus:outline-none focus:border-maroon transition-colors resize-none`}
-                      value={formData.message}
-                      onChange={(e) => {
-                        setFormData({...formData, message: e.target.value});
-                        if (errors.message) setErrors({...errors, message: undefined});
-                      }}
-                    />
-                    {errors.message && <p className="text-xs text-red-500 font-bold">{errors.message}</p>}
-                  </div>
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-4 pt-8">
                   <button 
-                    type="submit"
+                    type="button"
+                    onClick={() => setCurrentStep(1)}
+                    className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer text-sm"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                    {language === 'ne' ? 'विवरण संपादन गर्नुहोस्' : language === 'hi' ? 'संकोच बिना विवरण बदलें' : 'Back to Details'}
+                  </button>
+                  <button 
+                    type="button"
                     disabled={isSubmitting}
-                    className={`md:col-span-2 ${isSubmitting ? 'bg-maroon/70 cursor-not-allowed' : 'bg-maroon hover:bg-saffron'} text-cream font-bold py-4 rounded-xl transition-all duration-300 shadow-lg flex items-center justify-center gap-2`}
+                    onClick={handleSubmit}
+                    className={`flex-1 ${isSubmitting ? 'bg-maroon/70 cursor-not-allowed' : 'bg-maroon hover:bg-saffron'} text-cream font-bold py-4 rounded-xl transition-all duration-300 shadow-lg flex items-center justify-center gap-2 cursor-pointer text-sm`}
                   >
                     {isSubmitting ? (
                       <>
-                        <Loader2 className="w-5 h-5 animate-spin" />
-                        {(t.booking.form as any).btnLoading}
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <span>{language === 'ne' ? 'प्रक्रियामा छ...' : language === 'hi' ? 'प्रक्रिया चालू है...' : 'Processing...'}</span>
                       </>
                     ) : (
-                      t.booking.form.btn
+                      <>
+                        <Check className="w-4 h-4 text-gold stroke-[3px]" />
+                        <span>{language === 'ne' ? 'बुकिङ सुनिश्चित गर्नुहोस्' : language === 'hi' ? 'बुकिंग सुनिश्चित करें' : 'Complete Booking'}</span>
+                      </>
                     )}
                   </button>
-                </form>
+                </div>
               </motion.div>
             )}
           </AnimatePresence>
+
         </div>
       </div>
     </motion.section>

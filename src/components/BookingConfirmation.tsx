@@ -20,7 +20,7 @@ interface BookingConfirmationProps {
 }
 
 export const BookingConfirmation: React.FC<BookingConfirmationProps> = ({ booking, onClose }) => {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
   const [isPaying, setIsPaying] = useState(false);
   const [payError, setPayError] = useState<string | null>(null);
 
@@ -127,31 +127,45 @@ export const BookingConfirmation: React.FC<BookingConfirmationProps> = ({ bookin
             </div>
           )}
 
-          <div className="flex flex-col sm:flex-row gap-4">
-            <div className="flex-1 flex gap-2">
-            <a 
-              href={generateGoogleCalendarLink(booking)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex-1 bg-white border-2 border-gold text-maroon py-4 rounded-xl font-bold text-center hover:bg-gold/10 transition-all flex items-center justify-center gap-2"
-            >
-              <Calendar className="w-5 h-5" /> Google
-            </a>
-            <button 
-              onClick={() => downloadICal(booking)}
-              className="px-6 bg-white border-2 border-maroon text-maroon py-4 rounded-xl font-bold hover:bg-maroon/5 transition-all flex items-center justify-center"
-              title="Download .ics"
-            >
-              <Download className="w-5 h-5" />
-            </button>
+          <div className="bg-paper p-6 rounded-2xl border border-gold/20 flex flex-col md:flex-row md:items-center justify-between gap-6 mb-6">
+            <div className="space-y-1 text-left">
+              <h4 className="font-serif font-black text-maroon text-base">
+                {language === 'ne' ? 'पात्रोमा सुरक्षित गर्नुहोस्' : language === 'hi' ? 'कैलेंडर में सहेजें' : 'Save Ritual to Calendar'}
+              </h4>
+              <p className="text-xs text-gray-500 max-w-sm">
+                {language === 'ne' 
+                  ? 'क्यालेन्डर निमन्त्रणा (.ics) डाउनलोड गर्नुहोस् वा सिधै गुगल क्यालेन्डरमा थप्नुहोस्।' 
+                  : language === 'hi' 
+                    ? 'कैलेंडर निमंत्रण (.ics) डाउनलोड करें या सीधे गूगल कैलेंडर में जोड़ें।' 
+                    : 'Download the calendar invitation (.ics) or add directly to Google Calendar.'}
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-3 shrink-0">
+              <button 
+                onClick={() => downloadICal(booking)}
+                className="bg-maroon text-cream px-5 py-3 rounded-xl font-bold text-sm hover:bg-saffron transition-all flex items-center justify-center gap-2 shadow-md shadow-maroon/10 cursor-pointer"
+              >
+                <Download className="w-4 h-4 text-gold shrink-0" />
+                {language === 'ne' ? 'क्यालेन्डर थप्नुहोस् (.ics)' : language === 'hi' ? 'कैलेंडर में जोड़ें (.ics)' : 'Add to Calendar (.ics)'}
+              </button>
+              <a 
+                href={generateGoogleCalendarLink(booking)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-white border border-gold/30 text-maroon px-5 py-3 rounded-xl font-bold text-sm hover:bg-gold/5 transition-all flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <Calendar className="w-4 h-4 text-gold shrink-0" />
+                {language === 'ne' ? 'गुगल' : language === 'hi' ? 'गूगल' : 'Google'}
+              </a>
+            </div>
           </div>
+
           <button 
             onClick={onClose}
-            className="flex-1 bg-maroon text-cream py-4 rounded-xl font-bold hover:bg-saffron transition-all duration-300 shadow-lg shadow-maroon/10"
+            className="w-full bg-maroon text-cream py-4 rounded-xl font-bold hover:bg-saffron transition-all duration-300 shadow-lg shadow-maroon/10"
           >
             {confirmationT.home}
           </button>
-        </div>
       </div>
     </div>
   </motion.div>
