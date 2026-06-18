@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Sparkles, Star, Moon, Sun, ChevronRight, CheckCircle2, Plus, Minus, HelpCircle } from 'lucide-react';
 import { SERVICES } from '../constants.ts';
 import { useLanguage } from '../LanguageContext.tsx';
+import { SafeImage } from './SafeImage.tsx';
 
 interface JyotishSectionProps {
   onSelectService: (service: any) => void;
@@ -88,10 +89,12 @@ export const JyotishSection: React.FC<JyotishSectionProps> = ({ onSelectService 
               <div className="absolute inset-4 border-2 border-gold/20 rounded-full border-dashed animate-[spin_30s_linear_infinite_reverse]" />
               
               <div className="absolute inset-12 bg-cream rounded-full flex items-center justify-center p-8 shadow-2xl relative z-10">
-                <img 
+                <SafeImage 
                   src="https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&q=80&w=800" 
                   alt="Vedic Astrology" 
                   className="w-full h-full object-cover rounded-full group-hover:scale-110 transition-transform duration-700"
+                  fallbackType="service"
+                  seed="astrology"
                 />
                 <div className="absolute inset-0 bg-maroon/20 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                    <div className="w-16 h-16 bg-gold text-maroon rounded-full flex items-center justify-center shadow-xl">

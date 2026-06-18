@@ -21,41 +21,10 @@ import {
 import { useLanguage } from '../LanguageContext';
 import { RELIGIOUS_BOOKS, Book } from '../library_constants';
 import { cn } from '../lib/utils';
+import { SafeImage } from './SafeImage.tsx';
 
 const ReadingModal = ({ book, onClose, language, t }: { book: Book, onClose: () => void, language: string, t: any }) => {
   const [isFullScreen, setIsFullScreen] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
-  const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
-
-  useEffect(() => {
-    if (book.audioUrl) {
-      const newAudio = new Audio(book.audioUrl);
-      newAudio.onended = () => setIsPlaying(false);
-      setAudio(newAudio);
-    }
-    return () => {
-      if (audio) {
-        audio.pause();
-      }
-    };
-  }, [book.audioUrl]);
-
-  const togglePlay = () => {
-    if (!audio) return;
-    if (isPlaying) {
-      audio.pause();
-    } else {
-      audio.play();
-    }
-    setIsPlaying(!isPlaying);
-  };
-
-  const toggleMute = () => {
-    if (!audio) return;
-    audio.muted = !isMuted;
-    setIsMuted(!isMuted);
-  };
 
   // Prevent body scroll when modal is open
   useEffect(() => {
@@ -96,31 +65,6 @@ const ReadingModal = ({ book, onClose, language, t }: { book: Book, onClose: () 
             </div>
           </div>
           <div className="flex items-center gap-2">
-            {book.audioUrl && (
-              <div className="flex items-center gap-1 bg-maroon/5 rounded-xl p-1 mr-4">
-                <button 
-                  onClick={togglePlay}
-                  className="p-2.5 bg-maroon text-white rounded-lg hover:bg-saffron transition-all active:scale-90"
-                  title={isPlaying ? (language === 'hi' ? 'रोकें' : language === 'ne' ? 'रोक्नुहोस्' : 'Pause') : (language === 'hi' ? 'चलाएं' : language === 'ne' ? 'बजाउनुहोस्' : 'Play Audio')}
-                >
-                  {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 ml-0.5" />}
-                </button>
-                <button 
-                  onClick={toggleMute}
-                  className="p-2.5 text-maroon hover:bg-maroon/10 rounded-lg transition-colors"
-                >
-                  {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
-                </button>
-                <div className="px-3 py-1 flex items-center gap-2">
-                  <div className={`w-1 h-4 bg-maroon/20 rounded-full overflow-hidden relative`}>
-                    {isPlaying && (
-                      <div className="absolute inset-0 bg-maroon animate-pulse" />
-                    )}
-                  </div>
-                  <span className="text-[10px] font-bold text-maroon uppercase tracking-widest hidden sm:inline">{t.library.audio}</span>
-                </div>
-              </div>
-            )}
             <button 
               onClick={() => setIsFullScreen(!isFullScreen)}
               className="p-3 text-gold hover:bg-gold/10 rounded-xl transition-colors hidden md:block"
@@ -290,10 +234,12 @@ export const Library = () => {
                   className="group bg-white rounded-[3rem] overflow-hidden border border-gold/5 hover:border-gold/30 hover:shadow-[0_40px_80px_-20px_rgba(74,4,4,0.1)] transition-all duration-500 flex flex-col h-full relative"
                 >
                   <div className="relative h-72 md:h-80 overflow-hidden">
-                    <img 
+                    <SafeImage 
                       src={book.image} 
                       alt={book.title[language]} 
                       className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-[1.5s] ease-out"
+                      fallbackType="book"
+                      seed={book.id}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-maroon/80 via-maroon/20 to-transparent" />
                     <div className="absolute top-6 left-6 bg-white/95 backdrop-blur px-4 py-1.5 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] text-maroon shadow-lg">

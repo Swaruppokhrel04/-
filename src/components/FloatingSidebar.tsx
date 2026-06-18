@@ -16,8 +16,8 @@ import {
 import { useLanguage } from '../LanguageContext';
 
 interface FloatingSidebarProps {
-  activeSection: 'services' | 'jyotish' | 'rashifal' | 'about' | 'testimonials' | 'faq' | 'contact' | 'booking';
-  setActiveSection: (section: 'services' | 'jyotish' | 'rashifal' | 'about' | 'testimonials' | 'faq' | 'contact' | 'booking') => void;
+  activeSection: 'services' | 'jyotish' | 'rashifal' | 'about' | 'faq' | 'contact' | 'booking';
+  setActiveSection: (section: 'services' | 'jyotish' | 'rashifal' | 'about' | 'faq' | 'contact' | 'booking') => void;
   viewMode: 'focus' | 'all';
 }
 
@@ -31,7 +31,6 @@ export const FloatingSidebar = ({ activeSection, setActiveSection, viewMode }: F
       jyotish: { title: "ज्योतिष सेवाहरू", icon: Compass },
       rashifal: { title: "दैनिक राशिफल", icon: Sun },
       about: { title: "पूज्य पण्डित जी", icon: Scroll },
-      testimonials: { title: "भक्तका अनुभव", icon: Users },
       faq: { title: "जिज्ञासा समाधान", icon: HelpCircle },
       contact: { title: "मन्दिर र सम्पर्क", icon: MapPin },
       booking: { title: "पूजा बुकिङ", icon: Calendar }
@@ -41,7 +40,6 @@ export const FloatingSidebar = ({ activeSection, setActiveSection, viewMode }: F
       jyotish: { title: "ज्योतिष परामर्श", icon: Compass },
       rashifal: { title: "दैनिक राशिफल", icon: Sun },
       about: { title: "पूज्य पण्डित जी", icon: Scroll },
-      testimonials: { title: "भक्तों के अनुभव", icon: Users },
       faq: { title: "जिज्ञासा समाधान", icon: HelpCircle },
       contact: { title: "स्थान एवं समय", icon: MapPin },
       booking: { title: "पूजा बुकिंग", icon: Calendar }
@@ -51,15 +49,14 @@ export const FloatingSidebar = ({ activeSection, setActiveSection, viewMode }: F
       jyotish: { title: "Astro Guidance", icon: Compass },
       rashifal: { title: "Daily Horoscope", icon: Sun },
       about: { title: "About Pandit Ji", icon: Scroll },
-      testimonials: { title: "Devotee Feedback", icon: Users },
       faq: { title: "Faith FAQs", icon: HelpCircle },
       contact: { title: "Temple Location", icon: MapPin },
       booking: { title: "Book a Puja", icon: Calendar }
     }
   };
 
-  const sectionsList: ('services' | 'jyotish' | 'rashifal' | 'about' | 'testimonials' | 'faq' | 'contact' | 'booking')[] = [
-    'services', 'jyotish', 'rashifal', 'about', 'testimonials', 'faq', 'contact', 'booking'
+  const sectionsList: ('services' | 'jyotish' | 'rashifal' | 'about' | 'faq' | 'contact' | 'booking')[] = [
+    'services', 'jyotish', 'rashifal', 'about', 'faq', 'contact', 'booking'
   ];
 
   const currentLangLabels = sectionLabels[language as 'ne' | 'hi' | 'en'] || sectionLabels['hi'];

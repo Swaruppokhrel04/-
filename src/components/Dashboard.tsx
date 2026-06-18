@@ -22,6 +22,7 @@ import {
 import { useAuth } from '../AuthContext';
 import { useLanguage } from '../LanguageContext';
 import { db } from '../lib/firebase';
+import { SafeImage } from './SafeImage.tsx';
 import { collection, query, where, getDocs, orderBy, updateDoc, doc } from 'firebase/firestore';
 import { format } from 'date-fns';
 import { DashboardBooking } from '../types';
@@ -207,7 +208,7 @@ export const Dashboard = () => {
               <div className="flex flex-col items-center mb-10 text-center">
                 <div className="w-24 h-24 bg-paper-dark rounded-full p-1 border-2 border-gold/20 mb-5 relative group">
                   {photoURL ? (
-                    <img src={photoURL} alt="" className="w-full h-full rounded-full object-cover transition-transform group-hover:scale-105" />
+                    <SafeImage src={photoURL} alt="Profile" className="w-full h-full rounded-full object-cover transition-transform group-hover:scale-105" fallbackType="avatar" seed={displayName || user.email || 'user'} />
                   ) : (
                     <div className="w-full h-full rounded-full bg-maroon flex items-center justify-center text-cream text-3xl font-bold">
                       {displayName?.[0]?.toUpperCase() || user.displayName?.[0]?.toUpperCase() || 'Y'}
@@ -442,7 +443,7 @@ export const Dashboard = () => {
                           <div className="relative">
                             <div className="w-28 h-28 bg-white rounded-[2rem] p-1 border-2 border-gold/10 flex items-center justify-center overflow-hidden shadow-sm group-hover:border-gold/30 transition-all">
                               {photoURL ? (
-                                <img src={photoURL} alt="Profile" className="w-full h-full object-cover transition-transform group-hover:scale-110" />
+                                <SafeImage src={photoURL} alt="Profile" className="w-full h-full object-cover transition-transform group-hover:scale-110" fallbackType="avatar" seed={displayName || user.email || 'user_edit'} />
                               ) : (
                                 <div className="w-full h-full bg-paper-dark flex items-center justify-center text-gold/20">
                                   <User className="w-14 h-14" />

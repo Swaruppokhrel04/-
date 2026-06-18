@@ -58,20 +58,18 @@ import { SplashScreen } from './components/SplashScreen.tsx';
 import { BottomNav } from './components/BottomNav.tsx';
 import { ChatWidget } from './components/ChatWidget.tsx';
 import { BookingConfirmation } from './components/BookingConfirmation.tsx';
+import { SafeImage } from './components/SafeImage.tsx';
 import { Dashboard } from './components/Dashboard.tsx';
 import { ContactForm } from './components/ContactForm.tsx';
-import { AudioPlayer } from './components/AudioPlayer.tsx';
-import { GlobalSoundSystem } from './components/GlobalSoundSystem.tsx';
 import { Footer } from './components/Footer.tsx';
 import { UserGuide } from './components/UserGuide.tsx';
 import { CallActionButton } from './components/CallActionButton.tsx';
 import { Library } from './components/Library.tsx';
 import { Rashifal } from './components/Rashifal.tsx';
 import { JyotishSection } from './components/JyotishSection.tsx';
-import { Testimonials } from './components/Testimonials.tsx';
 import { FloatingSidebar } from './components/FloatingSidebar.tsx';
 
-const Navbar = ({ activeSection }: { activeSection?: 'services' | 'jyotish' | 'rashifal' | 'about' | 'testimonials' | 'faq' | 'contact' | 'booking' }) => {
+const Navbar = ({ activeSection }: { activeSection?: 'services' | 'jyotish' | 'rashifal' | 'about' | 'faq' | 'contact' | 'booking' }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isWhatsappOpen, setIsWhatsappOpen] = useState(false);
@@ -143,7 +141,6 @@ const Navbar = ({ activeSection }: { activeSection?: 'services' | 'jyotish' | 'r
         jyotish: "Astro Guidance",
         rashifal: "Daily Horoscope",
         about: "About Pandit Ji",
-        testimonials: "Devotee Feedback",
         faq: "Faith FAQs",
         contact: "Temple Location",
         booking: "Book a Puja",
@@ -156,7 +153,6 @@ const Navbar = ({ activeSection }: { activeSection?: 'services' | 'jyotish' | 'r
         jyotish: "ज्योतिष सेवाहरू",
         rashifal: "दैनिक राशिफल",
         about: "पूज्य पण्डित जी",
-        testimonials: "भक्तका अनुभव",
         faq: "जिज्ञासा समाधान",
         contact: "मन्दिर र सम्पर्क",
         booking: "पूजा बुकिङ",
@@ -169,7 +165,6 @@ const Navbar = ({ activeSection }: { activeSection?: 'services' | 'jyotish' | 'r
         jyotish: "ज्योतिष परामर्श",
         rashifal: "दैनिक राशिफल",
         about: "पूज्य पण्डित जी",
-        testimonials: "भक्तों के अनुभव",
         faq: "जिज्ञासा समाधान",
         contact: "स्थान एवं समय",
         booking: "पूजा बुकिंग",
@@ -417,7 +412,7 @@ const Navbar = ({ activeSection }: { activeSection?: 'services' | 'jyotish' | 'r
                 <div className="flex items-center gap-4 border-l border-gold/10 pl-6">
                   <div className="flex items-center gap-2 group relative cursor-pointer">
                     {user.photoURL ? (
-                      <img src={user.photoURL} alt={user.displayName || ''} className="w-8 h-8 rounded-full border border-gold/20" />
+                      <SafeImage src={user.photoURL} alt={user.displayName || ''} className="w-8 h-8 rounded-full border border-gold/20" fallbackType="avatar" seed={user.uid} />
                     ) : (
                       <div className="w-8 h-8 bg-maroon/10 rounded-full flex items-center justify-center text-maroon font-bold text-xs uppercase">
                         {user.displayName?.[0] || <Users className="w-4 h-4" />}
@@ -695,7 +690,7 @@ const Navbar = ({ activeSection }: { activeSection?: 'services' | 'jyotish' | 'r
                     <div className="bg-gradient-to-br from-maroon/5 to-saffron/5 rounded-3xl p-5 border border-maroon/10">
                       <div className="flex items-center gap-4 mb-4">
                         {user.photoURL ? (
-                          <img src={user.photoURL} alt="" className="w-12 h-12 rounded-full ring-2 ring-gold/20" />
+                          <SafeImage src={user.photoURL} alt="user avatar" className="w-12 h-12 rounded-full ring-2 ring-gold/20" fallbackType="avatar" seed={user.uid} />
                         ) : (
                           <div className="w-12 h-12 bg-maroon text-gold rounded-full flex items-center justify-center text-xl font-bold uppercase ring-2 ring-gold/20">
                             {user.displayName?.[0] || 'Y'}
@@ -1001,10 +996,12 @@ const Hero = () => {
         className="absolute inset-0 pointer-events-none"
       >
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-paper/50 to-paper z-10" />
-        <img 
+        <SafeImage 
           src="https://images.unsplash.com/photo-1544253457-3a137b1248a3?auto=format&fit=crop&q=80&w=2000" 
           alt="Divine Heritage"
           className="w-full h-full object-cover object-center opacity-50 scale-100"
+          fallbackType="banner"
+          seed="hero"
         />
       </motion.div>
 
@@ -1176,13 +1173,12 @@ const ServiceCard = ({
         )}
       </div>
       <div className="relative h-72 md:h-80 overflow-hidden">
-        <img 
+        <SafeImage 
           src={service.image} 
           alt={translatedService?.name || service.name}
           className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
-          onError={(e) => {
-            e.currentTarget.src = 'https://images.unsplash.com/photo-1590766948510-108259e9c4f3?auto=format&fit=crop&q=80&w=800';
-          }}
+          fallbackType="service"
+          seed={service.id}
         />
         <div className={`absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500`} />
         {isJyotish && <div className="absolute inset-0 bg-gold/10 mix-blend-overlay" />}
@@ -1294,11 +1290,6 @@ const ServiceCard = ({
                   <span className="text-[10px] font-bold uppercase tracking-widest text-gold/60">{t.services.mantra}</span>
                   <p className={`text-xs italic ${isJyotish ? 'text-gray-400' : 'text-gray-500'}`}>{service.mantra}</p>
                 </div>
-                {service.audioUrl && (
-                  <div className="mt-1">
-                    <AudioPlayer url={service.audioUrl} variant="compact" />
-                  </div>
-                )}
               </div>
             )}
           </div>
@@ -2145,7 +2136,7 @@ const PathSection = () => {
             >
               <div className="border border-gold/10 rounded overflow-hidden">
                 <div className="relative aspect-video">
-                  <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
+                  <SafeImage src={item.image} alt={item.title} className="w-full h-full object-cover" fallbackType="service" seed={idx} />
                   <div className="absolute inset-0 bg-maroon/20" />
                 </div>
                 <div className="p-8 text-center bg-paper">
@@ -2205,13 +2196,12 @@ const ServiceModal = ({
               <X className="w-5 h-5" />
             </button>
             <div className="relative h-72 md:h-[400px]">
-              <img 
+              <SafeImage 
                 src={service.image} 
                 alt={service.name} 
                 className="w-full h-full object-cover object-center"
-                onError={(e) => {
-                  e.currentTarget.src = 'https://images.unsplash.com/photo-1590766948510-108259e9c4f3?auto=format&fit=crop&q=80&w=800';
-                }}
+                fallbackType="service"
+                seed={service.id}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-maroon/80 via-maroon/20 to-transparent" />
               <div className="absolute bottom-8 left-8 right-8">
@@ -2227,11 +2217,7 @@ const ServiceModal = ({
                 {translatedService?.desc || service.description}
               </p>
 
-              {service.audioUrl && (
-                <div className="mb-8">
-                  <AudioPlayer url={service.audioUrl} title={translatedService?.name || service.name} />
-                </div>
-              )}
+              {/* Audio player removed */}
 
               <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-8 p-6 bg-paper-dark rounded-[2rem] border border-gold/10">
                 {service.deity && (
@@ -2398,7 +2384,6 @@ const MainContent = ({ setSelectedService, handleBookNow, preselectedBookingId, 
       jyotish: { title: "ज्योतिष सेवाहरू", subtitle: "प्राचीन ग्रह विश्लेषण", icon: Compass },
       rashifal: { title: "दैनिक राशिफल", subtitle: "आजको नक्षत्र फल", icon: Sun },
       about: { title: "पूज्य पण्डित जी", subtitle: "२५+ वर्षको परम्परा", icon: Scroll },
-      testimonials: { title: "भक्तका अनुभव", subtitle: "सन्तुष्ट श्रद्धालुहरू", icon: Users },
       faq: { title: "जिज्ञासा समाधान", subtitle: "बारम्बार सोधिने प्रश्नहरू", icon: HelpCircle },
       contact: { title: "मन्दिर र सम्पर्क", subtitle: "दर्शन र समय", icon: MapPin },
       booking: { title: "पूजा बुकिङ", subtitle: "शीघ्र सेवा", icon: Calendar }
@@ -2408,7 +2393,6 @@ const MainContent = ({ setSelectedService, handleBookNow, preselectedBookingId, 
       jyotish: { title: "ज्योतिष परामर्श", subtitle: "कुंडली एवं ग्रह विश्लेषण", icon: Compass },
       rashifal: { title: "दैनिक राशिफल", subtitle: "आज का नक्षत्र फल", icon: Sun },
       about: { title: "पूज्य पण्डित जी", subtitle: "२५+ वर्षों की परंपरा", icon: Scroll },
-      testimonials: { title: "भक्तों के अनुभव", subtitle: "संतुष्ट श्रद्धालु", icon: Users },
       faq: { title: "जिज्ञासा समाधान", subtitle: "पूछे जाने वाले प्रश्न", icon: HelpCircle },
       contact: { title: "स्थान एवं समय", subtitle: "मन्दिर दर्शन और संपर्क", icon: MapPin },
       booking: { title: "पूजा बुकिंग", subtitle: "शुभ मुहूर्त बुक करें", icon: Calendar }
@@ -2418,15 +2402,14 @@ const MainContent = ({ setSelectedService, handleBookNow, preselectedBookingId, 
       jyotish: { title: "Astro Guidance", subtitle: "Kundali & Chart Reading", icon: Compass },
       rashifal: { title: "Daily Horoscope", subtitle: "Zodiac Vibrations", icon: Sun },
       about: { title: "About Pandit Ji", subtitle: "25+ Years Lineage", icon: Scroll },
-      testimonials: { title: "Devotee Feedback", subtitle: "Blessed Experiences", icon: Users },
       faq: { title: "Faith FAQs", subtitle: "Frequently Asked Questions", icon: HelpCircle },
       contact: { title: "Temple Location", subtitle: "Visits & Timing Details", icon: MapPin },
       booking: { title: "Book a Puja", subtitle: "Secure Auspicious Service", icon: Calendar }
     }
   };
 
-  const sectionsList: ('services' | 'jyotish' | 'rashifal' | 'about' | 'testimonials' | 'faq' | 'contact' | 'booking')[] = [
-    'services', 'jyotish', 'rashifal', 'about', 'testimonials', 'faq', 'contact', 'booking'
+  const sectionsList: ('services' | 'jyotish' | 'rashifal' | 'about' | 'faq' | 'contact' | 'booking')[] = [
+    'services', 'jyotish', 'rashifal', 'about', 'faq', 'contact', 'booking'
   ];
 
   const currentLangLabels = sectionLabels[language as 'ne' | 'hi' | 'en'] || sectionLabels['hi'];
@@ -2478,10 +2461,12 @@ const MainContent = ({ setSelectedService, handleBookNow, preselectedBookingId, 
               <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
                 <div className="relative order-2 lg:order-1">
                   <div className="aspect-[4/5] md:aspect-[16/9] lg:aspect-[4/5] rounded-[2rem] md:rounded-[3.5rem] overflow-hidden shadow-2xl relative group">
-                    <img 
+                    <SafeImage 
                       src="https://images.unsplash.com/photo-1563722216449-3660d5bfa78f?auto=format&fit=crop&q=80&w=1200" 
                       alt="Purity and Tradition"
                       className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
+                      fallbackType="service"
+                      seed="experience"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-maroon/40 to-transparent opacity-60" />
                   </div>
@@ -2559,7 +2544,7 @@ const MainContent = ({ setSelectedService, handleBookNow, preselectedBookingId, 
                     <div className="flex -space-x-4">
                       {[1, 2, 3, 4].map((i) => (
                         <div key={i} className="w-12 h-12 rounded-full border-4 border-white bg-gray-200 overflow-hidden shadow-sm">
-                          <img src={`https://i.pravatar.cc/100?img=${i+10}`} alt="client" referrerPolicy="no-referrer" />
+                          <SafeImage src={`https://i.pravatar.cc/100?img=${i+10}`} alt="client" fallbackType="avatar" seed={i} />
                         </div>
                       ))}
                     </div>
@@ -2573,8 +2558,7 @@ const MainContent = ({ setSelectedService, handleBookNow, preselectedBookingId, 
             </div>
           </motion.section>
         );
-      case 'testimonials':
-        return <Testimonials />;
+
       case 'faq':
         return <FAQ />;
       case 'contact':
@@ -2813,7 +2797,7 @@ export default function App() {
   const [showSplash, setShowSplash] = useState(true);
   const [selectedService, setSelectedService] = useState<PujaService | null>(null);
   const [preselectedBookingId, setPreselectedBookingId] = useState<string | null>(null);
-  const [activeSection, setActiveSection] = useState<'services' | 'jyotish' | 'rashifal' | 'about' | 'testimonials' | 'faq' | 'contact' | 'booking'>('services');
+  const [activeSection, setActiveSection] = useState<'services' | 'jyotish' | 'rashifal' | 'about' | 'faq' | 'contact' | 'booking'>('services');
 
   const handleBookNow = (serviceId: string) => {
     setPreselectedBookingId(serviceId);
@@ -2867,7 +2851,6 @@ export default function App() {
         />
         <ChatWidget />
         <CallActionButton />
-        <GlobalSoundSystem />
       </div>
     </BrowserRouter>
   );
