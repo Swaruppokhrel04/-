@@ -70,7 +70,7 @@ import { Rashifal } from './components/Rashifal.tsx';
 import { JyotishSection } from './components/JyotishSection.tsx';
 import { Testimonials } from './components/Testimonials.tsx';
 
-const Navbar = () => {
+const Navbar = ({ activeSection }: { activeSection?: 'services' | 'jyotish' | 'rashifal' | 'about' | 'testimonials' | 'faq' | 'contact' | 'booking' }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isWhatsappOpen, setIsWhatsappOpen] = useState(false);
@@ -126,7 +126,75 @@ const Navbar = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const whatsappUrl = `https://wa.me/${CONTACT_INFO.whatsapp}`;
+  let currentSec = activeSection || 'services';
+  if (location.pathname === '/library') {
+    currentSec = 'library' as any;
+  } else if (location.pathname === '/news') {
+    currentSec = 'news' as any;
+  } else if (location.pathname === '/dashboard') {
+    currentSec = 'dashboard' as any;
+  }
+
+  const getServiceName = (section: string, lang: string) => {
+    const sectionLabels: Record<string, Record<string, string>> = {
+      en: {
+        services: "Pujas & Services",
+        jyotish: "Astro Guidance",
+        rashifal: "Daily Horoscope",
+        about: "About Pandit Ji",
+        testimonials: "Devotee Feedback",
+        faq: "Faith FAQs",
+        contact: "Temple Location",
+        booking: "Book a Puja",
+        library: "Vedic Library",
+        news: "Daily News & Panchang",
+        dashboard: "Devotee Dashboard",
+      },
+      ne: {
+        services: "पूजा र अनुष्ठान",
+        jyotish: "ज्योतिष सेवाहरू",
+        rashifal: "दैनिक राशिफल",
+        about: "पूज्य पण्डित जी",
+        testimonials: "भक्तका अनुभव",
+        faq: "जिज्ञासा समाधान",
+        contact: "मन्दिर र सम्पर्क",
+        booking: "पूजा बुकिङ",
+        library: "वैदिक पुस्तकालय",
+        news: "दैनिक समाचार र पञ्चाङ्ग",
+        dashboard: "भक्त ड्यासबोर्ड",
+      },
+      hi: {
+        services: "पूजा और अनुष्ठान",
+        jyotish: "ज्योतिष परामर्श",
+        rashifal: "दैनिक राशिफल",
+        about: "पूज्य पण्डित जी",
+        testimonials: "भक्तों के अनुभव",
+        faq: "जिज्ञासा समाधान",
+        contact: "स्थान एवं समय",
+        booking: "पूजा बुकिंग",
+        library: "वैदिक पुस्तकालय",
+        news: "दैनिक समाचार और पंचांग",
+        dashboard: "भक्त डैशबोर्ड",
+      }
+    };
+
+    const labels = sectionLabels[lang] || sectionLabels['en'];
+    return labels[section] || labels['services'];
+  };
+
+  const getWhatsAppMessage = (section: string, lang: string) => {
+    const sName = getServiceName(section, lang);
+    if (lang === 'ne') {
+      return `नमस्ते, म ${sName} को बारेमा थप जानकारी चाहन्छु।`;
+    }
+    if (lang === 'hi') {
+      return `नमस्ते, मैं ${sName} के बारे में और जानकारी चाहता हूँ।`;
+    }
+    return `Namaste, I would like to know more about ${sName}`;
+  };
+
+  const templateMsg = encodeURIComponent(getWhatsAppMessage(currentSec as string, language));
+  const whatsappUrl = `https://wa.me/${CONTACT_INFO.whatsapp}?text=${templateMsg}`;
 
   const results = query.trim() ? SERVICES.filter(s => {
     const serviceT = (i18n[language] as any).services_list[s.id];
@@ -249,7 +317,12 @@ const Navbar = () => {
                     className="absolute right-0 mt-2 w-48 bg-white rounded-2xl shadow-[0_20px_50px_rgba(122,12,12,0.15)] border border-gold/10 p-4 flex flex-col items-center z-50 text-center"
                   >
                     <p className="text-[10px] font-bold text-green-600 uppercase tracking-wider mb-2">WhatsApp Contact</p>
-                    <div className="bg-white p-2 rounded-xl border border-green-500/20 shadow-inner">
+                    <a 
+                      href={whatsappUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block bg-white p-2 rounded-xl border border-green-500/20 shadow-inner hover:scale-105 transition-transform"
+                    >
                       <QRCodeSVG 
                         value={whatsappUrl} 
                         size={120}
@@ -257,8 +330,8 @@ const Navbar = () => {
                         level="H"
                         includeMargin={false}
                       />
-                    </div>
-                    <p className="mt-2 text-[8px] text-gray-400 italic">Scan to chat with Pandit Ji directly</p>
+                    </a>
+                    <p className="mt-2 text-[8px] text-gray-400 italic">Scan or click to chat directly</p>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -699,9 +772,14 @@ const Navbar = () => {
               </div>
               
               <h3 className="text-xl font-serif font-bold text-maroon mb-2">WhatsApp Contact</h3>
-              <p className="text-sm text-gray-500 text-center mb-4">Scan this code to chat with Pandit Ji directly or call us at <span className="text-maroon font-bold">{CONTACT_INFO.displayPhone}</span>.</p>
+              <p className="text-sm text-gray-500 text-center mb-4">Scan or tap this code to chat with Pandit Ji directly or call us at <span className="text-maroon font-bold">{CONTACT_INFO.displayPhone}</span>.</p>
               
-              <div className="bg-white p-4 rounded-[2rem] border border-green-500/20 shadow-2xl ring-4 ring-green-500/5">
+              <a 
+                href={whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block bg-white p-4 rounded-[2rem] border border-green-500/20 shadow-2xl ring-4 ring-green-500/5 hover:scale-[1.02] transition-transform"
+              >
                 <QRCodeSVG 
                   value={whatsappUrl} 
                   size={200}
@@ -709,7 +787,7 @@ const Navbar = () => {
                   level="H"
                   includeMargin={false}
                 />
-              </div>
+              </a>
               
               <div className="mt-8 flex flex-col items-center gap-2">
                 <p className="text-[10px] text-saffron uppercase font-black tracking-[0.3em]">
@@ -2306,10 +2384,9 @@ const ContactSection = () => {
   );
 };
 
-const MainContent = ({ setSelectedService, handleBookNow, preselectedBookingId }: any) => {
+const MainContent = ({ setSelectedService, handleBookNow, preselectedBookingId, activeSection, setActiveSection }: any) => {
   const { t, language } = useLanguage();
   const [viewMode, setViewMode] = useState<'focus' | 'all'>('focus'); // Default to focus mode to respect "ek ek section alag alag"
-  const [activeSection, setActiveSection] = useState<'services' | 'jyotish' | 'rashifal' | 'about' | 'testimonials' | 'faq' | 'contact' | 'booking'>('services');
 
   const sectionLabels: Record<string, Record<string, { title: string, subtitle: string, icon: any }>> = {
     ne: {
@@ -2727,6 +2804,7 @@ export default function App() {
   const [showSplash, setShowSplash] = useState(true);
   const [selectedService, setSelectedService] = useState<PujaService | null>(null);
   const [preselectedBookingId, setPreselectedBookingId] = useState<string | null>(null);
+  const [activeSection, setActiveSection] = useState<'services' | 'jyotish' | 'rashifal' | 'about' | 'testimonials' | 'faq' | 'contact' | 'booking'>('services');
 
   const handleBookNow = (serviceId: string) => {
     setPreselectedBookingId(serviceId);
@@ -2748,7 +2826,7 @@ export default function App() {
     <BrowserRouter>
       <div className="min-h-screen bg-paper pb-32 md:pb-0 font-sans text-gray-900 selection:bg-maroon selection:text-white relative overflow-hidden">
         <DecorativeBackground />
-        <Navbar />
+        <Navbar activeSection={activeSection} />
         
         <Routes>
           <Route path="/" element={
@@ -2756,6 +2834,8 @@ export default function App() {
               setSelectedService={setSelectedService}
               handleBookNow={handleBookNow}
               preselectedBookingId={preselectedBookingId}
+              activeSection={activeSection}
+              setActiveSection={setActiveSection}
             />
           } />
           <Route path="/library" element={<Library />} />
